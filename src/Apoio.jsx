@@ -1,6 +1,8 @@
 // useState: Hook para gerenciar estados locais
 // useEffect: Hook para executar código quando componente monta/atualiza
 import { useState, useEffect } from 'react';
+// EmailJS: Biblioteca para envio de emails direto do frontend
+import emailjs from '@emailjs/browser';
 
 // Componente da página de apoio - formulário de contato
 export default function Apoio() {
@@ -12,6 +14,8 @@ export default function Apoio() {
     const [loading, setLoading] = useState(false);
     // Estado para armazenar histórico de mensagens enviadas
     const [historico, setHistorico] = useState([]);
+    // Estado para mostrar erros de envio
+    const [erro, setErro] = useState('');
 
     // useEffect: Executa quando componente monta (carrega histórico do localStorage)
     useEffect(() => {
@@ -23,30 +27,71 @@ export default function Apoio() {
     // Função para processar envio do formulário
     const handleSubmit = async (e) => {
         e.preventDefault(); // Impede reload da página
+        setErro(''); // Limpa erros anteriores
         
         // Valida se todos os campos estão preenchidos
         if (formData.nome && formData.email && formData.mensagem) {
             setLoading(true); // Ativa estado de carregamento
             
-            // Simula envio para servidor (1.5 segundos de delay)
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            // Cria novo item para o histórico com data atual
-            const novoItem = { ...formData, data: new Date().toLocaleString() };
-            // Mantém apenas os últimos 5 itens no histórico
-            const novoHistorico = [novoItem, ...historico.slice(0, 4)];
-            
-            // Atualiza estado e salva no localStorage
-            setHistorico(novoHistorico);
-            localStorage.setItem('apoio-historico', JSON.stringify(novoHistorico));
-            
-            // Mostra mensagem de sucesso
-            setEnviado(true);
-            setLoading(false);
-            // Remove mensagem de sucesso após 3 segundos
-            setTimeout(() => setEnviado(false), 3000);
-            // Limpa o formulário
-            setFormData({ nome: '', email: '', mensagem: '' });
+            try {
+                // Parâmetros do template de email
+                const templateParams = {
+                    from_name: formData.nome,
+                    from_email: formData.email,
+                    message: formData.mensagem,
+                    to_email: 'rm94720@estudante.fieb.edu.br'
+                };
+                
+                // Tenta enviar via EmailJS (substitua pelos IDs reais)
+                const SERVICE_ID = 'service_id'; // Substitua pelo Service ID real
+                const TEMPLATE_ID = 'template_id'; // Substitua pelo Template ID real  
+                const PUBLIC_KEY = 'public_key'; // Substitua pela Public Key real
+                
+                // Se as configurações não foram alteradas, usa mailto como fallback
+                if (SERVICE_ID === 'service_id' || TEMPLATE_ID === 'template_id' || PUBLIC_KEY === 'public_key') {
+                    // Fallback: abre cliente de email do usuário
+                    const subject = encodeURIComponent(`Apoio - ${formData.nome}`);
+                    const body = encodeURIComponent(
+                        `Nome: ${formData.nome}\n` +
+                        `Email: ${formData.email}\n\n` +
+                        `Mensagem:\n${formData.mensagem}`
+                    );
+                    window.open(`mailto:rm94720@estudante.fieb.edu.br?subject=${subject}&body=${body}`);
+                } else {
+                    // Envia via EmailJS se configurado
+                    await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+                }
+                
+                // Cria novo item para o histórico com data atual
+                const novoItem = { ...formData, data: new Date().toLocaleString() };
+                // Mantém apenas os últimos 5 itens no histórico
+                const novoHistorico = [novoItem, ...historico.slice(0, 4)];
+                
+                // Atualiza estado e salva no localStorage
+                setHistorico(novoHistorico);
+                localStorage.setItem('apoio-historico', JSON.stringify(novoHistorico));
+                
+                // Mostra mensagem de sucesso
+                setEnviado(true);
+                // Remove mensagem de sucesso após 3 segundos
+                setTimeout(() => setEnviado(false), 3000);
+                // Limpa o formulário
+                setFormData({ nome: '', email: '', mensagem: '' });
+                
+            } catch (error) {
+                console.error('Erro ao enviar email:', error);
+                // Se falhar, tenta mailto como fallback
+                const subject = encodeURIComponent(`Apoio - ${formData.nome}`);
+                const body = encodeURIComponent(
+                    `Nome: ${formData.nome}\n` +
+                    `Email: ${formData.email}\n\n` +
+                    `Mensagem:\n${formData.mensagem}`
+                );
+                window.open(`mailto:rm94720@estudante.fieb.edu.br?subject=${subject}&body=${body}`);
+                setErro('Abrindo seu cliente de email...');
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -57,7 +102,12 @@ export default function Apoio() {
             <h2 style={{ color: "#558C03" }}>Solicite Apoio</h2>
             {enviado && (
               <div className="alert alert-success">
-                ✓ Mensagem enviada com sucesso! Responderemos em breve.
+                ✓ Mensagem enviada com sucesso para rm94720@estudante.fieb.edu.br! Responderemos em breve.
+              </div>
+            )}
+            {erro && (
+              <div className="alert alert-danger">
+                ✗ {erro}
               </div>
             )}
             <form onSubmit={handleSubmit}>
