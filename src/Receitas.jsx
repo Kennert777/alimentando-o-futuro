@@ -1,10 +1,18 @@
+// useState: Hook para gerenciar estados locais
+// useMemo: Hook para otimizar cálculos pesados (evita recalcular a cada render)
 import { useState, useMemo } from 'react';
 
+// Componente da página de receitas sustentáveis
 export default function Receitas() {
+    // Estado para armazenar qual receita está selecionada para exibição
     const [receitaSelecionada, setReceitaSelecionada] = useState(null);
+    // Estado para o texto de busca digitado pelo usuário
     const [busca, setBusca] = useState('');
+    // Estado para armazenar IDs das receitas favoritadas
     const [favoritas, setFavoritas] = useState([]);
     
+    // Array com todas as receitas disponíveis no sistema
+    // Cada receita tem: id, nome, categoria, ingredientes e modo de preparo
     const receitas = [
         {
             id: 1,
@@ -92,15 +100,20 @@ export default function Receitas() {
         }
     ];
     
+    // useMemo: Otimiza a filtragem - só recalcula quando 'busca' muda
+    // Filtra receitas por nome ou categoria baseado no texto de busca
     const receitasFiltradas = useMemo(() => {
         return receitas.filter(receita => 
+            // Converte para minúsculo para busca case-insensitive
             receita.nome.toLowerCase().includes(busca.toLowerCase()) ||
             receita.categoria.toLowerCase().includes(busca.toLowerCase())
         );
-    }, [busca]);
+    }, [busca]); // Dependência: só executa quando 'busca' muda
     
+    // Função para adicionar/remover receita dos favoritos
     const toggleFavorita = (id) => {
         setFavoritas(prev => 
+            // Se já está nos favoritos, remove; senão, adiciona
             prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
         );
     };

@@ -1,8 +1,13 @@
+// useState: Hook para gerenciar estado local
 import { useState } from 'react';
 
+// Componente da página Horta Digital - ensina cultivo de plantas
 export default function HortaDigital() {
+    // Estado para controlar qual planta está selecionada para mostrar detalhes
     const [plantaSelecionada, setPlantaSelecionada] = useState(null);
     
+    // Array com informações de plantas para cultivo doméstico
+    // Cada planta tem: id, nome, dificuldade, tempo de colheita, cuidados e dicas
     const plantas = [
         {
             id: 1,
