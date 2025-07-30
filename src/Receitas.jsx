@@ -33,6 +33,62 @@ export default function Receitas() {
             categoria: "Bebida",
             ingredientes: ["Cascas de maçã", "Cascas de pêra", "Água", "Açúcar ou mel"],
             preparo: "Ferva as cascas em água por 10min. Coe, adoce e sirva gelado."
+        },
+        {
+            id: 5,
+            nome: "Geleia de cascas de laranja",
+            categoria: "Doce",
+            ingredientes: ["Cascas de 6 laranjas", "2 xícaras de açúcar", "1 xícara de água", "Suco de 1 limão"],
+            preparo: "Corte as cascas em tiras finas. Cozinhe com açúcar e água até engrossar. Adicione limão no final."
+        },
+        {
+            id: 6,
+            nome: "Refogado de folhas de beterraba",
+            categoria: "Acompanhamento",
+            ingredientes: ["Folhas de beterraba", "Alho", "Cebola", "Azeite", "Sal e pimenta"],
+            preparo: "Refogue alho e cebola no azeite. Adicione as folhas picadas e tempere. Cozinhe por 5 minutos."
+        },
+        {
+            id: 7,
+            nome: "Pão de casca de abóbora",
+            categoria: "Doce",
+            ingredientes: ["2 xícaras de casca de abóbora cozida", "3 xícaras de farinha", "1 xícara de açúcar", "3 ovos", "1/2 xícara de óleo", "1 colher de fermento"],
+            preparo: "Bata a abóbora com ovos e óleo. Misture farinha, açúcar e fermento. Una tudo e asse por 45min a 180°C."
+        },
+        {
+            id: 8,
+            nome: "Chá de cascas de abacaxi",
+            categoria: "Bebida",
+            ingredientes: ["Cascas de 1 abacaxi", "1 litro de água", "Canela em pau", "Cravo", "Mel a gosto"],
+            preparo: "Ferva as cascas com água e especiarias por 15min. Coe, adoce com mel e sirva quente ou gelado."
+        },
+        {
+            id: 9,
+            nome: "Torta salgada de talos",
+            categoria: "Prato Principal",
+            ingredientes: ["Talos de acelga", "Talos de espinafre", "3 ovos", "1 xícara de leite", "Queijo ralado", "Massa de torta"],
+            preparo: "Refogue os talos picados. Misture ovos, leite e queijo. Coloque na massa e asse por 30min a 180°C."
+        },
+        {
+            id: 10,
+            nome: "Vitamina de cascas verdes",
+            categoria: "Bebida",
+            ingredientes: ["Cascas de maçã verde", "Cascas de pepino", "1 banana", "Água de coco", "Hortelã"],
+            preparo: "Bata todos os ingredientes no liquidificador. Coe se preferir e sirva gelado com gelo."
+        },
+        {
+            id: 11,
+            nome: "Doce de casca de melancia",
+            categoria: "Doce",
+            ingredientes: ["Cascas de melancia", "Açúcar", "Cravo", "Canela"],
+            preparo: "Corte as cascas em cubos. Cozinhe com açúcar e especiarias até formar calda espessa."
+        },
+        {
+            id: 12,
+            nome: "Salada de talos e folhas",
+            categoria: "Salada",
+            ingredientes: ["Talos de couve-flor", "Folhas de cenoura", "Folhas de rabanete", "Azeite", "Limão", "Sal"],
+            preparo: "Branqueie os talos por 2min. Misture com folhas cruas, tempere com azeite, limão e sal."
         }
     ];
     
@@ -54,7 +110,7 @@ export default function Receitas() {
         <h2 style={{ color: "#4F732C" }}>Receitas Sustentáveis</h2>
         <p>Descubra como reaproveitar alimentos com criatividade e sabor.</p>
         
-        <div className="mb-3">
+        <div className="mb-4">
           <input 
             type="text" 
             className="form-control" 
@@ -62,6 +118,41 @@ export default function Receitas() {
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
           />
+        </div>
+        
+        <div className="row mb-4">
+          <div className="col-md-6">
+            <div className="card" style={{ backgroundColor: "#D9C179" }}>
+              <div className="card-body">
+                <h5>📺 Tutoriais em Vídeo</h5>
+                <p>Aprenda com vídeos práticos sobre reaproveitamento</p>
+                <a href="https://www.youtube.com/results?search_query=receitas+sustentaveis+cascas" 
+                   className="btn btn-success me-2" target="_blank" rel="noopener noreferrer">
+                  Ver Tutoriais
+                </a>
+                <a href="https://www.youtube.com/results?search_query=aproveitamento+integral+alimentos" 
+                   className="btn btn-outline-success" target="_blank" rel="noopener noreferrer">
+                  Mais Dicas
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="card" style={{ backgroundColor: "#D9AE89" }}>
+              <div className="card-body">
+                <h5>📚 Guias Completos</h5>
+                <p>Documentos e artigos sobre alimentação sustentável</p>
+                <a href="https://www.google.com/search?q=guia+aproveitamento+integral+alimentos+pdf" 
+                   className="btn btn-success me-2" target="_blank" rel="noopener noreferrer">
+                  Baixar Guias
+                </a>
+                <a href="https://www.google.com/search?q=receitas+cascas+talos+folhas" 
+                   className="btn btn-outline-success" target="_blank" rel="noopener noreferrer">
+                  Pesquisar
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div className="row">
