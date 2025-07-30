@@ -39,210 +39,71 @@ export default function HortaDigital() {
     ];
 
     return (
-      <div className="container" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <h2 style={{ 
-            color: "#2c3e50", 
-            fontSize: "2.4rem", 
-            fontWeight: "300", 
-            marginBottom: "20px" 
-          }}>
-            Horta Digital
-          </h2>
-          <p style={{ 
-            fontSize: "1.1rem", 
-            color: "#6c757d", 
-            fontWeight: "300", 
-            lineHeight: "1.6", 
-            marginBottom: "50px" 
-          }}>
-            Aprenda a cultivar seus próprios alimentos em casa com nossas dicas práticas.
-          </p>
-          
-          <div className="row" style={{ marginBottom: "60px" }}>
-            <div className="col-md-6" style={{ marginBottom: "30px" }}>
-              <div style={{ 
-                backgroundColor: "white", 
-                borderRadius: "12px", 
-                padding: "30px", 
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)", 
-                border: "1px solid #f1f3f4",
-                height: "100%"
-              }}>
-                <h5 style={{ 
-                  color: "#2c3e50", 
-                  fontSize: "1.3rem", 
-                  fontWeight: "400", 
-                  marginBottom: "16px" 
-                }}>
-                  🌱 Iniciantes
-                </h5>
-                <p style={{ 
-                  color: "#6c757d", 
-                  fontSize: "0.95rem", 
-                  lineHeight: "1.5", 
-                  marginBottom: "24px" 
-                }}>
-                  Comece com plantas fáceis de cultivar
-                </p>
-                <a 
-                  href="https://www.youtube.com/results?search_query=horta+caseira+iniciantes" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{ 
-                    backgroundColor: "#4a90e2", 
-                    border: "none", 
-                    borderRadius: "6px", 
-                    padding: "10px 20px", 
-                    color: "white", 
-                    textDecoration: "none", 
-                    fontSize: "0.9rem", 
-                    fontWeight: "400",
-                    display: "inline-block"
-                  }}
-                >
+      <div className="container mt-5">
+        <h2 style={{ color: "#4F732C" }}>Horta Digital</h2>
+        <p className="lead">
+          Aprenda a cultivar seus próprios alimentos em casa com nossas dicas práticas.
+        </p>
+        
+        <div className="row mb-4">
+          <div className="col-md-6">
+            <div className="card" style={{ backgroundColor: "#D9C179" }}>
+              <div className="card-body">
+                <h5>🌱 Iniciantes</h5>
+                <p>Comece com plantas fáceis de cultivar</p>
+                <a href="https://www.youtube.com/results?search_query=horta+caseira+iniciantes" 
+                   className="btn btn-success" target="_blank" rel="noopener noreferrer">
                   Ver Tutoriais
                 </a>
               </div>
             </div>
-            <div className="col-md-6" style={{ marginBottom: "30px" }}>
-              <div style={{ 
-                backgroundColor: "white", 
-                borderRadius: "12px", 
-                padding: "30px", 
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)", 
-                border: "1px solid #f1f3f4",
-                height: "100%"
-              }}>
-                <h5 style={{ 
-                  color: "#2c3e50", 
-                  fontSize: "1.3rem", 
-                  fontWeight: "400", 
-                  marginBottom: "16px" 
-                }}>
-                  🏡 Espaços Pequenos
-                </h5>
-                <p style={{ 
-                  color: "#6c757d", 
-                  fontSize: "0.95rem", 
-                  lineHeight: "1.5", 
-                  marginBottom: "24px" 
-                }}>
-                  Soluções para apartamentos e varandas
-                </p>
-                <a 
-                  href="https://www.youtube.com/results?search_query=horta+apartamento" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{ 
-                    backgroundColor: "#4a90e2", 
-                    border: "none", 
-                    borderRadius: "6px", 
-                    padding: "10px 20px", 
-                    color: "white", 
-                    textDecoration: "none", 
-                    fontSize: "0.9rem", 
-                    fontWeight: "400",
-                    display: "inline-block"
-                  }}
-                >
+          </div>
+          <div className="col-md-6">
+            <div className="card" style={{ backgroundColor: "#D9AE89" }}>
+              <div className="card-body">
+                <h5>🏡 Espaços Pequenos</h5>
+                <p>Soluções para apartamentos e varandas</p>
+                <a href="https://www.youtube.com/results?search_query=horta+apartamento" 
+                   className="btn btn-success" target="_blank" rel="noopener noreferrer">
                   Ver Dicas
                 </a>
               </div>
             </div>
           </div>
+        </div>
 
-          <h3 style={{ 
-            color: "#2c3e50", 
-            fontSize: "1.8rem", 
-            fontWeight: "400", 
-            marginBottom: "30px" 
-          }}>
-            Plantas Recomendadas
-          </h3>
-          <div className="row">
-            <div className="col-md-6" style={{ marginBottom: "30px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {plantas.map(planta => (
-                  <button 
-                    key={planta.id}
-                    onClick={() => setPlantaSelecionada(planta)}
-                    style={{ 
-                      backgroundColor: "white", 
-                      border: "1px solid #e9ecef", 
-                      borderRadius: "8px", 
-                      padding: "16px 20px", 
-                      display: "flex", 
-                      justifyContent: "space-between", 
-                      alignItems: "center",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
-                    }}
-                  >
-                    <span style={{ 
-                      color: "#2c3e50", 
-                      fontSize: "1rem", 
-                      fontWeight: "400" 
-                    }}>
-                      {planta.nome}
-                    </span>
-                    <span style={{ 
-                      backgroundColor: "#4a90e2", 
-                      color: "white", 
-                      padding: "4px 12px", 
-                      borderRadius: "12px", 
-                      fontSize: "0.8rem", 
-                      fontWeight: "400" 
-                    }}>
-                      {planta.dificuldade}
-                    </span>
-                  </button>
-                ))}
-              </div>
+        <h3 style={{ color: "#558C03" }}>Plantas Recomendadas</h3>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="list-group">
+              {plantas.map(planta => (
+                <button 
+                  key={planta.id}
+                  className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                  style={{ backgroundColor: "#AEBF2C" }}
+                  onClick={() => setPlantaSelecionada(planta)}
+                >
+                  <span>{planta.nome}</span>
+                  <span className="badge bg-success">{planta.dificuldade}</span>
+                </button>
+              ))}
             </div>
-            
-            <div className="col-md-6">
-              {plantaSelecionada && (
-                <div style={{ 
-                  backgroundColor: "white", 
-                  borderRadius: "12px", 
-                  padding: "30px", 
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)", 
-                  border: "1px solid #f1f3f4" 
-                }}>
-                  <h5 style={{ 
-                    color: "#2c3e50", 
-                    fontSize: "1.4rem", 
-                    fontWeight: "400", 
-                    marginBottom: "20px" 
-                  }}>
-                    {plantaSelecionada.nome}
-                  </h5>
-                  <div style={{ marginBottom: "16px" }}>
-                    <strong style={{ color: "#2c3e50" }}>Dificuldade:</strong>
-                    <span style={{ color: "#6c757d", marginLeft: "8px" }}>{plantaSelecionada.dificuldade}</span>
-                  </div>
-                  <div style={{ marginBottom: "16px" }}>
-                    <strong style={{ color: "#2c3e50" }}>Tempo para colheita:</strong>
-                    <span style={{ color: "#6c757d", marginLeft: "8px" }}>{plantaSelecionada.tempo}</span>
-                  </div>
-                  <div style={{ marginBottom: "20px" }}>
-                    <strong style={{ color: "#2c3e50" }}>Cuidados:</strong>
-                    <span style={{ color: "#6c757d", marginLeft: "8px" }}>{plantaSelecionada.cuidados}</span>
-                  </div>
-                  <div style={{ 
-                    backgroundColor: "#f8f9fa", 
-                    border: "1px solid #e9ecef", 
-                    borderRadius: "8px", 
-                    padding: "16px" 
-                  }}>
-                    <strong style={{ color: "#2c3e50" }}>💡 Dica:</strong>
-                    <span style={{ color: "#6c757d", marginLeft: "8px" }}>{plantaSelecionada.dicas}</span>
+          </div>
+          
+          <div className="col-md-6">
+            {plantaSelecionada && (
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title" style={{ color: "#4F732C" }}>{plantaSelecionada.nome}</h5>
+                  <p><strong>Dificuldade:</strong> {plantaSelecionada.dificuldade}</p>
+                  <p><strong>Tempo para colheita:</strong> {plantaSelecionada.tempo}</p>
+                  <p><strong>Cuidados:</strong> {plantaSelecionada.cuidados}</p>
+                  <div className="alert alert-info">
+                    <strong>💡 Dica:</strong> {plantaSelecionada.dicas}
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
