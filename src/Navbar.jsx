@@ -5,24 +5,101 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: "#4F732C" }}>
+    <nav style={{ 
+      backgroundColor: "white", 
+      borderBottom: "1px solid #e9ecef", 
+      padding: "16px 0",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.04)"
+    }}>
       <div className="container">
-        <Link className="navbar-brand" to="/">Feeding the Future</Link>
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`}>
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item"><Link className="nav-link" to="/">Início</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/horta">Horta</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/receitas">Receitas</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/apoio">Apoio</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/sobre">Sobre</Link></li>
-          </ul>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Link 
+            to="/" 
+            style={{ 
+              fontSize: "1.4rem", 
+              fontWeight: "400", 
+              color: "#2c3e50", 
+              textDecoration: "none" 
+            }}
+          >
+            Alimentando o Futuro
+          </Link>
+          
+          <button 
+            style={{ 
+              display: "none", 
+              backgroundColor: "transparent", 
+              border: "none", 
+              fontSize: "1.2rem", 
+              color: "#2c3e50" 
+            }}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            ☰
+          </button>
+          
+          <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
+            <Link 
+              to="/" 
+              style={{ 
+                color: "#6c757d", 
+                textDecoration: "none", 
+                fontSize: "0.95rem", 
+                fontWeight: "400",
+                transition: "color 0.3s ease"
+              }}
+            >
+              Início
+            </Link>
+            <Link 
+              to="/horta" 
+              style={{ 
+                color: "#6c757d", 
+                textDecoration: "none", 
+                fontSize: "0.95rem", 
+                fontWeight: "400",
+                transition: "color 0.3s ease"
+              }}
+            >
+              Horta
+            </Link>
+            <Link 
+              to="/receitas" 
+              style={{ 
+                color: "#6c757d", 
+                textDecoration: "none", 
+                fontSize: "0.95rem", 
+                fontWeight: "400",
+                transition: "color 0.3s ease"
+              }}
+            >
+              Receitas
+            </Link>
+            <Link 
+              to="/apoio" 
+              style={{ 
+                color: "#6c757d", 
+                textDecoration: "none", 
+                fontSize: "0.95rem", 
+                fontWeight: "400",
+                transition: "color 0.3s ease"
+              }}
+            >
+              Apoio
+            </Link>
+            <Link 
+              to="/sobre" 
+              style={{ 
+                color: "#6c757d", 
+                textDecoration: "none", 
+                fontSize: "0.95rem", 
+                fontWeight: "400",
+                transition: "color 0.3s ease"
+              }}
+            >
+              Sobre
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

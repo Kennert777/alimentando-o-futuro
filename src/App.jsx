@@ -11,9 +11,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function App() {
   return (
     <Router>
-      <div className="d-flex flex-column min-vh-100">
+      <div style={{ 
+        display: "flex", 
+        flexDirection: "column", 
+        minHeight: "100vh", 
+        backgroundColor: "white" 
+      }}>
         <Navbar />
-        <main className="flex-grow-1">
+        <main style={{ flexGrow: 1 }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/horta" element={<HortaDigital />} />

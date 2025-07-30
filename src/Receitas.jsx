@@ -50,93 +50,233 @@ export default function Receitas() {
     };
 
     return (
-      <div className="container mt-5">
-        <h2 style={{ color: "#4F732C" }}>Receitas Sustentáveis</h2>
-        <p>Descubra como reaproveitar alimentos com criatividade e sabor.</p>
-        
-        <div className="mb-3">
-          <input 
-            type="text" 
-            className="form-control" 
-            placeholder="Buscar receitas..."
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-          />
-        </div>
-        
-        <div className="row">
-          <div className="col-md-6">
-            <ul className="list-group">
-              {receitasFiltradas.map(receita => (
-                <li 
-                  key={receita.id}
-                  className="list-group-item list-group-item-action d-flex justify-content-between align-items-center" 
-                  style={{ backgroundColor: "#D9AE89", cursor: "pointer" }}
-                  onClick={() => setReceitaSelecionada(receita)}
-                >
-                  <div>
-                    <strong>{receita.nome}</strong>
-                    <br/>
-                    <small className="text-muted">{receita.categoria}</small>
-                  </div>
-                  <button 
-                    className="btn btn-sm"
-                    onClick={(e) => { e.stopPropagation(); toggleFavorita(receita.id); }}
-                    style={{ color: favoritas.includes(receita.id) ? "red" : "gray" }}
-                  >
-                    ♥
-                  </button>
-                </li>
-              ))}
-            </ul>
-            {receitasFiltradas.length === 0 && (
-              <div className="alert alert-info">Nenhuma receita encontrada.</div>
-            )}
+      <div className="container" style={{ paddingTop: "60px", paddingBottom: "80px" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+          <h2 style={{ 
+            color: "#2c3e50", 
+            fontSize: "2.4rem", 
+            fontWeight: "300", 
+            marginBottom: "20px" 
+          }}>
+            Receitas Sustentáveis
+          </h2>
+          <p style={{ 
+            fontSize: "1.1rem", 
+            color: "#6c757d", 
+            fontWeight: "300", 
+            lineHeight: "1.6", 
+            marginBottom: "40px" 
+          }}>
+            Descubra como reaproveitar alimentos com criatividade e sabor.
+          </p>
+          
+          <div style={{ marginBottom: "40px" }}>
+            <input 
+              type="text" 
+              placeholder="Buscar receitas..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              style={{ 
+                width: "100%", 
+                padding: "12px 16px", 
+                border: "1px solid #e9ecef", 
+                borderRadius: "8px", 
+                fontSize: "1rem", 
+                outline: "none",
+                transition: "border-color 0.3s ease"
+              }}
+            />
           </div>
           
-          <div className="col-md-6">
-            {receitaSelecionada && (
-              <div className="card" style={{ backgroundColor: "#F9F9F9" }}>
-                <div className="card-body">
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <h5 className="card-title" style={{ color: "#4F732C" }}>{receitaSelecionada.nome}</h5>
-                    <span className="badge bg-secondary">{receitaSelecionada.categoria}</span>
+          <div className="row">
+            <div className="col-md-6" style={{ marginBottom: "30px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {receitasFiltradas.map(receita => (
+                  <div 
+                    key={receita.id}
+                    onClick={() => setReceitaSelecionada(receita)}
+                    style={{ 
+                      backgroundColor: "white", 
+                      border: "1px solid #e9ecef", 
+                      borderRadius: "8px", 
+                      padding: "20px", 
+                      cursor: "pointer", 
+                      display: "flex", 
+                      justifyContent: "space-between", 
+                      alignItems: "center",
+                      transition: "all 0.3s ease",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.04)"
+                    }}
+                  >
+                    <div>
+                      <div style={{ 
+                        color: "#2c3e50", 
+                        fontSize: "1.1rem", 
+                        fontWeight: "400", 
+                        marginBottom: "4px" 
+                      }}>
+                        {receita.nome}
+                      </div>
+                      <div style={{ 
+                        color: "#6c757d", 
+                        fontSize: "0.9rem" 
+                      }}>
+                        {receita.categoria}
+                      </div>
+                    </div>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); toggleFavorita(receita.id); }}
+                      style={{ 
+                        backgroundColor: "transparent", 
+                        border: "none", 
+                        fontSize: "1.2rem", 
+                        color: favoritas.includes(receita.id) ? "#e74c3c" : "#bdc3c7",
+                        cursor: "pointer",
+                        padding: "4px"
+                      }}
+                    >
+                      ♥
+                    </button>
                   </div>
-                  <h6>Ingredientes:</h6>
-                  <ul>
+                ))}
+              </div>
+              {receitasFiltradas.length === 0 && (
+                <div style={{ 
+                  backgroundColor: "#f8f9fa", 
+                  border: "1px solid #e9ecef", 
+                  borderRadius: "8px", 
+                  padding: "20px", 
+                  textAlign: "center", 
+                  color: "#6c757d" 
+                }}>
+                  Nenhuma receita encontrada.
+                </div>
+              )}
+            </div>
+            
+            <div className="col-md-6">
+              {receitaSelecionada && (
+                <div style={{ 
+                  backgroundColor: "white", 
+                  borderRadius: "12px", 
+                  padding: "30px", 
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)", 
+                  border: "1px solid #f1f3f4" 
+                }}>
+                  <div style={{ 
+                    display: "flex", 
+                    justifyContent: "space-between", 
+                    alignItems: "center", 
+                    marginBottom: "20px" 
+                  }}>
+                    <h5 style={{ 
+                      color: "#2c3e50", 
+                      fontSize: "1.4rem", 
+                      fontWeight: "400", 
+                      margin: "0" 
+                    }}>
+                      {receitaSelecionada.nome}
+                    </h5>
+                    <span style={{ 
+                      backgroundColor: "#4a90e2", 
+                      color: "white", 
+                      padding: "4px 12px", 
+                      borderRadius: "12px", 
+                      fontSize: "0.8rem", 
+                      fontWeight: "400" 
+                    }}>
+                      {receitaSelecionada.categoria}
+                    </span>
+                  </div>
+                  <h6 style={{ 
+                    color: "#2c3e50", 
+                    fontSize: "1.1rem", 
+                    fontWeight: "400", 
+                    marginBottom: "12px" 
+                  }}>
+                    Ingredientes:
+                  </h6>
+                  <ul style={{ 
+                    color: "#6c757d", 
+                    fontSize: "0.95rem", 
+                    lineHeight: "1.5", 
+                    marginBottom: "24px",
+                    paddingLeft: "20px" 
+                  }}>
                     {receitaSelecionada.ingredientes.map((ing, index) => (
-                      <li key={index}>{ing}</li>
+                      <li key={index} style={{ marginBottom: "4px" }}>{ing}</li>
                     ))}
                   </ul>
-                  <h6>Modo de preparo:</h6>
-                  <p>{receitaSelecionada.preparo}</p>
+                  <h6 style={{ 
+                    color: "#2c3e50", 
+                    fontSize: "1.1rem", 
+                    fontWeight: "400", 
+                    marginBottom: "12px" 
+                  }}>
+                    Modo de preparo:
+                  </h6>
+                  <p style={{ 
+                    color: "#6c757d", 
+                    fontSize: "0.95rem", 
+                    lineHeight: "1.6", 
+                    marginBottom: "24px" 
+                  }}>
+                    {receitaSelecionada.preparo}
+                  </p>
                   <button 
-                    className="btn btn-outline-success btn-sm"
                     onClick={() => toggleFavorita(receitaSelecionada.id)}
+                    style={{ 
+                      backgroundColor: favoritas.includes(receitaSelecionada.id) ? "#4a90e2" : "transparent", 
+                      border: favoritas.includes(receitaSelecionada.id) ? "none" : "2px solid #4a90e2", 
+                      borderRadius: "6px", 
+                      padding: "8px 16px", 
+                      color: favoritas.includes(receitaSelecionada.id) ? "white" : "#4a90e2", 
+                      fontSize: "0.9rem", 
+                      fontWeight: "400",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease"
+                    }}
                   >
                     {favoritas.includes(receitaSelecionada.id) ? '💚 Favoritada' : '🤍 Favoritar'}
                   </button>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-        
-        {favoritas.length > 0 && (
-          <div className="mt-4">
-            <h4 style={{ color: "#558C03" }}>Suas Favoritas ({favoritas.length})</h4>
-            <div className="d-flex flex-wrap gap-2">
-              {favoritas.map(id => {
-                const receita = receitas.find(r => r.id === id);
-                return (
-                  <span key={id} className="badge bg-success p-2">
-                    {receita?.nome}
-                  </span>
-                );
-              })}
+              )}
             </div>
           </div>
-        )}
+          
+          {favoritas.length > 0 && (
+            <div style={{ marginTop: "50px" }}>
+              <h4 style={{ 
+                color: "#2c3e50", 
+                fontSize: "1.6rem", 
+                fontWeight: "400", 
+                marginBottom: "20px" 
+              }}>
+                Suas Favoritas ({favoritas.length})
+              </h4>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+                {favoritas.map(id => {
+                  const receita = receitas.find(r => r.id === id);
+                  return (
+                    <span 
+                      key={id} 
+                      style={{ 
+                        backgroundColor: "#4a90e2", 
+                        color: "white", 
+                        padding: "8px 16px", 
+                        borderRadius: "16px", 
+                        fontSize: "0.9rem", 
+                        fontWeight: "400" 
+                      }}
+                    >
+                      {receita?.nome}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
