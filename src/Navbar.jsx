@@ -35,6 +35,18 @@ export default function Navbar() {
             <li className="nav-item"><Link className="nav-link" to="/receitas">Receitas</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/apoio">Apoio</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/sobre">Sobre</Link></li>
+            {/* Links condicionais baseados no login */}
+            {localStorage.getItem('currentUser') ? (
+              <>
+                <li className="nav-item"><Link className="nav-link" to="/dashboard">📊 Dashboard</Link></li>
+                <li className="nav-item"><Link className="nav-link" to="/chat">💬 Chat</Link></li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item"><Link className="nav-link" to="/login">Entrar</Link></li>
+                <li className="nav-item"><Link className="nav-link" to="/register">Cadastrar</Link></li>
+              </>
+            )}
           </ul>
         </div>
       </div>

@@ -8,8 +8,16 @@ import HortaDigital from './HortaDigital';
 import Receitas from './Receitas';
 import Apoio from './Apoio';
 import Sobre from './Sobre';
+import Login from './Login';
+import Register from './Register';
+import Dashboard from './Dashboard';
+import HortasUsuario from './HortasUsuario';
+import Chat from './Chat';
+import Admin from './Admin';
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
+// Inicializa dados padrão do sistema
+import './initData.js';
 
 // Componente principal da aplicação
 export default function App() {
@@ -31,6 +39,12 @@ export default function App() {
             <Route path="/receitas" element={<Receitas />} />        {/* Página de receitas */}
             <Route path="/apoio" element={<Apoio />} />              {/* Página de apoio */}
             <Route path="/sobre" element={<Sobre />} />              {/* Página sobre */}
+            <Route path="/login" element={<Login />} />              {/* Página de login */}
+            <Route path="/register" element={<Register />} />        {/* Página de registro */}
+            <Route path="/dashboard" element={<Dashboard />} />      {/* Dashboard do usuário */}
+            <Route path="/hortas-usuario" element={<HortasUsuario />} /> {/* Hortas do usuário */}
+            <Route path="/chat" element={<Chat />} />                {/* Sistema de chat */}
+            <Route path="/admin" element={<Admin />} />              {/* Painel administrativo */}
           </Routes>
         </main>
         
