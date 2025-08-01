@@ -47,6 +47,8 @@ export default function Register() {
         }, 1000);
     };
 
+
+
     if (sucesso) {
         return (
             <div className="container mt-5">
@@ -69,7 +71,7 @@ export default function Register() {
                 <div className="col-md-6">
                     <div className="card" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
                         <div className="card-body p-5">
-                            <h2 className="text-center mb-4" style={{ color: "#4F732C" }}>Cadastrar</h2>
+                            <h2 className="text-center mb-4 bubble-text" style={{ color: "#4F732C" }}>Cadastrar</h2>
                             
                             {erro && (
                                 <div className="alert alert-danger">{erro}</div>

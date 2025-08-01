@@ -120,7 +120,7 @@ export default function Receitas() {
 
     return (
       <div className="container mt-5">
-        <h2 style={{ color: "#4F732C" }}>Receitas Sustentáveis</h2>
+        <h2 className="bubble-text" style={{ color: "#4F732C" }}>Receitas Sustentáveis</h2>
         <p>Descubra como reaproveitar alimentos com criatividade e sabor.</p>
         
         <div className="mb-4">

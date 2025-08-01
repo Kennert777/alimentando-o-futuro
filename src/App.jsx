@@ -14,8 +14,11 @@ import Dashboard from './Dashboard';
 import HortasUsuario from './HortasUsuario';
 import Chat from './Chat';
 import Admin from './Admin';
+import Chatbot from './Chatbot';
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
+// CSS para modo escuro
+import './darkMode.css';
 // Inicializa dados padrão do sistema
 import './initData.js';
 
@@ -50,6 +53,9 @@ export default function App() {
         
         {/* Footer: Rodapé fixo na parte inferior */}
         <Footer />
+        
+        {/* Chatbot: Assistente virtual flutuante */}
+        <Chatbot />
       </div>
     </Router>
   );

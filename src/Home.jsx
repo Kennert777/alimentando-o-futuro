@@ -8,7 +8,7 @@ export default function Home() {
         {/* Seção Hero - Apresentação principal do site */}
         <div className="container mt-5 text-center">
           {/* Título principal com emoji e cor personalizada */}
-          <h1 style={{ color: "#4F732C", fontSize: "3rem" }}>🌱 Feeding the Future</h1>
+          <h1 className="bubble-text" style={{ color: "#4F732C", fontSize: "3rem" }}>🌱 Alimentando o Futuro</h1>
           
           {/* Subtítulo explicativo */}
           <p className="lead">
@@ -24,7 +24,7 @@ export default function Home() {
         {/* Seção de Funcionalidades - Cards apresentando as principais áreas do site */}
         <div className="container mt-5">
           {/* Título da seção */}
-          <h2 className="text-center mb-5" style={{ color: "#4F732C" }}>Explore Nossas Funcionalidades</h2>
+          <h2 className="text-center mb-5 section-title" style={{ color: "#4F732C" }}>Explore Nossas Funcionalidades</h2>
           
           {/* Grid responsivo com 3 colunas */}
           <div className="row">
@@ -77,7 +77,7 @@ export default function Home() {
           <div className="card" style={{ backgroundColor: "#4F732C", color: "white" }}>
             <div className="card-body text-center py-5">
               {/* Título motivacional */}
-              <h3>Comece Sua Jornada Sustentável Hoje!</h3>
+              <h3 className="bubble-text">Comece Sua Jornada Sustentável!</h3>
               {/* Texto de apoio */}
               <p className="lead">Junte-se a milhares de pessoas que já transformaram sua alimentação</p>
               

@@ -26,13 +26,15 @@ export default function Login() {
         }, 1000);
     };
 
+
+
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
                         <div className="card-body p-5">
-                            <h2 className="text-center mb-4" style={{ color: "#4F732C" }}>Entrar</h2>
+                            <h2 className="text-center mb-4 bubble-text" style={{ color: "#4F732C" }}>Entrar</h2>
                             
                             {erro && (
                                 <div className="alert alert-danger">{erro}</div>
@@ -73,14 +75,6 @@ export default function Login() {
 
                             <div className="text-center">
                                 <p>Não tem conta? <Link to="/register" style={{ color: "#4F732C" }}>Cadastre-se</Link></p>
-                            </div>
-
-                            <hr />
-                            
-                            <div className="text-center">
-                                <p className="mb-2">Ou entre com:</p>
-                                <button className="btn btn-outline-primary me-2">Google</button>
-                                <button className="btn btn-outline-info">Facebook</button>
                             </div>
                         </div>
                     </div>

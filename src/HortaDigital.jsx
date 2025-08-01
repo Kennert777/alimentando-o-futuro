@@ -109,7 +109,7 @@ export default function HortaDigital() {
 
     return (
       <div className="container mt-5">
-        <h2 style={{ color: "#4F732C" }}>Horta Digital</h2>
+        <h2 className="bubble-text" style={{ color: "#4F732C" }}>Horta Digital</h2>
         <p className="lead">
           Aprenda a cultivar seus próprios alimentos em casa com nossas dicas práticas.
         </p>
@@ -200,7 +200,7 @@ export default function HortaDigital() {
           </div>
         </div>
 
-        <h3 style={{ color: "#558C03" }}>Catálogo de Plantas ({plantas.length} espécies)</h3>
+        <h3 className="section-title" style={{ color: "#558C03" }}>Catálogo de Plantas ({plantas.length} espécies)</h3>
         <div className="row">
           <div className="col-md-6">
             <div className="list-group">

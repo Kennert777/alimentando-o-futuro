@@ -1,0 +1,242 @@
+/* Variáveis CSS para modo claro e escuro */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #333333;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --card-bg: #ffffff;
+  --navbar-bg: #4F732C;
+  --footer-bg: #4F732C;
+  --bubble-font: 'DynaPuff', cursive;
+}
+
+/* Aplicação da fonte bubble nos títulos */
+h1, .bubble-title {
+  font-family: var(--bubble-font) !important;
+  font-weight: 600;
+}
+
+.navbar-brand {
+  font-family: var(--bubble-font) !important;
+  font-weight: 500;
+}
+
+/* Títulos de seções */
+h2.section-title {
+  font-family: var(--bubble-font) !important;
+  font-weight: 500;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+  --card-bg: #2d2d2d;
+  --navbar-bg: #2d4a1a;
+  --footer-bg: #2d4a1a;
+}
+
+/* Aplicação das variáveis */
+body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--navbar-bg) !important;
+}
+
+/* Footer */
+footer {
+  background-color: var(--footer-bg) !important;
+}
+
+/* Form controls */
+.form-control {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.form-control:focus {
+  background-color: var(--card-bg) !important;
+  border-color: #4F732C !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(79, 115, 44, 0.25) !important;
+}
+
+/* Buttons */
+.btn-outline-success {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.btn-outline-success:hover {
+  background-color: #4F732C !important;
+  border-color: #4F732C !important;
+}
+
+/* Tables */
+.table {
+  color: var(--text-primary) !important;
+}
+
+.table th {
+  border-color: var(--border-color) !important;
+}
+
+.table td {
+  border-color: var(--border-color) !important;
+}
+
+/* List groups */
+.list-group-item {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Alerts */
+.alert-info {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Nav tabs */
+.nav-tabs .nav-link {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Chat messages */
+[data-theme="dark"] .bg-light {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Badges */
+.badge.bg-secondary {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Text muted */
+.text-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* Cards coloridos - ajustes para modo escuro */
+[data-theme="dark"] .card[style*="#D9C179"] {
+  background-color: #4a4a2a !important;
+}
+
+[data-theme="dark"] .card[style*="#D9AE89"] {
+  background-color: #4a3a2a !important;
+}
+
+[data-theme="dark"] .card[style*="#AEBF2C"] {
+  background-color: #3a4a1a !important;
+}
+
+[data-theme="dark"] .card[style*="#4F732C"] {
+  background-color: #2d4a1a !important;
+}
+
+/* Botões no modo escuro */
+[data-theme="dark"] .btn-primary {
+  background-color: #4F732C !important;
+  border-color: #4F732C !important;
+}
+
+[data-theme="dark"] .btn-success {
+  background-color: #558C03 !important;
+  border-color: #558C03 !important;
+}
+
+/* Links no modo escuro */
+[data-theme="dark"] a {
+  color: #81c784 !important;
+}
+
+[data-theme="dark"] a:hover {
+  color: #a5d6a7 !important;
+}
+
+/* Dropdown de perfil */
+.dropdown-menu {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+.dropdown-item {
+  color: var(--text-primary) !important;
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dropdown-header {
+  color: var(--text-primary) !important;
+}
+
+.dropdown-divider {
+  border-color: var(--border-color) !important;
+}
+
+/* Avatar do usuário */
+.user-avatar {
+  transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Estilo especial para títulos bubble */
+.bubble-text {
+  font-family: var(--bubble-font) !important;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  letter-spacing: 0.5px;
+}
+
+/* Chatbot no modo escuro */
+[data-theme="dark"] .chatbot-window {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .chatbot-messages {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .chatbot-input {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .bot-message {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
