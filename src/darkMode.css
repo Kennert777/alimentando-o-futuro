@@ -11,20 +11,30 @@
   --bubble-font: 'DynaPuff', cursive;
 }
 
-/* Aplicação da fonte bubble nos títulos */
-h1, .bubble-title {
+/* Aplicação da fonte bubble em todo o site */
+body, * {
   font-family: var(--bubble-font) !important;
+}
+
+h1, .bubble-title {
   font-weight: 600;
 }
 
-.navbar-brand {
-  font-family: var(--bubble-font) !important;
+h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
-/* Títulos de seções */
-h2.section-title {
-  font-family: var(--bubble-font) !important;
+.navbar-brand {
+  font-weight: 600;
+}
+
+/* Textos normais */
+p, span, div, button, input, textarea {
+  font-weight: 400;
+}
+
+/* Links e botões */
+a, .btn {
   font-weight: 500;
 }
 

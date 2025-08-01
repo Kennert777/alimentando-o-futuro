@@ -3,65 +3,150 @@ import { useState } from 'react';
 export default function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { id: 1, text: 'Olá! 👋 Sou o assistente virtual do Alimentando o Futuro. Como posso ajudar?', isBot: true }
+        { id: 1, text: 'Olá! 👋 Sou o Bot Verde do Alimentando o Futuro!', isBot: true },
+        { id: 2, text: 'Escolha uma categoria ou digite sua pergunta:', isBot: true, showCategories: true }
     ]);
     const [inputText, setInputText] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+    const [currentCategory, setCurrentCategory] = useState(null);
 
-    const responses = {
-        // Cumprimentos
-        'ola': ['Olá! 😊 Como posso ajudar você hoje?', 'Oi! Que bom te ver aqui! Em que posso ajudar?', 'Olá! Bem-vindo ao Alimentando o Futuro! 🌱'],
-        'oi': ['Oi! 👋 Como vai? Em que posso te ajudar?', 'Oi! Que legal você estar aqui! O que precisa?', 'Oi! Pronto para uma vida mais sustentável? 🌿'],
-        'bom dia': ['Bom dia! ☀️ Que seu dia seja cheio de sustentabilidade!', 'Bom dia! Como posso tornar seu dia mais verde?'],
-        'boa tarde': ['Boa tarde! 🌅 Em que posso ajudar nesta tarde?', 'Boa tarde! Vamos falar sobre sustentabilidade?'],
-        'boa noite': ['Boa noite! 🌙 Ainda dá tempo de aprender algo novo!', 'Boa noite! Que tal planejar uma horta para amanhã?'],
-        
-        // Despedidas
-        'tchau': ['Tchau! 👋 Volte sempre que precisar!', 'Até logo! Continue sendo sustentável! 🌱'],
-        'obrigado': ['Por nada! 😊 Fico feliz em ajudar!', 'Sempre à disposição! 💚', 'De nada! Que tal começar uma horta agora? 🌱'],
-        'valeu': ['Valeu você! 😄 Precisa de mais alguma coisa?', 'Tmj! 🤝 Sempre aqui para ajudar!'],
-        
-        // Perguntas sobre o bot
-        'quem': ['Sou o assistente virtual do Alimentando o Futuro! 🤖 Estou aqui para te ajudar com tudo sobre sustentabilidade!'],
-        'nome': ['Pode me chamar de Bot Verde! 🌱 Sou especialista em sustentabilidade!'],
-        'como vai': ['Estou ótimo! 😊 Sempre animado para falar sobre sustentabilidade! E você?'],
-        
-        // Funcionalidades
-        'horta': ['Para criar uma horta, acesse "Horta Digital"! 🌿 Temos 12 plantas catalogadas e guias completos. Quer que eu te conte sobre alguma planta específica?'],
-        'receitas': ['Temos 12 receitas incríveis! 🍽️ Desde bolo de casca de banana até chips de batata. Qual tipo de receita te interessa mais?'],
-        'login': ['Para entrar, clique no ícone de perfil 👤 no canto superior direito! Ainda não tem conta? Posso te ajudar a se cadastrar!'],
-        'cadastro': ['Cadastrar é super fácil! 🚀 Clique no perfil e "Cadastrar". Você já ganha pontos só por se inscrever!'],
-        'pontos': ['Sistema de pontos é demais! 🏆 Cadastrar horta = +50, colheita = +100. Quanto mais sustentável, mais pontos!'],
-        'chat': ['Nosso chat comunitário é incrivel! 💬 Tem salas para hortas, receitas e suporte. A galera lá é muito gente boa!'],
-        
-        // Temas sustentabilidade
-        'sustentabilidade': ['Sustentabilidade é tudo! 🌍 Pequenas ações fazem grande diferença. Que tal começar com uma hortinha?'],
-        'meio ambiente': ['Cuidar do planeta é cuidar de nós! 🌱 Cada receita reaproveitada e cada planta cultivada ajuda muito!'],
-        'organico': ['Orgânico é vida! 🌿 Sem agrotóxicos, mais saúde. Quer aprender a cultivar orgânico?'],
-        
-        // Utilitários
-        'admin': ['Acesso admin: admin@admin.com / admin123 🔑 (Psiu, só entre nós! 🤫)'],
-        'ajuda': ['Posso conversar sobre: 🌱 hortas, 🍽️ receitas, 🔑 login, 💬 chat, 🏆 pontos, 🌍 sustentabilidade. O que te interessa?'],
-        
-        // Respostas padrão
-        'default': [
-            'Hmm, não entendi muito bem... 🤔 Pode reformular? Ou digite "ajuda" para ver o que sei fazer!',
-            'Opa, me confundi! 😅 Tenta de novo ou me pergunta sobre hortas, receitas ou sustentabilidade!',
-            'Desculpa, ainda estou aprendendo! 🤖 Que tal me perguntar sobre nossas hortas ou receitas?'
-        ]
+    const categories = [
+        { id: 'hortas', name: '🌱 Hortas', icon: '🌿' },
+        { id: 'receitas', name: '🍽️ Receitas', icon: '🥗' },
+        { id: 'conta', name: '👤 Minha Conta', icon: '🔑' },
+        { id: 'pontos', name: '🏆 Gamificação', icon: '⭐' },
+        { id: 'suporte', name: '🎆 Suporte', icon: '📞' }
+    ];
+
+    const categoryResponses = {
+        hortas: {
+            intro: 'Você escolheu Hortas! 🌱 Temos muito conteúdo:',
+            topics: {
+                'plantas': {
+                    title: '🌿 Plantas Disponíveis',
+                    content: 'Temos 12 plantas catalogadas:\n\n• **Fáceis**: Alface, Manjericão, Cebolinha, Rúcula\n• **Médias**: Tomate Cereja, Pimentão\n• **Especiais**: Rabanete (25 dias!), Hortelã\n\nQual te interessa mais?'
+                },
+                'como começar': {
+                    title: '🌱 Como Começar',
+                    content: '**Passo a passo:**\n\n1. Escolha o local (sol/sombra)\n2. Prepare o solo ou vaso\n3. Selecione plantas fáceis\n4. Regue regularmente\n5. Acompanhe o crescimento\n\nPrecisa de dicas específicas?'
+                },
+                'cuidados': {
+                    title: '💧 Cuidados Essenciais',
+                    content: '**Cuidados básicos:**\n\n• **Rega**: Manhã ou final da tarde\n• **Sol**: 4-6h diárias para maioria\n• **Solo**: Bem drenado e nutritivo\n• **Pragas**: Controle natural\n\nQuer saber sobre alguma planta específica?'
+                }
+            }
+        },
+        receitas: {
+            intro: 'Receitas Sustentáveis! 🍽️ Aproveitamento total:',
+            topics: {
+                'cascas': {
+                    title: '🍌 Receitas com Cascas',
+                    content: '**Receitas populares:**\n\n• Bolo de casca de banana\n• Chips de casca de batata\n• Geleia de casca de laranja\n• Chá de casca de abacaxi\n\nTodas com tutoriais completos!'
+                },
+                'talos': {
+                    title: '🥦 Aproveitando Talos',
+                    content: '**Receitas com talos:**\n\n• Farofa de talos (couve/brócolis)\n• Refogado de folhas de beterraba\n• Torta salgada de talos\n• Salada de talos e folhas\n\nZero desperdício!'
+                },
+                'doces': {
+                    title: '🍰 Doces Sustentáveis',
+                    content: '**Sobremesas especiais:**\n\n• Pão de casca de abóbora\n• Doce de casca de melancia\n• Bolo de casca de banana\n\nDeliciosos e sustentáveis!'
+                }
+            }
+        },
+        conta: {
+            intro: 'Sua Conta 👤 Tudo sobre login e cadastro:',
+            topics: {
+                'login': {
+                    title: '🔑 Como Fazer Login',
+                    content: '**Passo a passo:**\n\n1. Clique no ícone de perfil (canto superior direito)\n2. Selecione "Entrar"\n3. Digite email e senha\n4. Clique "Entrar"\n\nProblemas? Verifique email/senha!'
+                },
+                'cadastro': {
+                    title: '📝 Criar Conta',
+                    content: '**Cadastro rápido:**\n\n1. Clique no perfil > "Cadastrar"\n2. Preencha: nome, email, telefone\n3. Crie uma senha segura\n4. Confirme a senha\n\n🎆 Ganhe pontos ao se cadastrar!'
+                },
+                'perfil': {
+                    title: '📋 Gerenciar Perfil',
+                    content: '**No seu dashboard:**\n\n• Veja suas estatísticas\n• Gerencie hortas cadastradas\n• Acompanhe pontos e emblemas\n• Acesse chat comunitário\n\nTudo em um lugar!'
+                }
+            }
+        },
+        pontos: {
+            intro: 'Sistema de Gamificação! 🏆 Ganhe pontos e emblemas:',
+            topics: {
+                'como ganhar': {
+                    title: '⭐ Como Ganhar Pontos',
+                    content: '**Ações que dão pontos:**\n\n• Cadastrar horta: +50 pontos\n• Atualizar para colheita: +100 pontos\n• Primeiro cadastro: +50 pontos\n• Participar do chat: +10 pontos\n\nSeja sustentável e ganhe!'
+                },
+                'emblemas': {
+                    title: '🏅 Emblemas Especiais',
+                    content: '**Emblemas disponíveis:**\n\n• 🎆 Primeiro Cadastro\n• 🌱 Mestre da Horta\n• 🍽️ Chef Sustentável\n• 💬 Comunicador\n\nColecione todos!'
+                },
+                'ranking': {
+                    title: '📈 Sistema de Níveis',
+                    content: '**Níveis de sustentabilidade:**\n\n• 0-99: Iniciante 🌱\n• 100-299: Cultivador 🌿\n• 300-599: Especialista 🌳\n• 600+: Mestre Verde 🌲\n\nQual seu nível?'
+                }
+            }
+        },
+        suporte: {
+            intro: 'Suporte Técnico 📞 Estou aqui para ajudar:',
+            topics: {
+                'problemas': {
+                    title: '🔧 Problemas Comuns',
+                    content: '**Soluções rápidas:**\n\n• **Não consigo logar**: Verifique email/senha\n• **Esqueci senha**: Use "Esqueci senha"\n• **Site lento**: Limpe cache do navegador\n• **Erro no cadastro**: Verifique dados\n\nAinda com problema?'
+                },
+                'contato': {
+                    title: '📧 Falar com Humanos',
+                    content: '**Canais de contato:**\n\n• **Email**: rm94720@estudante.fieb.edu.br\n• **Chat**: Sala de suporte\n• **Formulário**: Página "Apoio"\n\nResposta em até 24h!'
+                },
+                'admin': {
+                    title: '🔑 Acesso Administrativo',
+                    content: '**Para administradores:**\n\nEmail: admin@admin.com\nSenha: admin123\n\n🚨 Apenas para testes e demonstração!'
+                }
+            }
+        }
+    };
+
+    const quickResponses = {
+        'ola': ['Olá! 😊 Escolha uma categoria acima ou me faça uma pergunta!'],
+        'oi': ['Oi! 👋 Que categoria te interessa mais?'],
+        'ajuda': ['Escolha uma das categorias acima ou digite sua dúvida! Estou aqui para ajudar! 🤖'],
+        'obrigado': ['Por nada! 😊 Precisa de mais alguma coisa?'],
+        'tchau': ['Tchau! 👋 Volte sempre que precisar de ajuda!'],
+        'default': ['Não entendi... 🤔 Tente escolher uma categoria acima ou reformule sua pergunta!']
+    };
+
+    const handleCategoryClick = (categoryId) => {
+        const category = categoryResponses[categoryId];
+        if (!category) return;
+
+        setCurrentCategory(categoryId);
+        const categoryMessage = {
+            id: Date.now(),
+            text: category.intro,
+            isBot: true,
+            showTopics: true,
+            categoryId: categoryId
+        };
+        setMessages(prev => [...prev, categoryMessage]);
+    };
+
+    const handleTopicClick = (categoryId, topicKey) => {
+        const topic = categoryResponses[categoryId]?.topics[topicKey];
+        if (!topic) return;
+
+        const topicMessage = {
+            id: Date.now(),
+            text: `**${topic.title}**\n\n${topic.content}`,
+            isBot: true
+        };
+        setMessages(prev => [...prev, topicMessage]);
     };
 
     const getBotResponse = (userMessage) => {
         const message = userMessage.toLowerCase().trim();
         
-        // Verifica cumprimentos exatos primeiro
-        if (message === 'oi' || message === 'ola' || message === 'olá') {
-            const greetings = responses[message === 'olá' ? 'ola' : 'oi'];
-            return greetings[Math.floor(Math.random() * greetings.length)];
-        }
-        
-        // Verifica outras palavras-chave
-        for (const [key, response] of Object.entries(responses)) {
+        // Respostas rápidas
+        for (const [key, response] of Object.entries(quickResponses)) {
             if (message.includes(key)) {
                 if (Array.isArray(response)) {
                     return response[Math.floor(Math.random() * response.length)];
@@ -70,9 +155,16 @@ export default function Chatbot() {
             }
         }
         
-        // Resposta padrão aleatória
-        const defaultResponses = responses.default;
-        return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        // Busca em categorias
+        for (const [categoryId, category] of Object.entries(categoryResponses)) {
+            for (const [topicKey, topic] of Object.entries(category.topics)) {
+                if (message.includes(topicKey) || message.includes(topic.title.toLowerCase())) {
+                    return `**${topic.title}**\n\n${topic.content}`;
+                }
+            }
+        }
+        
+        return quickResponses.default;
     };
 
     const sendMessage = () => {
@@ -169,29 +261,83 @@ export default function Chatbot() {
                         }}
                     >
                         {messages.map(message => (
-                            <div
-                                key={message.id}
-                                style={{
-                                    marginBottom: '10px',
-                                    display: 'flex',
-                                    justifyContent: message.isBot ? 'flex-start' : 'flex-end'
-                                }}
-                            >
+                            <div key={message.id}>
                                 <div
-                                    className={message.isBot ? 'bot-message' : ''}
                                     style={{
-                                        maxWidth: '80%',
-                                        padding: '10px 12px',
-                                        borderRadius: '12px',
-                                        backgroundColor: message.isBot ? 'white' : '#4F732C',
-                                        color: message.isBot ? '#333' : 'white',
-                                        fontSize: '14px',
-                                        lineHeight: '1.4',
-                                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                        marginBottom: '10px',
+                                        display: 'flex',
+                                        justifyContent: message.isBot ? 'flex-start' : 'flex-end'
                                     }}
                                 >
-                                    {message.text}
+                                    <div
+                                        className={message.isBot ? 'bot-message' : ''}
+                                        style={{
+                                            maxWidth: '80%',
+                                            padding: '10px 12px',
+                                            borderRadius: '12px',
+                                            backgroundColor: message.isBot ? 'white' : '#4F732C',
+                                            color: message.isBot ? '#333' : 'white',
+                                            fontSize: '14px',
+                                            lineHeight: '1.4',
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                                            whiteSpace: 'pre-line'
+                                        }}
+                                    >
+                                        {message.text}
+                                    </div>
                                 </div>
+                                
+                                {/* Botões de categorias */}
+                                {message.showCategories && (
+                                    <div style={{ marginBottom: '15px' }}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                                            {categories.map(cat => (
+                                                <button
+                                                    key={cat.id}
+                                                    onClick={() => handleCategoryClick(cat.id)}
+                                                    style={{
+                                                        backgroundColor: '#4F732C',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '15px',
+                                                        padding: '5px 10px',
+                                                        fontSize: '12px',
+                                                        cursor: 'pointer',
+                                                        margin: '2px'
+                                                    }}
+                                                >
+                                                    {cat.icon} {cat.name.split(' ')[1]}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* Botões de tópicos */}
+                                {message.showTopics && message.categoryId && (
+                                    <div style={{ marginBottom: '15px' }}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                                            {Object.entries(categoryResponses[message.categoryId].topics).map(([key, topic]) => (
+                                                <button
+                                                    key={key}
+                                                    onClick={() => handleTopicClick(message.categoryId, key)}
+                                                    style={{
+                                                        backgroundColor: '#558C03',
+                                                        color: 'white',
+                                                        border: 'none',
+                                                        borderRadius: '12px',
+                                                        padding: '4px 8px',
+                                                        fontSize: '11px',
+                                                        cursor: 'pointer',
+                                                        margin: '2px'
+                                                    }}
+                                                >
+                                                    {topic.title.split(' ')[1] || topic.title}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))}
                         
