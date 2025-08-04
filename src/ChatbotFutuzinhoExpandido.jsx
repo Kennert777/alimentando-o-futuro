@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function ChatbotFutuzinhoExpandido() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { id: 1, text: 'Olá! 👋 Sou o Futuzinho, seu assistente do Alimentando o Futuro!', isBot: true },
+        { id: 1, text: 'Olá! 👋 Sou o Goat, seu assistente do Alimentando o Futuro!', isBot: true },
         { id: 2, text: 'Posso te ajudar com cultivo, receitas, nutrição e muito mais! O que você gostaria de saber?', isBot: true }
     ]);
     const [inputText, setInputText] = useState('');
@@ -174,8 +174,8 @@ export default function ChatbotFutuzinhoExpandido() {
         ],
 
         'quem.*voce|o que.*voce|voce.*quem': [
-            'Sou o Futuzinho! 🤖 Seu assistente virtual especialista em hortas, alimentação saudável e sustentabilidade!',
-            'Me chamo Futuzinho! Estou aqui para te ajudar com cultivo, receitas e vida sustentável! 🌱',
+            'Sou o Goat! 🤖 Seu assistente virtual especialista em hortas, alimentação saudável e sustentabilidade!',
+            'Me chamo Goat! Estou aqui para te ajudar com cultivo, receitas e vida sustentável! 🌱',
             'Sou seu guia verde! Posso te ensinar sobre plantas, nutrição e como aproveitar melhor os alimentos! 🌿'
         ],
 
@@ -421,7 +421,7 @@ export default function ChatbotFutuzinhoExpandido() {
                             fontWeight: 'bold'
                         }}
                     >
-                        🤖 Futuzinho - Seu Assistente Verde Inteligente
+                        🤖 Goat - Seu Assistente Verde Inteligente
                     </div>
 
                     <div
@@ -471,7 +471,7 @@ export default function ChatbotFutuzinhoExpandido() {
                                         boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                                     }}
                                 >
-                                    Futuzinho digitando... 🌱
+                                    Goat digitando... 🌱
                                 </div>
                             </div>
                         )}
