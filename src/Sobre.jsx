@@ -116,6 +116,31 @@ export default function Sobre() {
               </div>
             </div>
             
+            <div className="card mb-4">
+              <div className="card-body">
+                <div className="d-flex align-items-center mb-3">
+                  <span className="icon me-2">🎨</span>
+                  <h5 className="mb-0">Design</h5>
+                </div>
+                <p className="small mb-3">
+                  Interface baseada no UI Kit Gardenex Community
+                </p>
+                <a 
+                  href="https://www.figma.com/design/qxgXb4YhvQNWYSMoMQUxl1/Gardenex-App-UI-kit--Community-?node-id=0-1&m=dev&t=EhT8dU7eaBtQypOp-1" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-primary w-100"
+                  style={{ borderColor: "#4F732C", color: "#4F732C" }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="me-2">
+                    <path d="M15.332 8.668a3.333 3.333 0 0 0 0-6.663H8.668a3.333 3.333 0 0 0 0 6.663 3.333 3.333 0 0 0 0 6.665 3.333 3.333 0 0 0 0 6.664A3.334 3.334 0 0 0 12 18.664V8.668h3.332z"/>
+                    <circle cx="15.332" cy="12" r="3.332"/>
+                  </svg>
+                  Ver no Figma
+                </a>
+              </div>
+            </div>
+            
             <div className="card">
               <div className="card-body">
                 <div className="d-flex align-items-center mb-3">
