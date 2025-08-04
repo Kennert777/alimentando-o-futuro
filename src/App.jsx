@@ -17,6 +17,14 @@ import Admin from './Admin';
 import ChatbotFutuzinhoExpandido from './ChatbotFutuzinhoExpandido';
 import Dicas from './Dicas';
 import Colheitas from './Colheitas';
+// Componentes Administrativos
+import AdminLogin from './AdminLogin';
+import AdminDashboard from './AdminDashboard';
+import AdminUsuarios from './AdminUsuarios';
+import AdminSolicitacoes from './AdminSolicitacoes';
+import AdminRelatorios from './AdminRelatorios';
+import AdminDicas from './AdminDicas';
+import AdminRegister from './AdminRegister';
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
 // CSS para modo escuro
@@ -52,6 +60,16 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />              {/* Painel administrativo */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
             <Route path="/colheitas" element={<Colheitas />} />      {/* Controle de colheitas */}
+            {/* Rotas Administrativas */}
+            <Route path="/admin/login" element={<AdminLogin />} />   {/* Login admin */}
+            <Route path="/admin/register" element={<AdminRegister />} /> {/* Cadastro admin */}
+            <Route path="/admin/dashboard" element={<AdminDashboard />} /> {/* Dashboard admin */}
+            <Route path="/admin/usuarios" element={<AdminUsuarios />} /> {/* Gerenciar usuários */}
+            <Route path="/admin/hortas" element={<HortasUsuario />} />   {/* Gerenciar hortas */}
+            <Route path="/admin/solicitacoes" element={<AdminSolicitacoes />} /> {/* Solicitações */}
+            <Route path="/admin/dicas" element={<AdminDicas />} />       {/* Gerenciar dicas */}
+            <Route path="/admin/relatorios" element={<AdminRelatorios />} /> {/* Relatórios */}
+            <Route path="/admin/gamificacao" element={<AdminDashboard />} /> {/* Gamificação */}
           </Routes>
         </main>
         

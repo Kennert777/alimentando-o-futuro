@@ -3,11 +3,19 @@
 import { useState, useEffect } from 'react';
 // EmailJS: Biblioteca para envio de emails direto do frontend
 import emailjs from '@emailjs/browser';
+import db from './database.js';
 
 // Componente da página de apoio - formulário de contato
 export default function Apoio() {
-    // Estado para armazenar dados do formulário (nome, email, mensagem)
-    const [formData, setFormData] = useState({ nome: '', email: '', mensagem: '' });
+    // Estado para armazenar dados do formulário
+    const [formData, setFormData] = useState({ 
+        tipo_solicitacao: 'conhecimento', 
+        titulo: '', 
+        descricao: '', 
+        urgencia: 'media' 
+    });
+    // Estado do usuário logado
+    const [user, setUser] = useState(null);
     // Estado para mostrar mensagem de sucesso após envio
     const [enviado, setEnviado] = useState(false);
     // Estado para mostrar loading durante envio
@@ -17,78 +25,109 @@ export default function Apoio() {
     // Estado para mostrar erros de envio
     const [erro, setErro] = useState('');
 
-    // useEffect: Executa quando componente monta (carrega histórico do localStorage)
+    // useEffect: Executa quando componente monta
     useEffect(() => {
-        // Recupera histórico salvo no navegador
-        const saved = localStorage.getItem('apoio-historico');
-        if (saved) setHistorico(JSON.parse(saved));
-    }, []); // Array vazio = executa apenas uma vez
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        setUser(currentUser);
+        
+        if (currentUser) {
+            loadSolicitacoes(currentUser.id);
+        } else {
+            // Recupera histórico salvo no navegador para usuários não logados
+            const saved = localStorage.getItem('apoio-historico');
+            if (saved) setHistorico(JSON.parse(saved));
+        }
+    }, []);
+    
+    const loadSolicitacoes = async (userId) => {
+        try {
+            const solicitacoes = await db.buscarSolicitacoesPorUsuario(userId);
+            setHistorico(solicitacoes);
+        } catch (error) {
+            console.error('Erro ao carregar solicitações:', error);
+        }
+    };
 
     // Função para processar envio do formulário
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Impede reload da página
-        setErro(''); // Limpa erros anteriores
+        e.preventDefault();
+        setErro('');
         
-        // Valida se todos os campos estão preenchidos
-        if (formData.nome && formData.email && formData.mensagem) {
-            setLoading(true); // Ativa estado de carregamento
+        if (!user) {
+            setErro('Você precisa estar logado para solicitar apoio.');
+            return;
+        }
+        
+        if (formData.titulo && formData.descricao) {
+            setLoading(true);
             
             try {
-                // Parâmetros do template de email
-                const templateParams = {
-                    from_name: formData.nome,
-                    from_email: formData.email,
-                    message: formData.mensagem,
-                    to_email: 'rm94720@estudante.fieb.edu.br'
-                };
+                // Salvar solicitação no banco de dados
+                await db.criarSolicitacaoApoio({
+                    tipo_solicitacao: formData.tipo_solicitacao,
+                    titulo: formData.titulo,
+                    descricao: formData.descricao,
+                    urgencia: formData.urgencia
+                }, user.id);
                 
-                // Tenta enviar via EmailJS (substitua pelos IDs reais)
-                const SERVICE_ID = 'service_id'; // Substitua pelo Service ID real
-                const TEMPLATE_ID = 'template_id'; // Substitua pelo Template ID real  
-                const PUBLIC_KEY = 'public_key'; // Substitua pela Public Key real
-                
-                // Se as configurações não foram alteradas, usa mailto como fallback
-                if (SERVICE_ID === 'service_id' || TEMPLATE_ID === 'template_id' || PUBLIC_KEY === 'public_key') {
-                    // Fallback: abre cliente de email do usuário
-                    const subject = encodeURIComponent(`Apoio - ${formData.nome}`);
+                // Enviar email via EmailJS
+                try {
+                    const templateParams = {
+                        from_name: user.nome,
+                        from_email: user.email,
+                        to_email: 'rm94720@estudante.fieb.edu.br',
+                        subject: `Solicitação de Apoio - ${formData.titulo}`,
+                        message: `Tipo: ${formData.tipo_solicitacao}\nUrgência: ${formData.urgencia}\n\nTítulo: ${formData.titulo}\n\nDescrição:\n${formData.descricao}`,
+                        tipo_solicitacao: formData.tipo_solicitacao,
+                        urgencia: formData.urgencia,
+                        titulo: formData.titulo,
+                        descricao: formData.descricao
+                    };
+                    
+                    // Configurar EmailJS (substitua pelos seus IDs reais)
+                    const SERVICE_ID = 'service_alimentando';
+                    const TEMPLATE_ID = 'template_apoio';
+                    const PUBLIC_KEY = 'sua_public_key_aqui';
+                    
+                    // Tentar enviar via EmailJS
+                    if (SERVICE_ID !== 'service_alimentando') {
+                        await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+                    } else {
+                        // Fallback: mailto
+                        const subject = encodeURIComponent(`Solicitação de Apoio - ${formData.titulo}`);
+                        const body = encodeURIComponent(
+                            `Usuário: ${user.nome} (${user.email})\n` +
+                            `Tipo: ${formData.tipo_solicitacao}\n` +
+                            `Urgência: ${formData.urgencia}\n\n` +
+                            `Título: ${formData.titulo}\n\n` +
+                            `Descrição:\n${formData.descricao}`
+                        );
+                        window.open(`mailto:rm94720@estudante.fieb.edu.br?subject=${subject}&body=${body}`);
+                    }
+                } catch (emailError) {
+                    console.log('Erro no envio de email, usando fallback');
+                    // Fallback em caso de erro
+                    const subject = encodeURIComponent(`Solicitação de Apoio - ${formData.titulo}`);
                     const body = encodeURIComponent(
-                        `Nome: ${formData.nome}\n` +
-                        `Email: ${formData.email}\n\n` +
-                        `Mensagem:\n${formData.mensagem}`
+                        `Usuário: ${user.nome} (${user.email})\n` +
+                        `Tipo: ${formData.tipo_solicitacao}\n` +
+                        `Urgência: ${formData.urgencia}\n\n` +
+                        `Título: ${formData.titulo}\n\n` +
+                        `Descrição:\n${formData.descricao}`
                     );
                     window.open(`mailto:rm94720@estudante.fieb.edu.br?subject=${subject}&body=${body}`);
-                } else {
-                    // Envia via EmailJS se configurado
-                    await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
                 }
                 
-                // Cria novo item para o histórico com data atual
-                const novoItem = { ...formData, data: new Date().toLocaleString() };
-                // Mantém apenas os últimos 5 itens no histórico
-                const novoHistorico = [novoItem, ...historico.slice(0, 4)];
+                // Recarregar solicitações
+                loadSolicitacoes(user.id);
                 
-                // Atualiza estado e salva no localStorage
-                setHistorico(novoHistorico);
-                localStorage.setItem('apoio-historico', JSON.stringify(novoHistorico));
-                
-                // Mostra mensagem de sucesso
                 setEnviado(true);
-                // Remove mensagem de sucesso após 3 segundos
                 setTimeout(() => setEnviado(false), 3000);
-                // Limpa o formulário
-                setFormData({ nome: '', email: '', mensagem: '' });
+                setFormData({ tipo_solicitacao: 'conhecimento', titulo: '', descricao: '', urgencia: 'media' });
                 
             } catch (error) {
-                console.error('Erro ao enviar email:', error);
-                // Se falhar, tenta mailto como fallback
-                const subject = encodeURIComponent(`Apoio - ${formData.nome}`);
-                const body = encodeURIComponent(
-                    `Nome: ${formData.nome}\n` +
-                    `Email: ${formData.email}\n\n` +
-                    `Mensagem:\n${formData.mensagem}`
-                );
-                window.open(`mailto:rm94720@estudante.fieb.edu.br?subject=${subject}&body=${body}`);
-                setErro('Abrindo seu cliente de email...');
+                console.error('Erro ao enviar solicitação:', error);
+                setErro('Erro ao enviar solicitação: ' + error.message);
             } finally {
                 setLoading(false);
             }
@@ -100,9 +139,16 @@ export default function Apoio() {
         <div className="row">
           <div className="col-md-8">
             <h2 style={{ color: "#558C03" }}>Solicite Apoio</h2>
+            
+            {!user && (
+              <div className="alert alert-warning">
+                Você precisa estar <a href="/login">logado</a> para solicitar apoio.
+              </div>
+            )}
+            
             {enviado && (
               <div className="alert alert-success">
-                ✓ Mensagem enviada com sucesso para rm94720@estudante.fieb.edu.br! Responderemos em breve.
+                ✓ Solicitação enviada com sucesso! Responderemos em breve.
               </div>
             )}
             {erro && (
@@ -110,74 +156,112 @@ export default function Apoio() {
                 ✗ {erro}
               </div>
             )}
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label">Nome *</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  value={formData.nome}
-                  onChange={(e) => setFormData({...formData, nome: e.target.value})}
+            
+            {user && (
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label className="form-label">Tipo de Solicitação *</label>
+                  <select 
+                    className="form-control"
+                    value={formData.tipo_solicitacao}
+                    onChange={(e) => setFormData({...formData, tipo_solicitacao: e.target.value})}
+                    disabled={loading}
+                    required
+                  >
+                    <option value="sementes">Sementes</option>
+                    <option value="ferramentas">Ferramentas</option>
+                    <option value="conhecimento">Conhecimento</option>
+                    <option value="voluntarios">Voluntários</option>
+                    <option value="financeiro">Apoio Financeiro</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </div>
+                
+                <div className="mb-3">
+                  <label className="form-label">Título *</label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    value={formData.titulo}
+                    onChange={(e) => setFormData({...formData, titulo: e.target.value})}
+                    disabled={loading}
+                    required 
+                  />
+                </div>
+                
+                <div className="mb-3">
+                  <label className="form-label">Urgência</label>
+                  <select 
+                    className="form-control"
+                    value={formData.urgencia}
+                    onChange={(e) => setFormData({...formData, urgencia: e.target.value})}
+                    disabled={loading}
+                  >
+                    <option value="baixa">Baixa</option>
+                    <option value="media">Média</option>
+                    <option value="alta">Alta</option>
+                    <option value="critica">Crítica</option>
+                  </select>
+                </div>
+                
+                <div className="mb-3">
+                  <label className="form-label">Descrição *</label>
+                  <textarea 
+                    className="form-control" 
+                    rows="4"
+                    value={formData.descricao}
+                    onChange={(e) => setFormData({...formData, descricao: e.target.value})}
+                    disabled={loading}
+                    required
+                  ></textarea>
+                </div>
+                
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ backgroundColor: "#AEBF2C", border: "none" }}
                   disabled={loading}
-                  required 
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Email *</label>
-                <input 
-                  type="email" 
-                  className="form-control" 
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  disabled={loading}
-                  required 
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Mensagem *</label>
-                <textarea 
-                  className="form-control" 
-                  rows="4"
-                  value={formData.mensagem}
-                  onChange={(e) => setFormData({...formData, mensagem: e.target.value})}
-                  disabled={loading}
-                  required
-                ></textarea>
-              </div>
-              <button 
-                type="submit" 
-                className="btn btn-primary" 
-                style={{ backgroundColor: "#AEBF2C", border: "none" }}
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm me-2"></span>
-                    Enviando...
-                  </>
-                ) : 'Enviar'}
-              </button>
-            </form>
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2"></span>
+                      Enviando...
+                    </>
+                  ) : 'Enviar Solicitação'}
+                </button>
+              </form>
+            )}
           </div>
           
           <div className="col-md-4">
             <div className="card" style={{ backgroundColor: "#D9C179" }}>
               <div className="card-body">
                 <h5>Outras formas de contato</h5>
-                <p><strong>Email:</strong> contato@feedingthefuture.com</p>
+                <p><strong>Email:</strong> rm94720@estudante.fieb.edu.br</p>
                 <p><strong>Telefone:</strong> (11) 9999-9999</p>
                 <p><strong>WhatsApp:</strong> (11) 9999-9999</p>
               </div>
             </div>
             
-            {historico.length > 0 && (
+            {user && historico.length > 0 && (
               <div className="card mt-3">
                 <div className="card-body">
-                  <h6>Suas mensagens recentes</h6>
-                  {historico.map((item, index) => (
+                  <h6>Suas solicitações recentes</h6>
+                  {historico.slice(0, 5).map((item, index) => (
                     <div key={index} className="border-bottom pb-2 mb-2">
-                      <small className="text-muted">{item.data}</small>
-                      <p className="mb-0 small">{item.mensagem.substring(0, 50)}...</p>
+                      <div className="d-flex justify-content-between">
+                        <small className="text-muted">{new Date(item.data_solicitacao).toLocaleDateString()}</small>
+                        <span className={`badge ${
+                          item.status === 'pendente' ? 'bg-warning' :
+                          item.status === 'em_analise' ? 'bg-info' :
+                          item.status === 'aprovada' ? 'bg-success' :
+                          item.status === 'concluida' ? 'bg-success' : 'bg-danger'
+                        }`}>
+                          {item.status}
+                        </span>
+                      </div>
+                      <strong className="small">{item.titulo}</strong>
+                      <p className="mb-0 small text-muted">{item.descricao.substring(0, 50)}...</p>
                     </div>
                   ))}
                 </div>

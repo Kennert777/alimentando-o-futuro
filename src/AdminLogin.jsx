@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import db from './database.js';
 
-export default function Login() {
+export default function AdminLogin() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState('');
@@ -14,8 +14,15 @@ export default function Login() {
 
         try {
             const usuario = await db.autenticarUsuario(formData.email, formData.password);
-            localStorage.setItem('currentUser', JSON.stringify(usuario));
-            window.location.href = '/dashboard';
+            
+            if (usuario.tipo_perfil !== 'admin') {
+                setErro('Acesso negado. Apenas administradores podem acessar.');
+                setLoading(false);
+                return;
+            }
+            
+            localStorage.setItem('currentAdmin', JSON.stringify(usuario));
+            window.location.href = '/admin/dashboard';
         } catch (error) {
             setErro(error.message);
         } finally {
@@ -23,15 +30,16 @@ export default function Login() {
         }
     };
 
-
-
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
                         <div className="card-body p-5">
-                            <h2 className="text-center mb-4 bubble-text" style={{ color: "#4F732C" }}>Entrar</h2>
+                            <div className="text-center mb-4">
+                                <h2 className="bubble-text" style={{ color: "#4F732C" }}>🔐 Admin</h2>
+                                <p className="text-muted">Acesso Administrativo</p>
+                            </div>
                             
                             {erro && (
                                 <div className="alert alert-danger">{erro}</div>
@@ -66,16 +74,13 @@ export default function Login() {
                                     style={{ backgroundColor: "#4F732C", color: "white" }}
                                     disabled={loading}
                                 >
-                                    {loading ? 'Entrando...' : 'Entrar'}
+                                    {loading ? 'Entrando...' : 'Entrar como Admin'}
                                 </button>
                             </form>
 
                             <div className="text-center">
-                                <p>Não tem conta? <Link to="/register" style={{ color: "#4F732C" }}>Cadastre-se</Link></p>
-                                <hr />
-                                <p className="small text-muted">
-                                    Acesso administrativo? <Link to="/admin/login" style={{ color: "#4F732C" }}>Clique aqui</Link>
-                                </p>
+                                <p>Não tem conta admin? <Link to="/admin/register" style={{ color: "#4F732C" }}>Cadastre-se</Link></p>
+                                <Link to="/login" style={{ color: "#4F732C" }}>← Voltar ao login normal</Link>
                             </div>
                         </div>
                     </div>

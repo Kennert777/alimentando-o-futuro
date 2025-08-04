@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import db from './database.js';
 
 export default function Colheitas() {
     const [user, setUser] = useState(null);
@@ -22,36 +23,49 @@ export default function Colheitas() {
         loadColheitas(currentUser.id);
     }, []);
 
-    const loadColheitas = (userId) => {
-        const allColheitas = JSON.parse(localStorage.getItem('colheitas') || '[]');
-        const userColheitas = allColheitas.filter(c => c.usuario_id === userId);
-        setColheitas(userColheitas);
+    const loadColheitas = async (userId) => {
+        try {
+            const userColheitas = await db.buscarColheitasPorUsuario(userId);
+            setColheitas(userColheitas);
+        } catch (error) {
+            console.error('Erro ao carregar colheitas:', error);
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const allColheitas = JSON.parse(localStorage.getItem('colheitas') || '[]');
         
-        const novaColheita = {
-            id: Date.now(),
-            usuario_id: user.id,
-            horta_id: 1, // Assumindo horta padrão
-            ...formData,
-            data_registro: new Date().toISOString(),
-            quantidade_kg: parseFloat(formData.quantidade_kg)
-        };
+        try {
+            // Buscar primeira horta do usuário
+            const hortas = await db.buscarHortasPorUsuario(user.id);
+            const hortaId = hortas.length > 0 ? hortas[0].id : null;
+            
+            if (!hortaId) {
+                alert('Você precisa ter pelo menos uma horta cadastrada para registrar colheitas.');
+                return;
+            }
+            
+            await db.criarColheita({
+                horta_id: hortaId,
+                tipo_planta: formData.tipo_planta,
+                quantidade_kg: parseFloat(formData.quantidade_kg),
+                data_colheita: formData.data_colheita,
+                qualidade: formData.qualidade,
+                destino: formData.destino,
+                observacoes: formData.observacoes
+            }, user.id);
+            
+            // Atualizar pontos do usuário
+            const updatedUser = await db.buscarUsuarioPorId(user.id);
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+            setUser(updatedUser);
 
-        allColheitas.push(novaColheita);
-        localStorage.setItem('colheitas', JSON.stringify(allColheitas));
-        
-        // Adiciona pontos por colheita
-        const updatedUser = { ...user, pontos: (user.pontos || 0) + 100 };
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-        setUser(updatedUser);
-
-        loadColheitas(user.id);
-        setShowForm(false);
-        setFormData({ tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: '' });
+            loadColheitas(user.id);
+            setShowForm(false);
+            setFormData({ tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: '' });
+        } catch (error) {
+            alert('Erro ao registrar colheita: ' + error.message);
+        }
     };
 
     const getTotalColheitas = () => {

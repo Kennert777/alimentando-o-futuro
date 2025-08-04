@@ -141,6 +141,10 @@ export default function Navbar() {
                       <Link className="dropdown-item" to="/register">
                         📝 Cadastrar
                       </Link>
+                      <div className="dropdown-divider"></div>
+                      <Link className="dropdown-item" to="/admin/login">
+                        🔐 Admin
+                      </Link>
                     </>
                   )}
                 </div>

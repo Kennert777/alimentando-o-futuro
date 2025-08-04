@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import db from './database.js';
 
 export default function HortasUsuario() {
     const [user, setUser] = useState(null);
@@ -18,50 +19,55 @@ export default function HortasUsuario() {
         loadHortas(currentUser.id);
     }, []);
 
-    const loadHortas = (userId) => {
-        const allHortas = JSON.parse(localStorage.getItem('userHortas') || '[]');
-        const userHortas = allHortas.filter(h => h.userId === userId);
-        setHortas(userHortas);
+    const loadHortas = async (userId) => {
+        try {
+            const userHortas = await db.buscarHortasPorUsuario(userId);
+            setHortas(userHortas);
+        } catch (error) {
+            console.error('Erro ao carregar hortas:', error);
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const allHortas = JSON.parse(localStorage.getItem('userHortas') || '[]');
         
-        const newHorta = {
-            id: Date.now(),
-            userId: user.id,
-            ...formData,
-            dataCriacao: new Date().toISOString(),
-            aprovada: false
-        };
-
-        allHortas.push(newHorta);
-        localStorage.setItem('userHortas', JSON.stringify(allHortas));
-        
-        // Adiciona pontos por cadastrar horta
-        const updatedUser = { ...user, pontos: (user.pontos || 0) + 50 };
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-        setUser(updatedUser);
-
-        loadHortas(user.id);
-        setShowForm(false);
-        setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
-    };
-
-    const updateStatus = (hortaId, newStatus) => {
-        const allHortas = JSON.parse(localStorage.getItem('userHortas') || '[]');
-        const updatedHortas = allHortas.map(h => 
-            h.id === hortaId ? { ...h, status: newStatus } : h
-        );
-        localStorage.setItem('userHortas', JSON.stringify(updatedHortas));
-        loadHortas(user.id);
-
-        // Adiciona pontos por atualizar status
-        if (newStatus === 'colheita') {
-            const updatedUser = { ...user, pontos: (user.pontos || 0) + 100 };
+        try {
+            await db.criarHorta({
+                nome: formData.nome,
+                localizacao: formData.localizacao,
+                tipo_cultivo: formData.tipo,
+                descricao: formData.descricao,
+                status: formData.status
+            }, user.id);
+            
+            // Atualizar pontos do usuário
+            const updatedUser = await db.buscarUsuarioPorId(user.id);
             localStorage.setItem('currentUser', JSON.stringify(updatedUser));
             setUser(updatedUser);
+
+            loadHortas(user.id);
+            setShowForm(false);
+            setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
+        } catch (error) {
+            alert('Erro ao cadastrar horta: ' + error.message);
+        }
+    };
+
+    const updateStatus = async (hortaId, newStatus) => {
+        try {
+            await db.atualizarHorta(hortaId, { status: newStatus });
+            
+            // Adiciona pontos por atualizar status para colheita
+            if (newStatus === 'colheita') {
+                await db.adicionarPontos(user.id, 100, 'status_colheita');
+                const updatedUser = await db.buscarUsuarioPorId(user.id);
+                localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                setUser(updatedUser);
+            }
+            
+            loadHortas(user.id);
+        } catch (error) {
+            alert('Erro ao atualizar status: ' + error.message);
         }
     };
 
@@ -172,7 +178,7 @@ export default function HortasUsuario() {
                                         </span>
                                     </div>
                                     <p><strong>📍 Local:</strong> {horta.localizacao}</p>
-                                    <p><strong>🌱 Tipo:</strong> {horta.tipo}</p>
+                                    <p><strong>🌱 Tipo:</strong> {horta.tipo_cultivo}</p>
                                     <p><strong>📊 Status:</strong> 
                                         <select 
                                             className="form-select form-select-sm d-inline-block ms-2" 

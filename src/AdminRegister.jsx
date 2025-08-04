@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import db from './database.js';
 
-export default function Register() {
+export default function AdminRegister() {
     const [formData, setFormData] = useState({
-        nome: '', email: '', telefone: '', password: '', confirmPassword: ''
+        nome: '', email: '', telefone: '', password: '', confirmPassword: '', codigoAdmin: ''
     });
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState('');
     const [sucesso, setSucesso] = useState(false);
+
+    // Código secreto para criar admin (em produção seria mais seguro)
+    const CODIGO_ADMIN_SECRETO = 'ADMIN2025ITB';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,15 +24,23 @@ export default function Register() {
             return;
         }
 
+        if (formData.codigoAdmin !== CODIGO_ADMIN_SECRETO) {
+            setErro('Código de administrador inválido');
+            setLoading(false);
+            return;
+        }
+
         try {
-            await db.criarUsuario({
+            const novoAdmin = await db.criarUsuario({
                 nome: formData.nome,
                 email: formData.email,
                 telefone: formData.telefone,
                 senha: formData.password
             });
             
-            // Adicionar pontos de boas-vindas
+            // Atualizar para tipo admin
+            await db.atualizarUsuario(novoAdmin.id, { tipo_perfil: 'admin' });
+            
             setSucesso(true);
         } catch (error) {
             setErro(error.message);
@@ -38,17 +49,15 @@ export default function Register() {
         }
     };
 
-
-
     if (sucesso) {
         return (
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <div className="alert alert-success text-center">
-                            <h4>Cadastro realizado com sucesso!</h4>
-                            <p>Você já pode fazer login na plataforma.</p>
-                            <Link to="/login" className="btn btn-success">Fazer Login</Link>
+                            <h4>Admin cadastrado com sucesso!</h4>
+                            <p>Você já pode fazer login como administrador.</p>
+                            <Link to="/admin/login" className="btn btn-success">Fazer Login Admin</Link>
                         </div>
                     </div>
                 </div>
@@ -62,7 +71,10 @@ export default function Register() {
                 <div className="col-md-6">
                     <div className="card" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
                         <div className="card-body p-5">
-                            <h2 className="text-center mb-4 bubble-text" style={{ color: "#4F732C" }}>Cadastrar</h2>
+                            <div className="text-center mb-4">
+                                <h2 className="bubble-text" style={{ color: "#4F732C" }}>🔐 Cadastro Admin</h2>
+                                <p className="text-muted">Registro de Administrador</p>
+                            </div>
                             
                             {erro && (
                                 <div className="alert alert-danger">{erro}</div>
@@ -124,18 +136,30 @@ export default function Register() {
                                     />
                                 </div>
 
+                                <div className="mb-3">
+                                    <label className="form-label">Código de Administrador</label>
+                                    <input 
+                                        type="password" 
+                                        className="form-control"
+                                        value={formData.codigoAdmin}
+                                        onChange={(e) => setFormData({...formData, codigoAdmin: e.target.value})}
+                                        placeholder="Código secreto para admin"
+                                        required 
+                                    />
+                                </div>
+
                                 <button 
                                     type="submit" 
                                     className="btn w-100 mb-3"
                                     style={{ backgroundColor: "#4F732C", color: "white" }}
                                     disabled={loading}
                                 >
-                                    {loading ? 'Cadastrando...' : 'Cadastrar'}
+                                    {loading ? 'Cadastrando...' : 'Cadastrar Admin'}
                                 </button>
                             </form>
 
                             <div className="text-center">
-                                <p>Já tem conta? <Link to="/login" style={{ color: "#4F732C" }}>Faça login</Link></p>
+                                <Link to="/admin/login" style={{ color: "#4F732C" }}>← Voltar ao login admin</Link>
                             </div>
                         </div>
                     </div>

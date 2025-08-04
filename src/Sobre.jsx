@@ -37,7 +37,7 @@ export default function Sobre() {
                 
                 <h6>🍽️ Receitas Sustentáveis</h6>
                 <ul className="small">
-                  <li>12 receitas de aproveitamento</li>
+                  <li>50 receitas de aproveitamento</li>
                   <li>Sistema de busca e favoritos</li>
                   <li>Categorias organizadas</li>
                   <li>Tutoriais passo a passo</li>
@@ -46,43 +46,23 @@ export default function Sobre() {
               <div className="col-md-6">
                 <h6>👤 Sistema de Usuários</h6>
                 <ul className="small">
-                  <li>Cadastro e autenticação</li>
+                  <li>Cadastro e autenticação completos</li>
                   <li>Dashboard personalizado</li>
                   <li>Gerenciamento de hortas</li>
-                  <li>Histórico de atividades</li>
+                  <li>Registro de colheitas</li>
                 </ul>
                 
-                <h6>🏆 Gamificação</h6>
+                <h6>🔐 Painel Administrativo</h6>
                 <ul className="small">
-                  <li>Sistema de pontos</li>
-                  <li>Emblemas de conquistas</li>
-                  <li>Níveis de sustentabilidade</li>
-                  <li>Ranking de usuários</li>
+                  <li>Gerenciamento de usuários</li>
+                  <li>Controle de solicitações</li>
+                  <li>Relatórios detalhados</li>
+                  <li>Sistema de gamificação</li>
                 </ul>
               </div>
             </div>
             
-            <h4 style={{ color: "#558C03" }}>Tecnologias Utilizadas</h4>
-            <div className="row">
-              <div className="col-md-6">
-                <h6>Frontend</h6>
-                <ul className="small">
-                  <li><strong>React:</strong> Interface dinâmica</li>
-                  <li><strong>Bootstrap:</strong> Design responsivo</li>
-                  <li><strong>Google Fonts:</strong> Tipografia DynaPuff</li>
-                  <li><strong>CSS3:</strong> Modo escuro e animações</li>
-                </ul>
-              </div>
-              <div className="col-md-6">
-                <h6>Funcionalidades</h6>
-                <ul className="small">
-                  <li><strong>LocalStorage:</strong> Persistência de dados</li>
-                  <li><strong>EmailJS:</strong> Sistema de contato</li>
-                  <li><strong>React Router:</strong> Navegação SPA</li>
-                  <li><strong>Chatbot:</strong> Suporte inteligente</li>
-                </ul>
-              </div>
-            </div>
+
             
             <h4 style={{ color: "#558C03" }}>Impacto Esperado</h4>
             <p>
@@ -97,43 +77,59 @@ export default function Sobre() {
             </ul>
           </div>
           
-          <div className="col-md-4">
-            <div className="card mb-3" style={{ backgroundColor: "#D9C179" }}>
+          <div className="col-lg-4">
+            <div className="card mb-4">
               <div className="card-body">
-                <h5 className="card-title">🏫 Informações Acadêmicas</h5>
-                <p className="card-text">
-                  <strong>Instituição:</strong> Instituto Técnico de Barueri (ITB)<br/>
-                  <strong>Curso:</strong> Técnico em Informática<br/>
-                  <strong>Turma:</strong> INF2CM<br/>
-                  <strong>Ano:</strong> 2025<br/>
-                  <strong>Semestre:</strong> 2º
-                </p>
+                <div className="d-flex align-items-center mb-3">
+                  <span className="icon me-2">🏫</span>
+                  <h5 className="mb-0">Informações Acadêmicas</h5>
+                </div>
+                <div className="mb-2">
+                  <span className="icon me-2" style={{ fontSize: '0.8rem' }}>🏢</span>
+                  <strong>Instituição:</strong> Instituto Técnico de Barueri (ITB)
+                </div>
+                <div className="mb-2">
+                  <span className="icon me-2" style={{ fontSize: '0.8rem' }}>📚</span>
+                  <strong>Curso:</strong> Técnico em Informática
+                </div>
+                <div className="mb-2">
+                  <span className="icon me-2" style={{ fontSize: '0.8rem' }}>👥</span>
+                  <strong>Turma:</strong> INF2CM
+                </div>
+                <div className="mb-2">
+                  <span className="icon me-2" style={{ fontSize: '0.8rem' }}>📅</span>
+                  <strong>Ano:</strong> 2025 - 2º Semestre
+                </div>
               </div>
             </div>
             
-            <div className="card mb-3" style={{ backgroundColor: "#D9AE89" }}>
+            <div className="card mb-4">
               <div className="card-body">
                 <h5 className="card-title">📊 Estatísticas</h5>
                 <p className="card-text small">
                   <strong>Plantas Catalogadas:</strong> 12<br/>
-                  <strong>Receitas Disponíveis:</strong> 12<br/>
-                  <strong>Categorias de Suporte:</strong> 5<br/>
-                  <strong>Tópicos de Ajuda:</strong> 15<br/>
-                  <strong>Funcionalidades:</strong> 8+
+                  <strong>Receitas Disponíveis:</strong> 50<br/>
+                  <strong>Sistema de Usuários:</strong> Completo<br/>
+                  <strong>Painel Admin:</strong> Funcional<br/>
+                  <strong>Banco de Dados:</strong> Integrado
                 </p>
               </div>
             </div>
             
-            <div className="card" style={{ backgroundColor: "#AEBF2C" }}>
+            <div className="card">
               <div className="card-body">
-                <h5 className="card-title">📧 Contato</h5>
-                <p className="card-text small">
-                  <strong>Email:</strong> rm94720@estudante.fieb.edu.br<br/>
-                  <strong>Suporte:</strong> Chat integrado<br/>
-                  <strong>Formulário:</strong> Página Apoio<br/>
-                  <strong>Resposta:</strong> Até 24h
+                <div className="d-flex align-items-center mb-3">
+                  <span className="icon me-2">📧</span>
+                  <h5 className="mb-0">Contato</h5>
+                </div>
+                <p className="small mb-3">
+                  <span className="icon me-2" style={{ fontSize: '0.8rem' }}>✉</span>
+                  rm94720@estudante.fieb.edu.br<br/>
+                  <span className="icon me-2" style={{ fontSize: '0.8rem' }}>💬</span>
+                  Chat integrado - Resposta em até 24h
                 </p>
-                <a href="/apoio" className="btn btn-sm" style={{ backgroundColor: "#4F732C", color: "white" }}>
+                <a href="/apoio" className="btn btn-success w-100">
+                  <span className="icon me-2">🤝</span>
                   Solicitar Apoio
                 </a>
               </div>

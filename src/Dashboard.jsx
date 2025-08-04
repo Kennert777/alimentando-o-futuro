@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import db from './database.js';
 
 export default function Dashboard() {
     const [user, setUser] = useState(null);
@@ -14,15 +15,23 @@ export default function Dashboard() {
         setUser(currentUser);
 
         // Carrega estatísticas do usuário
-        const userHortas = JSON.parse(localStorage.getItem('userHortas') || '[]');
-        const userReceitas = JSON.parse(localStorage.getItem('userReceitas') || '[]');
-        
-        setStats({
-            hortas: userHortas.filter(h => h.userId === currentUser.id).length,
-            receitas: userReceitas.filter(r => r.userId === currentUser.id).length,
-            pontos: currentUser.pontos || 0
-        });
+        loadUserStats(currentUser.id);
     }, []);
+    
+    const loadUserStats = async (userId) => {
+        try {
+            const hortas = await db.buscarHortasPorUsuario(userId);
+            const colheitas = await db.buscarColheitasPorUsuario(userId);
+            
+            setStats({
+                hortas: hortas.length,
+                colheitas: colheitas.length,
+                pontos: user?.pontos || 0
+            });
+        } catch (error) {
+            console.error('Erro ao carregar estatísticas:', error);
+        }
+    };
 
     const logout = () => {
         localStorage.removeItem('currentUser');
@@ -63,8 +72,8 @@ export default function Dashboard() {
                 <div className="col-md-4">
                     <div className="card text-center" style={{ backgroundColor: "#AEBF2C" }}>
                         <div className="card-body">
-                            <h3>{stats.receitas}</h3>
-                            <p>Receitas Compartilhadas</p>
+                            <h3>{stats.colheitas}</h3>
+                            <p>Colheitas Registradas</p>
                         </div>
                     </div>
                 </div>
@@ -108,9 +117,9 @@ export default function Dashboard() {
                 <div className="col-md-6 mb-3">
                     <div className="card h-100">
                         <div className="card-body text-center">
-                            <h5>💬 Chat Comunitário</h5>
-                            <p>Converse com outros usuários e tire dúvidas</p>
-                            <Link to="/chat" className="btn btn-primary" style={{ backgroundColor: "#558C03", border: "none" }}>
+                            <h5>🌾 Registrar Colheitas</h5>
+                            <p>Registre suas colheitas e ganhe pontos</p>
+                            <Link to="/colheitas" className="btn btn-primary" style={{ backgroundColor: "#558C03", border: "none" }}>
                                 Acessar
                             </Link>
                         </div>
