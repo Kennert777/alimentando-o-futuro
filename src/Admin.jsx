@@ -6,6 +6,8 @@ export default function Admin() {
     const [users, setUsers] = useState([]);
     const [hortas, setHortas] = useState([]);
     const [stats, setStats] = useState({});
+    const [solicitacoes, setSolicitacoes] = useState([]);
+    const [metas, setMetas] = useState([]);
 
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -25,11 +27,19 @@ export default function Admin() {
         setUsers(allUsers);
         setHortas(allHortas);
         
+        const allSolicitacoes = JSON.parse(localStorage.getItem('solicitacoes') || '[]');
+        const allMetas = JSON.parse(localStorage.getItem('metas') || '[]');
+        
+        setSolicitacoes(allSolicitacoes);
+        setMetas(allMetas);
+        
         setStats({
             totalUsers: allUsers.length,
             totalHortas: allHortas.length,
             hortasAprovadas: allHortas.filter(h => h.aprovada).length,
-            hortasPendentes: allHortas.filter(h => !h.aprovada).length
+            hortasPendentes: allHortas.filter(h => !h.aprovada).length,
+            solicitacoesPendentes: allSolicitacoes.filter(s => s.status === 'pendente').length,
+            metasAtivas: allMetas.filter(m => m.ativa).length
         });
     };
 
@@ -107,7 +117,34 @@ export default function Admin() {
                     <div className="card text-center bg-warning">
                         <div className="card-body">
                             <h3>{stats.hortasPendentes}</h3>
-                            <p>Pendentes</p>
+                            <p>Hortas Pendentes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div className="row mb-4">
+                <div className="col-md-4">
+                    <div className="card text-center" style={{ backgroundColor: "#FF6B6B" }}>
+                        <div className="card-body text-white">
+                            <h3>{stats.solicitacoesPendentes || 0}</h3>
+                            <p>Solicitações Pendentes</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card text-center" style={{ backgroundColor: "#4ECDC4" }}>
+                        <div className="card-body text-white">
+                            <h3>{stats.metasAtivas || 0}</h3>
+                            <p>Metas Ativas</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card text-center" style={{ backgroundColor: "#45B7D1" }}>
+                        <div className="card-body text-white">
+                            <h3>{users.reduce((total, u) => total + (u.pontos || 0), 0)}</h3>
+                            <p>Total de Pontos</p>
                         </div>
                     </div>
                 </div>
@@ -129,6 +166,30 @@ export default function Admin() {
                         onClick={() => setActiveTab('hortas')}
                     >
                         🌱 Hortas
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button 
+                        className={`nav-link ${activeTab === 'apoio' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('apoio')}
+                    >
+                        🆘 Solicitações
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button 
+                        className={`nav-link ${activeTab === 'dicas' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('dicas')}
+                    >
+                        💡 Dicas
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button 
+                        className={`nav-link ${activeTab === 'gamificacao' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('gamificacao')}
+                    >
+                        🏆 Gamificação
                     </button>
                 </li>
                 <li className="nav-item">
@@ -169,6 +230,18 @@ export default function Admin() {
                                             <td>{user.pontos || 0}</td>
                                             <td>{new Date(user.dataCadastro).toLocaleDateString()}</td>
                                             <td>
+                                                <button 
+                                                    className="btn btn-sm btn-warning me-1"
+                                                    onClick={() => alert('Funcionalidade em desenvolvimento')}
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button 
+                                                    className="btn btn-sm btn-info me-1"
+                                                    onClick={() => alert('Redefinir senha: ' + user.email)}
+                                                >
+                                                    Reset Senha
+                                                </button>
                                                 <button 
                                                     className="btn btn-sm btn-danger"
                                                     onClick={() => deleteUser(user.id)}
@@ -242,20 +315,128 @@ export default function Admin() {
                 </div>
             )}
 
-            {activeTab === 'relatorios' && (
+            {activeTab === 'apoio' && (
+                <div className="card">
+                    <div className="card-header">
+                        <h5>Gerenciar Solicitações de Apoio</h5>
+                    </div>
+                    <div className="card-body">
+                        <div className="alert alert-info">
+                            <strong>Em desenvolvimento:</strong> Sistema de solicitações de apoio será implementado aqui.
+                            <br />Funcionalidades: Aprovar/Rejeitar solicitações, Gerenciar recursos, Conectar doadores.
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {activeTab === 'dicas' && (
+                <div className="card">
+                    <div className="card-header">
+                        <h5>Gerenciar Dicas e Conteúdo</h5>
+                    </div>
+                    <div className="card-body">
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <button className="btn btn-success me-2">+ Nova Dica</button>
+                                <button className="btn btn-primary me-2">+ Nova Receita</button>
+                            </div>
+                            <div className="col-md-6">
+                                <select className="form-select">
+                                    <option>Filtrar por categoria</option>
+                                    <option>Cultivo</option>
+                                    <option>Nutrição</option>
+                                    <option>Receitas</option>
+                                    <option>Sustentabilidade</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="alert alert-info">
+                            <strong>Funcionalidades disponíveis:</strong>
+                            <ul className="mb-0">
+                                <li>Criar e editar dicas de cultivo</li>
+                                <li>Moderar receitas de usuários</li>
+                                <li>Gerenciar base de conhecimento de plantas</li>
+                                <li>Aprovar conteúdo gerado pela comunidade</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {activeTab === 'gamificacao' && (
                 <div className="row">
                     <div className="col-md-6">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5>🎯 Desafios e Metas</h5>
+                            </div>
+                            <div className="card-body">
+                                <button className="btn btn-success mb-3">+ Novo Desafio</button>
+                                <div className="list-group">
+                                    <div className="list-group-item d-flex justify-content-between align-items-center">
+                                        Primeira Horta
+                                        <span className="badge bg-success">Ativo</span>
+                                    </div>
+                                    <div className="list-group-item d-flex justify-content-between align-items-center">
+                                        Colhedor Semanal
+                                        <span className="badge bg-success">Ativo</span>
+                                    </div>
+                                    <div className="list-group-item d-flex justify-content-between align-items-center">
+                                        Login Diário
+                                        <span className="badge bg-warning">Pausado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5>🏆 Emblemas e Recompensas</h5>
+                            </div>
+                            <div className="card-body">
+                                <button className="btn btn-primary mb-3">+ Novo Emblema</button>
+                                <div className="row">
+                                    <div className="col-6 text-center mb-2">
+                                        <div className="badge bg-success p-2">🌱 Primeiro Passo</div>
+                                        <small className="d-block">0 pontos</small>
+                                    </div>
+                                    <div className="col-6 text-center mb-2">
+                                        <div className="badge bg-success p-2">🌿 Cultivador</div>
+                                        <small className="d-block">50 pontos</small>
+                                    </div>
+                                    <div className="col-6 text-center mb-2">
+                                        <div className="badge bg-success p-2">🏆 Mestre da Horta</div>
+                                        <small className="d-block">500 pontos</small>
+                                    </div>
+                                    <div className="col-6 text-center mb-2">
+                                        <div className="badge bg-success p-2">📚 Educador</div>
+                                        <small className="d-block">200 pontos</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {activeTab === 'relatorios' && (
+                <div className="row">
+                    <div className="col-md-4">
                         <div className="card">
                             <div className="card-header">
                                 <h5>📈 Crescimento de Usuários</h5>
                             </div>
                             <div className="card-body">
-                                <p>Total de usuários cadastrados: <strong>{stats.totalUsers}</strong></p>
-                                <p>Usuários ativos (com pontos): <strong>{users.filter(u => u.pontos > 0).length}</strong></p>
+                                <p>Total de usuários: <strong>{stats.totalUsers}</strong></p>
+                                <p>Usuários ativos: <strong>{users.filter(u => u.pontos > 0).length}</strong></p>
+                                <p>Taxa de engajamento: <strong>
+                                    {stats.totalUsers > 0 ? Math.round((users.filter(u => u.pontos > 0).length / stats.totalUsers) * 100) : 0}%
+                                </strong></p>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                         <div className="card">
                             <div className="card-header">
                                 <h5>🌱 Status das Hortas</h5>
@@ -266,6 +447,19 @@ export default function Admin() {
                                 <p>Taxa de aprovação: <strong>
                                     {stats.totalHortas > 0 ? Math.round((stats.hortasAprovadas / stats.totalHortas) * 100) : 0}%
                                 </strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5>🎯 Impacto Social</h5>
+                            </div>
+                            <div className="card-body">
+                                <p>Colheitas registradas: <strong>0</strong></p>
+                                <p>Kg de alimentos: <strong>0 kg</strong></p>
+                                <p>Receitas compartilhadas: <strong>0</strong></p>
+                                <button className="btn btn-sm btn-primary">Gerar Relatório Completo</button>
                             </div>
                         </div>
                     </div>

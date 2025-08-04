@@ -51,6 +51,7 @@ export default function Navbar() {
             <li className="nav-item"><Link className="nav-link" to="/">Início</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/horta">Horta</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/receitas">Receitas</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/dicas">Dicas</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/apoio">Apoio</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/sobre">Sobre</Link></li>
             {/* Toggle de modo escuro */}
@@ -116,6 +117,9 @@ export default function Navbar() {
                       </Link>
                       <Link className="dropdown-item" to="/hortas-usuario">
                         🌱 Minhas Hortas
+                      </Link>
+                      <Link className="dropdown-item" to="/colheitas">
+                        🌾 Minhas Colheitas
                       </Link>
                       <Link className="dropdown-item" to="/chat">
                         💬 Chat

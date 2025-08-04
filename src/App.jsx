@@ -6,7 +6,7 @@ import Footer from './Footer';
 import Home from './Home';
 import HortaDigital from './HortaDigital';
 import Receitas from './Receitas';
-import Apoio from './Apoio';
+import ApoioNovo from './ApoioNovo';
 import Sobre from './Sobre';
 import Login from './Login';
 import Register from './Register';
@@ -14,7 +14,9 @@ import Dashboard from './Dashboard';
 import HortasUsuario from './HortasUsuario';
 import Chat from './Chat';
 import Admin from './Admin';
-import Chatbot from './Chatbot';
+import ChatbotFutuzinhoExpandido from './ChatbotFutuzinhoExpandido';
+import Dicas from './Dicas';
+import Colheitas from './Colheitas';
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
 // CSS para modo escuro
@@ -40,7 +42,7 @@ export default function App() {
             <Route path="/" element={<Home />} />                    {/* Página inicial */}
             <Route path="/horta" element={<HortaDigital />} />       {/* Página da horta */}
             <Route path="/receitas" element={<Receitas />} />        {/* Página de receitas */}
-            <Route path="/apoio" element={<Apoio />} />              {/* Página de apoio */}
+            <Route path="/apoio" element={<ApoioNovo />} />              {/* Página de apoio */}
             <Route path="/sobre" element={<Sobre />} />              {/* Página sobre */}
             <Route path="/login" element={<Login />} />              {/* Página de login */}
             <Route path="/register" element={<Register />} />        {/* Página de registro */}
@@ -48,6 +50,8 @@ export default function App() {
             <Route path="/hortas-usuario" element={<HortasUsuario />} /> {/* Hortas do usuário */}
             <Route path="/chat" element={<Chat />} />                {/* Sistema de chat */}
             <Route path="/admin" element={<Admin />} />              {/* Painel administrativo */}
+            <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
+            <Route path="/colheitas" element={<Colheitas />} />      {/* Controle de colheitas */}
           </Routes>
         </main>
         
@@ -55,7 +59,7 @@ export default function App() {
         <Footer />
         
         {/* Chatbot: Assistente virtual flutuante */}
-        <Chatbot />
+        <ChatbotFutuzinhoExpandido />
       </div>
     </Router>
   );
