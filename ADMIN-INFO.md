@@ -3,8 +3,8 @@
 ## 🔐 Acesso Administrativo
 
 ### Contas Admin Existentes:
-- **Email:** admin@teste.com
-- **Senha:** admin123
+- **Email:** rm94720@estudante.fieb.edu.br
+- **Senha:** 123456
 
 ### Criar Nova Conta Admin:
 1. Acesse: `/admin/register`
@@ -16,15 +16,16 @@
 
 ### Configuração Atual:
 - **Destino:** rm94720@estudante.fieb.edu.br
-- **Método:** EmailJS + Fallback (mailto)
+- **Método:** EmailJS + Fallback (kennert)
 - **Status:** Funcional
 
 ### Como Funciona:
-1. Usuário faz solicitação de apoio
+1. Usuário faz ação (solicitação, chat, cadastro, etc.)
 2. Sistema salva no banco de dados
-3. Tenta enviar via EmailJS
-4. Se falhar, abre cliente de email local
-5. Admin recebe notificação por email
+3. Cria notificação para admin
+4. Envia email automático para rm94720@estudante.fieb.edu.br
+5. Admin vê notificação no painel
+6. Admin pode marcar como lida
 
 ## 🎯 Funcionalidades Admin:
 
@@ -37,6 +38,9 @@
 - [x] Gerar relatórios com filtros
 - [x] Exportar dados em CSV
 - [x] Sistema de gamificação integrado
+- [x] Sistema de notificações em tempo real
+- [x] Monitoramento de chat
+- [x] Emails automáticos para admin
 
 ### 📊 Relatórios Disponíveis:
 - Usuários (com filtros de data)
@@ -57,6 +61,7 @@
 5. **Dicas:** Criar conteúdo educativo
 6. **Relatórios:** Análise de dados
 7. **Hortas:** Gerenciar hortas comunitárias
+8. **Notificações:** Monitorar todas as atividades
 
 ## 🔧 Configurações:
 
@@ -69,3 +74,10 @@
 - **Configuração:** `EMAILJS-CONFIG.md`
 - **Fallback:** Sempre funcional via mailto
 - **Destino:** rm94720@estudante.fieb.edu.br
+
+### Notificações Automáticas:
+- **Cadastros:** Novos usuários
+- **Hortas:** Novas hortas cadastradas
+- **Colheitas:** Registros de colheita
+- **Solicitações:** Pedidos de apoio
+- **Chat:** Mensagens dos usuários

@@ -25,6 +25,7 @@ import AdminSolicitacoes from './AdminSolicitacoes';
 import AdminRelatorios from './AdminRelatorios';
 import AdminDicas from './AdminDicas';
 import AdminRegister from './AdminRegister';
+import AdminNotificacoes from './AdminNotificacoes';
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
 // CSS para modo escuro
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="/admin/solicitacoes" element={<AdminSolicitacoes />} /> {/* Solicitações */}
             <Route path="/admin/dicas" element={<AdminDicas />} />       {/* Gerenciar dicas */}
             <Route path="/admin/relatorios" element={<AdminRelatorios />} /> {/* Relatórios */}
+            <Route path="/admin/notificacoes" element={<AdminNotificacoes />} /> {/* Notificações */}
             <Route path="/admin/gamificacao" element={<AdminDashboard />} /> {/* Gamificação */}
           </Routes>
         </main>

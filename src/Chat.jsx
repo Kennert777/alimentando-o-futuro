@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import db from './database.js';
 
 export default function Chat() {
     const [user, setUser] = useState(null);
@@ -37,7 +38,7 @@ export default function Chat() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
-    const sendMessage = (e) => {
+    const sendMessage = async (e) => {
         e.preventDefault();
         if (!newMessage.trim()) return;
 
@@ -54,6 +55,9 @@ export default function Chat() {
         if (!allMessages[activeRoom]) allMessages[activeRoom] = [];
         allMessages[activeRoom].push(message);
         localStorage.setItem('chatMessages', JSON.stringify(allMessages));
+
+        // Salvar mensagem e notificar admin
+        await db.salvarMensagemChat(user, `[${rooms.find(r => r.id === activeRoom)?.name}] ${newMessage}`);
 
         setMessages([...messages, message]);
         setNewMessage('');

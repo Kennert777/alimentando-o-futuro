@@ -23,6 +23,12 @@ class Database {
     if (!localStorage.getItem('dicas')) {
       localStorage.setItem('dicas', JSON.stringify([]));
     }
+    if (!localStorage.getItem('notificacoes_admin')) {
+      localStorage.setItem('notificacoes_admin', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('mensagens_chat')) {
+      localStorage.setItem('mensagens_chat', JSON.stringify([]));
+    }
   }
 
   // Usuários
@@ -53,6 +59,14 @@ class Database {
 
     usuarios.push(novoUsuario);
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    
+    // Notificar admin sobre novo cadastro
+    await this.criarNotificacaoAdmin(
+      'cadastro',
+      'Novo usuário cadastrado',
+      `${novoUsuario.nome} se cadastrou no sistema`,
+      { nome: novoUsuario.nome, email: novoUsuario.email }
+    );
     
     return { ...novoUsuario, senha: undefined }; // Não retornar senha
   }
@@ -106,6 +120,15 @@ class Database {
     
     // Adicionar pontos ao usuário
     await this.adicionarPontos(usuarioId, 50, 'cadastro_horta');
+    
+    // Notificar admin
+    const usuario = await this.buscarUsuarioPorId(usuarioId);
+    await this.criarNotificacaoAdmin(
+      'horta',
+      'Nova horta cadastrada',
+      `${usuario.nome} cadastrou uma nova horta: ${novaHorta.nome}`,
+      { usuario: usuario.nome, horta: novaHorta.nome, localizacao: novaHorta.localizacao }
+    );
     
     return novaHorta;
   }
@@ -161,6 +184,15 @@ class Database {
     // Adicionar pontos ao usuário
     await this.adicionarPontos(usuarioId, 25, 'colheita');
     
+    // Notificar admin
+    const usuario = await this.buscarUsuarioPorId(usuarioId);
+    await this.criarNotificacaoAdmin(
+      'colheita',
+      'Nova colheita registrada',
+      `${usuario.nome} registrou colheita de ${novaColheita.quantidade_kg}kg de ${novaColheita.tipo_planta}`,
+      { usuario: usuario.nome, planta: novaColheita.tipo_planta, quantidade: novaColheita.quantidade_kg }
+    );
+    
     return novaColheita;
   }
 
@@ -191,6 +223,21 @@ class Database {
 
     solicitacoes.push(novaSolicitacao);
     localStorage.setItem('solicitacoes_apoio', JSON.stringify(solicitacoes));
+    
+    // Notificar admin
+    const usuario = await this.buscarUsuarioPorId(usuarioId);
+    await this.criarNotificacaoAdmin(
+      'solicitacao',
+      'Nova solicitação de apoio',
+      `${usuario.nome} fez uma solicitação: ${novaSolicitacao.titulo}`,
+      { 
+        usuario: usuario.nome, 
+        email: usuario.email,
+        tipo: novaSolicitacao.tipo_solicitacao,
+        titulo: novaSolicitacao.titulo,
+        urgencia: novaSolicitacao.urgencia
+      }
+    );
     
     return novaSolicitacao;
   }
@@ -411,6 +458,91 @@ class Database {
       filtros,
       data_geracao: new Date().toISOString()
     };
+  }
+
+  // Notificações para Admin
+  async criarNotificacaoAdmin(tipo, titulo, mensagem, dados = {}) {
+    const notificacoes = JSON.parse(localStorage.getItem('notificacoes_admin') || '[]');
+    
+    const novaNotificacao = {
+      id: Date.now(),
+      tipo, // 'solicitacao', 'chat', 'cadastro', 'colheita'
+      titulo,
+      mensagem,
+      dados,
+      lida: false,
+      data_criacao: new Date().toISOString()
+    };
+
+    notificacoes.unshift(novaNotificacao); // Adiciona no início
+    localStorage.setItem('notificacoes_admin', JSON.stringify(notificacoes));
+    
+    // Enviar email para admin
+    this.enviarEmailAdmin(titulo, mensagem, dados);
+    
+    return novaNotificacao;
+  }
+
+  async buscarNotificacoesAdmin() {
+    return JSON.parse(localStorage.getItem('notificacoes_admin') || '[]');
+  }
+
+  async marcarNotificacaoLida(id) {
+    const notificacoes = JSON.parse(localStorage.getItem('notificacoes_admin') || '[]');
+    const index = notificacoes.findIndex(n => n.id === parseInt(id));
+    
+    if (index !== -1) {
+      notificacoes[index].lida = true;
+      localStorage.setItem('notificacoes_admin', JSON.stringify(notificacoes));
+    }
+  }
+
+  // Enviar email para admin
+  enviarEmailAdmin(titulo, mensagem, dados) {
+    const subject = encodeURIComponent(`[Alimentando o Futuro] ${titulo}`);
+    const body = encodeURIComponent(
+      `${mensagem}\n\n` +
+      `Dados adicionais:\n${JSON.stringify(dados, null, 2)}\n\n` +
+      `Acesse o painel admin: ${window.location.origin}/admin/dashboard`
+    );
+    
+    // Tentar abrir cliente de email
+    try {
+      window.open(`mailto:rm94720@estudante.fieb.edu.br?subject=${subject}&body=${body}`);
+    } catch (error) {
+      console.log('Erro ao abrir cliente de email:', error);
+    }
+  }
+
+  // Mensagens de Chat
+  async salvarMensagemChat(usuario, mensagem) {
+    const mensagens = JSON.parse(localStorage.getItem('mensagens_chat') || '[]');
+    
+    const novaMensagem = {
+      id: Date.now(),
+      usuario_id: usuario.id,
+      usuario_nome: usuario.nome,
+      usuario_email: usuario.email,
+      mensagem,
+      data_envio: new Date().toISOString()
+    };
+
+    mensagens.push(novaMensagem);
+    localStorage.setItem('mensagens_chat', JSON.stringify(mensagens));
+    
+    // Notificar admin
+    await this.criarNotificacaoAdmin(
+      'chat',
+      'Nova mensagem no chat',
+      `${usuario.nome} enviou uma mensagem no chat`,
+      { usuario: usuario.nome, email: usuario.email, mensagem }
+    );
+    
+    return novaMensagem;
+  }
+
+  async buscarMensagensChat() {
+    return JSON.parse(localStorage.getItem('mensagens_chat') || '[]');
   }
 }
 

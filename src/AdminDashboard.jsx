@@ -6,6 +6,7 @@ export default function AdminDashboard() {
     const [admin, setAdmin] = useState(null);
     const [stats, setStats] = useState({});
     const [loading, setLoading] = useState(true);
+    const [notificacoes, setNotificacoes] = useState([]);
 
     useEffect(() => {
         const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin') || 'null');
@@ -23,10 +24,16 @@ export default function AdminDashboard() {
             const solicitacoes = await db.buscarTodasSolicitacoes();
             const pendentes = solicitacoes.filter(s => s.status === 'pendente').length;
             
+            const notificacoesAdmin = await db.buscarNotificacoesAdmin();
+            const naoLidas = notificacoesAdmin.filter(n => !n.lida).length;
+            
             setStats({
                 ...estatisticas,
-                solicitacoesPendentes: pendentes
+                solicitacoesPendentes: pendentes,
+                notificacoesNaoLidas: naoLidas
             });
+            
+            setNotificacoes(notificacoesAdmin.slice(0, 5)); // Últimas 5
         } catch (error) {
             console.error('Erro ao carregar estatísticas:', error);
         } finally {
@@ -85,6 +92,55 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Notificações Recentes */}
+            {notificacoes.length > 0 && (
+                <div className="row mb-4">
+                    <div className="col-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 className="mb-0">🔔 Notificações Recentes</h5>
+                                    <span className="badge bg-danger">{stats.notificacoesNaoLidas} não lidas</span>
+                                </div>
+                                <div className="list-group list-group-flush">
+                                    {notificacoes.map(notif => (
+                                        <div key={notif.id} className={`list-group-item ${!notif.lida ? 'bg-light' : ''}`}>
+                                            <div className="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 className="mb-1">
+                                                        {notif.tipo === 'solicitacao' && '📝'}
+                                                        {notif.tipo === 'chat' && '💬'}
+                                                        {notif.tipo === 'cadastro' && '👤'}
+                                                        {notif.tipo === 'horta' && '🌱'}
+                                                        {notif.tipo === 'colheita' && '🌾'}
+                                                        {' '}{notif.titulo}
+                                                    </h6>
+                                                    <p className="mb-1 small">{notif.mensagem}</p>
+                                                    <small className="text-muted">
+                                                        {new Date(notif.data_criacao).toLocaleString()}
+                                                    </small>
+                                                </div>
+                                                {!notif.lida && (
+                                                    <span className="badge bg-primary">Nova</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="text-center mt-3">
+                                    <Link to="/admin/notificacoes" className="btn btn-outline-primary btn-sm">
+                                        Ver todas as notificações
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="row mb-4">
             </div>
 
             {/* Menu de Funcionalidades */}
