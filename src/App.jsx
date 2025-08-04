@@ -26,12 +26,20 @@ import AdminRelatorios from './AdminRelatorios';
 import AdminDicas from './AdminDicas';
 import AdminRegister from './AdminRegister';
 import AdminNotificacoes from './AdminNotificacoes';
+import AdminHortas from './AdminHortas';
+import AdminSessionTest from './AdminSessionTest';
+import AdminNotificationTest from './AdminNotificationTest';
+import SystemStatus from './SystemStatus';
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
 // CSS para modo escuro
 import './darkMode.css';
 // Inicializa dados padrão do sistema
 import './initData.js';
+// Inicializa sistema de autenticação
+import './authInit.js';
+// Teste de conectividade do banco
+import './databaseTest.js';
 
 // Componente principal da aplicação
 export default function App() {
@@ -66,12 +74,15 @@ export default function App() {
             <Route path="/admin/register" element={<AdminRegister />} /> {/* Cadastro admin */}
             <Route path="/admin/dashboard" element={<AdminDashboard />} /> {/* Dashboard admin */}
             <Route path="/admin/usuarios" element={<AdminUsuarios />} /> {/* Gerenciar usuários */}
-            <Route path="/admin/hortas" element={<HortasUsuario />} />   {/* Gerenciar hortas */}
+            <Route path="/admin/hortas" element={<AdminHortas />} />   {/* Gerenciar hortas */}
             <Route path="/admin/solicitacoes" element={<AdminSolicitacoes />} /> {/* Solicitações */}
             <Route path="/admin/dicas" element={<AdminDicas />} />       {/* Gerenciar dicas */}
             <Route path="/admin/relatorios" element={<AdminRelatorios />} /> {/* Relatórios */}
             <Route path="/admin/notificacoes" element={<AdminNotificacoes />} /> {/* Notificações */}
             <Route path="/admin/gamificacao" element={<AdminDashboard />} /> {/* Gamificação */}
+            <Route path="/admin/test" element={<AdminSessionTest />} /> {/* Teste de sessão */}
+            <Route path="/admin/test-notifications" element={<AdminNotificationTest />} /> {/* Teste de notificações */}
+            <Route path="/system/status" element={<SystemStatus />} /> {/* Status do sistema */}
           </Routes>
         </main>
         

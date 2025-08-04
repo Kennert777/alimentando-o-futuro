@@ -22,7 +22,7 @@ export default function Register() {
         }
 
         try {
-            await db.criarUsuario({
+            const novoUsuario = await db.criarUsuario({
                 nome: formData.nome,
                 email: formData.email,
                 telefone: formData.telefone,
@@ -30,6 +30,8 @@ export default function Register() {
             });
             
             // Adicionar pontos de boas-vindas
+            await db.adicionarPontos(novoUsuario.id, 10, 'cadastro');
+            
             setSucesso(true);
         } catch (error) {
             setErro(error.message);

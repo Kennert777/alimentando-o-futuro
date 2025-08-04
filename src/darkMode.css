@@ -38,7 +38,7 @@ a, .btn {
   font-weight: 500;
 }
 
-[data-theme="dark"] {
+.dark-theme {
   --bg-primary: #1a1a1a;
   --bg-secondary: #2d2d2d;
   --text-primary: #ffffff;
@@ -138,7 +138,7 @@ footer {
 }
 
 /* Chat messages */
-[data-theme="dark"] .bg-light {
+.dark-theme .bg-light {
   background-color: var(--bg-secondary) !important;
   color: var(--text-primary) !important;
 }
@@ -154,39 +154,39 @@ footer {
 }
 
 /* Cards coloridos - ajustes para modo escuro */
-[data-theme="dark"] .card[style*="#D9C179"] {
+.dark-theme .card[style*="#D9C179"] {
   background-color: #4a4a2a !important;
 }
 
-[data-theme="dark"] .card[style*="#D9AE89"] {
+.dark-theme .card[style*="#D9AE89"] {
   background-color: #4a3a2a !important;
 }
 
-[data-theme="dark"] .card[style*="#AEBF2C"] {
+.dark-theme .card[style*="#AEBF2C"] {
   background-color: #3a4a1a !important;
 }
 
-[data-theme="dark"] .card[style*="#4F732C"] {
+.dark-theme .card[style*="#4F732C"] {
   background-color: #2d4a1a !important;
 }
 
 /* Botões no modo escuro */
-[data-theme="dark"] .btn-primary {
+.dark-theme .btn-primary {
   background-color: #4F732C !important;
   border-color: #4F732C !important;
 }
 
-[data-theme="dark"] .btn-success {
+.dark-theme .btn-success {
   background-color: #558C03 !important;
   border-color: #558C03 !important;
 }
 
 /* Links no modo escuro */
-[data-theme="dark"] a {
+.dark-theme a {
   color: #81c784 !important;
 }
 
-[data-theme="dark"] a:hover {
+.dark-theme a:hover {
   color: #a5d6a7 !important;
 }
 
@@ -231,22 +231,22 @@ footer {
 }
 
 /* Chatbot no modo escuro */
-[data-theme="dark"] .chatbot-window {
+.dark-theme .chatbot-window {
   background-color: var(--card-bg) !important;
   color: var(--text-primary) !important;
 }
 
-[data-theme="dark"] .chatbot-messages {
+.dark-theme .chatbot-messages {
   background-color: var(--bg-secondary) !important;
 }
 
-[data-theme="dark"] .chatbot-input {
+.dark-theme .chatbot-input {
   background-color: var(--card-bg) !important;
   border-color: var(--border-color) !important;
   color: var(--text-primary) !important;
 }
 
-[data-theme="dark"] .bot-message {
+.dark-theme .bot-message {
   background-color: var(--card-bg) !important;
   color: var(--text-primary) !important;
 }

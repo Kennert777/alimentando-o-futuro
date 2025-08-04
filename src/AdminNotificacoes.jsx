@@ -81,8 +81,12 @@ export default function AdminNotificacoes() {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 style={{ color: "#4F732C" }}>🔔 Notificações</h2>
                 <div>
+                    <h2 style={{ color: "#4F732C" }}>🔔 Notificações</h2>
+                    <div className="badge bg-danger">CENTRO DE NOTIFICAÇÕES ADMINISTRATIVO</div>
+                </div>
+                <div>
+                    <button className="btn btn-info btn-sm me-2" onClick={() => alert('Criando nova notificação...')}>➕ Nova</button>
                     <button 
                         className="btn btn-outline-success btn-sm me-2"
                         onClick={marcarTodasLidas}
@@ -93,8 +97,36 @@ export default function AdminNotificacoes() {
                 </div>
             </div>
 
+            {/* Painel de Controle de Notificações */}
+            <div className="row mb-4">
+                <div className="col-md-6">
+                    <div className="card border-warning">
+                        <div className="card-body">
+                            <h6 className="text-warning">⚡ Ações Rápidas</h6>
+                            <div className="d-grid gap-2">
+                                <button className="btn btn-warning btn-sm" onClick={() => alert('Enviando notificação para todos os usuários...')}>Notificar Todos</button>
+                                <button className="btn btn-outline-warning btn-sm" onClick={() => alert('Limpando notificações antigas...')}>Limpar Antigas</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="card border-info">
+                        <div className="card-body">
+                            <h6 className="text-info">📊 Estatísticas</h6>
+                            <p className="mb-1">Total: <strong>{notificacoesFiltradas.length}</strong></p>
+                            <p className="mb-1">Não lidas: <strong>{notificacoesFiltradas.filter(n => !n.lida).length}</strong></p>
+                            <p className="mb-0">Hoje: <strong>{notificacoesFiltradas.filter(n => new Date(n.data_criacao).toDateString() === new Date().toDateString()).length}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Filtros */}
-            <div className="card mb-4">
+            <div className="card mb-4 border-primary">
+                <div className="card-header bg-primary text-white">
+                    <h6 className="mb-0">🔍 Filtros de Notificações</h6>
+                </div>
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-6">
@@ -114,8 +146,9 @@ export default function AdminNotificacoes() {
                             </select>
                         </div>
                         <div className="col-md-6 d-flex align-items-end">
-                            <div className="text-muted">
-                                Total: {notificacoesFiltradas.length} notificações
+                            <div>
+                                <div className="text-muted mb-1">Total: {notificacoesFiltradas.length} notificações</div>
+                                <button className="btn btn-outline-primary btn-sm" onClick={() => alert('Exportando notificações...')}>📄 Exportar</button>
                             </div>
                         </div>
                     </div>

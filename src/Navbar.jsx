@@ -1,9 +1,11 @@
 // Link: Componente para navegação sem recarregar a página
 import { Link } from 'react-router-dom';
 // useState: Hook para gerenciar estado do menu mobile
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // Componente para alternar modo escuro
 import DarkModeToggle from './DarkModeToggle';
+// Hook de autenticação
+import { useAuth } from './useAuth.js';
 
 // Componente da barra de navegação
 export default function Navbar() {
@@ -11,18 +13,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   // Estado para controlar dropdown do perfil
   const [profileOpen, setProfileOpen] = useState(false);
-  // Estado do usuário logado
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    // Verifica se há usuário logado
-    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    setCurrentUser(user);
-  }, []);
+  // Hook de autenticação
+  const { currentUser, isAdmin, logout: authLogout } = useAuth();
 
   const logout = () => {
-    localStorage.removeItem('currentUser');
-    setCurrentUser(null);
+    authLogout();
     window.location.href = '/';
   };
 
@@ -112,18 +107,37 @@ export default function Navbar() {
                         <small className="text-muted">{currentUser.email}</small>
                       </div>
                       <div className="dropdown-divider"></div>
-                      <Link className="dropdown-item" to="/dashboard">
-                        📊 Dashboard
-                      </Link>
-                      <Link className="dropdown-item" to="/hortas-usuario">
-                        🌱 Minhas Hortas
-                      </Link>
-                      <Link className="dropdown-item" to="/colheitas">
-                        🌾 Minhas Colheitas
-                      </Link>
-                      <Link className="dropdown-item" to="/chat">
-                        💬 Chat
-                      </Link>
+                      {isAdmin ? (
+                        <>
+                          <Link className="dropdown-item" to="/admin/dashboard">
+                            🔐 Dashboard Admin
+                          </Link>
+                          <Link className="dropdown-item" to="/admin/usuarios">
+                            👥 Gerenciar Usuários
+                          </Link>
+                          <Link className="dropdown-item" to="/admin/solicitacoes">
+                            📋 Solicitações
+                          </Link>
+                          <Link className="dropdown-item" to="/admin/notificacoes">
+                            🔔 Notificações
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          <Link className="dropdown-item" to="/dashboard">
+                            📊 Dashboard
+                          </Link>
+                          <Link className="dropdown-item" to="/hortas-usuario">
+                            🌱 Minhas Hortas
+                          </Link>
+                          <Link className="dropdown-item" to="/colheitas">
+                            🌾 Minhas Colheitas
+                          </Link>
+                          <Link className="dropdown-item" to="/chat">
+                            💬 Chat
+                          </Link>
+                        </>
+                      )}
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item" onClick={logout}>
                         🚪 Sair

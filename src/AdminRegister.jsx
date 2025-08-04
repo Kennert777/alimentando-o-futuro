@@ -69,11 +69,15 @@ export default function AdminRegister() {
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className="card" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
+                    <div className="card border-danger" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(220,53,69,0.3)" }}>
                         <div className="card-body p-5">
                             <div className="text-center mb-4">
+                                <div className="alert alert-danger mb-3">
+                                    <strong>⚠️ REGISTRO ADMINISTRATIVO</strong>
+                                </div>
                                 <h2 className="bubble-text" style={{ color: "#4F732C" }}>🔐 Cadastro Admin</h2>
                                 <p className="text-muted">Registro de Administrador</p>
+                                <div className="badge bg-warning text-dark">Requer Código Secreto</div>
                             </div>
                             
                             {erro && (
@@ -150,11 +154,10 @@ export default function AdminRegister() {
 
                                 <button 
                                     type="submit" 
-                                    className="btn w-100 mb-3"
-                                    style={{ backgroundColor: "#4F732C", color: "white" }}
+                                    className="btn w-100 mb-3 btn-danger"
                                     disabled={loading}
                                 >
-                                    {loading ? 'Cadastrando...' : 'Cadastrar Admin'}
+                                    {loading ? '🔄 Cadastrando...' : '🔑 Cadastrar Admin'}
                                 </button>
                             </form>
 

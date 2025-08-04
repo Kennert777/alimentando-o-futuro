@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import db from './database.js';
+import { useAuth } from './useAuth.js';
 
 export default function AdminLogin() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState('');
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +23,7 @@ export default function AdminLogin() {
                 return;
             }
             
-            localStorage.setItem('currentAdmin', JSON.stringify(usuario));
+            login(usuario);
             window.location.href = '/admin/dashboard';
         } catch (error) {
             setErro(error.message);
@@ -34,11 +36,15 @@ export default function AdminLogin() {
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className="card" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
+                    <div className="card border-danger" style={{ backgroundColor: "white", boxShadow: "0 4px 20px rgba(220,53,69,0.3)" }}>
                         <div className="card-body p-5">
                             <div className="text-center mb-4">
+                                <div className="alert alert-danger mb-3">
+                                    <strong>⚠️ ACESSO RESTRITO</strong>
+                                </div>
                                 <h2 className="bubble-text" style={{ color: "#4F732C" }}>🔐 Admin</h2>
-                                <p className="text-muted">Acesso Administrativo</p>
+                                <p className="text-muted">Painel Administrativo</p>
+                                <div className="badge bg-warning text-dark">Apenas para Administradores</div>
                             </div>
                             
                             {erro && (
@@ -70,11 +76,10 @@ export default function AdminLogin() {
 
                                 <button 
                                     type="submit" 
-                                    className="btn w-100 mb-3"
-                                    style={{ backgroundColor: "#4F732C", color: "white" }}
+                                    className="btn w-100 mb-3 btn-danger"
                                     disabled={loading}
                                 >
-                                    {loading ? 'Entrando...' : 'Entrar como Admin'}
+                                    {loading ? '🔄 Verificando...' : '🔑 Entrar como Admin'}
                                 </button>
                             </form>
 

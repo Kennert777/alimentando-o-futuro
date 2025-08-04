@@ -143,21 +143,28 @@ class Database {
   }
 
   async atualizarHorta(id, dadosAtualizacao) {
-    const hortas = JSON.parse(localStorage.getItem('hortas') || '[]');
-    const index = hortas.findIndex(h => h.id === parseInt(id));
-    
-    if (index === -1) {
-      throw new Error('Horta não encontrada');
+    try {
+      const hortas = JSON.parse(localStorage.getItem('hortas') || '[]');
+      const index = hortas.findIndex(h => h.id === parseInt(id));
+      
+      if (index === -1) {
+        throw new Error('Horta não encontrada');
+      }
+
+      hortas[index] = {
+        ...hortas[index],
+        ...dadosAtualizacao,
+        data_ultima_atualizacao: new Date().toISOString()
+      };
+
+      localStorage.setItem('hortas', JSON.stringify(hortas));
+      return hortas[index];
+    } catch (error) {
+      if (error.message === 'Horta não encontrada') {
+        throw error;
+      }
+      throw new Error('Erro ao atualizar horta: ' + error.message);
     }
-
-    hortas[index] = {
-      ...hortas[index],
-      ...dadosAtualizacao,
-      data_ultima_atualizacao: new Date().toISOString()
-    };
-
-    localStorage.setItem('hortas', JSON.stringify(hortas));
-    return hortas[index];
   }
 
   // Colheitas

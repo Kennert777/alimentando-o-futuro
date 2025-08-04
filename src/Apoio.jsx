@@ -84,10 +84,10 @@ export default function Apoio() {
                         descricao: formData.descricao
                     };
                     
-                    // Configurar EmailJS (substitua pelos seus IDs reais)
-                    const SERVICE_ID = 'service_alimentando';
-                    const TEMPLATE_ID = 'template_apoio';
-                    const PUBLIC_KEY = 'sua_public_key_aqui';
+                    // Configurar EmailJS via variáveis de ambiente
+                    const SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'service_alimentando';
+                    const TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_apoio';
+                    const PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || '';
                     
                     // Tentar enviar via EmailJS
                     if (SERVICE_ID !== 'service_alimentando') {

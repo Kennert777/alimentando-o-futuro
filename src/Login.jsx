@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import db from './database.js';
+import { useAuth } from './useAuth.js';
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState('');
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,7 +16,7 @@ export default function Login() {
 
         try {
             const usuario = await db.autenticarUsuario(formData.email, formData.password);
-            localStorage.setItem('currentUser', JSON.stringify(usuario));
+            login(usuario);
             window.location.href = '/dashboard';
         } catch (error) {
             setErro(error.message);

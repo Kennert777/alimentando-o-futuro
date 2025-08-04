@@ -10,13 +10,13 @@ export default function Admin() {
     const [metas, setMetas] = useState([]);
 
     useEffect(() => {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        if (!currentUser || currentUser.email !== 'admin@admin.com') {
+        const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin') || 'null');
+        if (!currentAdmin || currentAdmin.tipo_perfil !== 'admin') {
             alert('Acesso negado. Apenas administradores.');
-            window.location.href = '/';
+            window.location.href = '/admin/login';
             return;
         }
-        setUser(currentUser);
+        setUser(currentAdmin);
         loadData();
     }, []);
 
@@ -85,7 +85,12 @@ export default function Admin() {
 
     return (
         <div className="container mt-4">
-            <h2 style={{ color: "#4F732C" }}>🛠️ Painel Administrativo</h2>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <h2 style={{ color: "#4F732C" }}>🛠️ Painel Administrativo LEGADO</h2>
+                <div className="alert alert-warning mb-0 py-2 px-3">
+                    <small>⚠️ Esta é a versão antiga. Use o <a href="/admin/dashboard" className="alert-link">novo painel</a></small>
+                </div>
+            </div>
             
             {/* Estatísticas */}
             <div className="row mb-4">
@@ -232,7 +237,7 @@ export default function Admin() {
                                             <td>
                                                 <button 
                                                     className="btn btn-sm btn-warning me-1"
-                                                    onClick={() => alert('Funcionalidade em desenvolvimento')}
+                                                    onClick={() => window.location.href = '/admin/usuarios'}
                                                 >
                                                     Editar
                                                 </button>
@@ -321,8 +326,8 @@ export default function Admin() {
                         <h5>Gerenciar Solicitações de Apoio</h5>
                     </div>
                     <div className="card-body">
-                        <div className="alert alert-info">
-                            <strong>Em desenvolvimento:</strong> Sistema de solicitações de apoio será implementado aqui.
+                        <div className="alert alert-success">
+                            <strong>✅ Sistema Funcional:</strong> Acesse o <a href="/admin/solicitacoes" className="alert-link">novo sistema de solicitações</a> para gerenciar pedidos de apoio.
                             <br />Funcionalidades: Aprovar/Rejeitar solicitações, Gerenciar recursos, Conectar doadores.
                         </div>
                     </div>
@@ -337,8 +342,8 @@ export default function Admin() {
                     <div className="card-body">
                         <div className="row mb-3">
                             <div className="col-md-6">
-                                <button className="btn btn-success me-2">+ Nova Dica</button>
-                                <button className="btn btn-primary me-2">+ Nova Receita</button>
+                                <button className="btn btn-success me-2" onClick={() => window.location.href = '/admin/dicas'}>+ Nova Dica</button>
+                                <button className="btn btn-primary me-2" onClick={() => alert('Funcionalidade de receitas será implementada em breve')}>+ Nova Receita</button>
                             </div>
                             <div className="col-md-6">
                                 <select className="form-select">
@@ -371,7 +376,7 @@ export default function Admin() {
                                 <h5>🎯 Desafios e Metas</h5>
                             </div>
                             <div className="card-body">
-                                <button className="btn btn-success mb-3">+ Novo Desafio</button>
+                                <button className="btn btn-success mb-3" onClick={() => alert('Sistema de desafios em desenvolvimento. Use o novo painel admin.')}>+ Novo Desafio</button>
                                 <div className="list-group">
                                     <div className="list-group-item d-flex justify-content-between align-items-center">
                                         Primeira Horta
@@ -395,7 +400,7 @@ export default function Admin() {
                                 <h5>🏆 Emblemas e Recompensas</h5>
                             </div>
                             <div className="card-body">
-                                <button className="btn btn-primary mb-3">+ Novo Emblema</button>
+                                <button className="btn btn-primary mb-3" onClick={() => alert('Sistema de emblemas em desenvolvimento. Use o novo painel admin.')}>+ Novo Emblema</button>
                                 <div className="row">
                                     <div className="col-6 text-center mb-2">
                                         <div className="badge bg-success p-2">🌱 Primeiro Passo</div>
@@ -459,7 +464,7 @@ export default function Admin() {
                                 <p>Colheitas registradas: <strong>0</strong></p>
                                 <p>Kg de alimentos: <strong>0 kg</strong></p>
                                 <p>Receitas compartilhadas: <strong>0</strong></p>
-                                <button className="btn btn-sm btn-primary">Gerar Relatório Completo</button>
+                                <button className="btn btn-sm btn-primary" onClick={() => window.location.href = '/admin/relatorios'}>Gerar Relatório Completo</button>
                             </div>
                         </div>
                     </div>

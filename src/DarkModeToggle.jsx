@@ -14,14 +14,13 @@ export default function DarkModeToggle() {
     }, []);
 
     const applyTheme = (dark) => {
+        const body = document.body;
+        const className = 'dark-theme';
+        
         if (dark) {
-            document.body.setAttribute('data-theme', 'dark');
-            document.body.style.backgroundColor = '#1a1a1a';
-            document.body.style.color = '#ffffff';
+            body.classList.add(className);
         } else {
-            document.body.removeAttribute('data-theme');
-            document.body.style.backgroundColor = '#ffffff';
-            document.body.style.color = '#333333';
+            body.classList.remove(className);
         }
     };
 

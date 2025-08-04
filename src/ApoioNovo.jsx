@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import db from './database.js';
 
 export default function ApoioNovo() {
     const [user, setUser] = useState(null);
@@ -19,33 +20,29 @@ export default function ApoioNovo() {
         loadSolicitacoes(currentUser.id);
     }, []);
 
-    const loadSolicitacoes = (userId) => {
-        const allSolicitacoes = JSON.parse(localStorage.getItem('solicitacoes') || '[]');
-        const userSolicitacoes = allSolicitacoes.filter(s => s.usuario_id === userId);
-        setMinhasSolicitacoes(userSolicitacoes);
+    const loadSolicitacoes = async (userId) => {
+        try {
+            const userSolicitacoes = await db.buscarSolicitacoesPorUsuario(userId);
+            setMinhasSolicitacoes(userSolicitacoes);
+        } catch (error) {
+            console.error('Erro ao carregar solicitações:', error);
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const allSolicitacoes = JSON.parse(localStorage.getItem('solicitacoes') || '[]');
         
-        const novaSolicitacao = {
-            id: Date.now(),
-            usuario_id: user.id,
-            ...formData,
-            status: 'pendente',
-            data_solicitacao: new Date().toISOString(),
-            valor_estimado: parseFloat(formData.valor_estimado) || 0
-        };
-
-        allSolicitacoes.push(novaSolicitacao);
-        localStorage.setItem('solicitacoes', JSON.stringify(allSolicitacoes));
-        
-        setEnviado(true);
-        setFormData({ tipo_solicitacao: '', titulo: '', descricao: '', urgencia: 'media', valor_estimado: '' });
-        loadSolicitacoes(user.id);
-        
-        setTimeout(() => setEnviado(false), 3000);
+        try {
+            await db.criarSolicitacaoApoio(formData, user.id);
+            
+            setEnviado(true);
+            setFormData({ tipo_solicitacao: '', titulo: '', descricao: '', urgencia: 'media', valor_estimado: '' });
+            loadSolicitacoes(user.id);
+            
+            setTimeout(() => setEnviado(false), 3000);
+        } catch (error) {
+            alert('Erro ao enviar solicitação: ' + error.message);
+        }
     };
 
     const getStatusBadge = (status) => {

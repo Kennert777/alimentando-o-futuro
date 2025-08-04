@@ -90,21 +90,65 @@ export default function AdminDicas() {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 style={{ color: "#4F732C" }}>💡 Gerenciar Dicas</h2>
                 <div>
+                    <h2 style={{ color: "#4F732C" }}>💡 Gerenciar Dicas</h2>
+                    <div className="badge bg-danger">EDITOR ADMINISTRATIVO</div>
+                </div>
+                <div>
+                    <button className="btn btn-info btn-sm me-2" onClick={() => alert('Importando dicas de arquivo...')}>📁 Importar</button>
                     <button 
                         className="btn btn-success me-2"
                         onClick={() => setShowForm(!showForm)}
                     >
-                        {showForm ? 'Cancelar' : 'Nova Dica'}
+                        {showForm ? 'Cancelar' : '➕ Nova Dica'}
                     </button>
                     <Link to="/admin/dashboard" className="btn btn-outline-secondary">← Voltar</Link>
                 </div>
             </div>
 
+            {/* Painel de Controle de Conteúdo */}
+            <div className="row mb-4">
+                <div className="col-md-4">
+                    <div className="card border-success">
+                        <div className="card-body text-center">
+                            <h6 className="text-success">📊 Estatísticas</h6>
+                            <p className="mb-1">Total: <strong>{dicas.length}</strong></p>
+                            <p className="mb-1">Ativas: <strong>{dicas.filter(d => d.ativa).length}</strong></p>
+                            <p className="mb-0">Inativas: <strong>{dicas.filter(d => !d.ativa).length}</strong></p>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card border-warning">
+                        <div className="card-body text-center">
+                            <h6 className="text-warning">⚡ Ações em Lote</h6>
+                            <button className="btn btn-warning btn-sm mb-1 w-100" onClick={() => alert('Ativando todas as dicas...')}>Ativar Todas</button>
+                            <button className="btn btn-outline-warning btn-sm w-100" onClick={() => alert('Desativando todas as dicas...')}>Desativar Todas</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card border-info">
+                        <div className="card-body text-center">
+                            <h6 className="text-info">🔍 Filtros</h6>
+                            <select className="form-select form-select-sm mb-1" onChange={(e) => alert('Filtro aplicado: ' + e.target.value)}>
+                                <option>Todas as categorias</option>
+                                <option value="cultivo">Cultivo</option>
+                                <option value="nutricao">Nutrição</option>
+                                <option value="receita">Receita</option>
+                            </select>
+                            <button className="btn btn-info btn-sm w-100" onClick={() => alert('Exportando dicas...')}>📄 Exportar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Formulário */}
             {showForm && (
-                <div className="card mb-4">
+                <div className="card mb-4 border-success">
+                    <div className="card-header bg-success text-white">
+                        <h5 className="mb-0">✏️ {editando ? 'Editar Dica' : 'Nova Dica'} - Painel Administrativo</h5>
+                    </div>
                     <div className="card-body">
                         <h5>{editando ? 'Editar Dica' : 'Nova Dica'}</h5>
                         <form onSubmit={handleSubmit}>
@@ -192,6 +236,11 @@ export default function AdminDicas() {
             )}
 
             {/* Lista de Dicas */}
+            <div className="card mb-3 border-primary">
+                <div className="card-header bg-primary text-white">
+                    <h5 className="mb-0">📋 Gerenciamento de Conteúdo - Controle Total</h5>
+                </div>
+            </div>
             <div className="row">
                 {dicas.length === 0 ? (
                     <div className="col-12">

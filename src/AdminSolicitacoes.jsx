@@ -24,6 +24,7 @@ export default function AdminSolicitacoes() {
             setSolicitacoes(todasSolicitacoes);
         } catch (error) {
             console.error('Erro ao carregar solicitações:', error);
+            alert('Erro ao carregar solicitações. Verifique sua conexão.');
         } finally {
             setLoading(false);
         }
@@ -84,12 +85,46 @@ export default function AdminSolicitacoes() {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 style={{ color: "#4F732C" }}>📋 Solicitações de Apoio</h2>
-                <Link to="/admin/dashboard" className="btn btn-outline-secondary">← Voltar</Link>
+                <div>
+                    <h2 style={{ color: "#4F732C" }}>📋 Solicitações de Apoio</h2>
+                    <div className="badge bg-danger">CONTROLE ADMINISTRATIVO</div>
+                </div>
+                <div>
+                    <button className="btn btn-info btn-sm me-2" onClick={() => alert('Relatório de solicitações gerado!')}>📄 Relatório</button>
+                    <Link to="/admin/dashboard" className="btn btn-outline-secondary">← Voltar</Link>
+                </div>
+            </div>
+
+            {/* Painel de Controle Administrativo */}
+            <div className="row mb-4">
+                <div className="col-md-6">
+                    <div className="card border-success">
+                        <div className="card-body">
+                            <h6 className="text-success">✅ Ações Rápidas</h6>
+                            <div className="d-grid gap-2">
+                                <button className="btn btn-success btn-sm" onClick={() => alert('Aprovando todas as solicitações pendentes...')}>Aprovar Todas Pendentes</button>
+                                <button className="btn btn-outline-success btn-sm" onClick={() => alert('Notificação enviada para todos os solicitantes!')}>Notificar Todos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="card border-info">
+                        <div className="card-body">
+                            <h6 className="text-info">📊 Estatísticas</h6>
+                            <p className="mb-1">Total: <strong>{solicitacoesFiltradas.length}</strong></p>
+                            <p className="mb-1">Pendentes: <strong>{solicitacoesFiltradas.filter(s => s.status === 'pendente').length}</strong></p>
+                            <p className="mb-0">Aprovadas: <strong>{solicitacoesFiltradas.filter(s => s.status === 'aprovada').length}</strong></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Filtros */}
-            <div className="card mb-4">
+            <div className="card mb-4 border-primary">
+                <div className="card-header bg-primary text-white">
+                    <h6 className="mb-0">🔍 Filtros Administrativos</h6>
+                </div>
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-6">
@@ -108,8 +143,9 @@ export default function AdminSolicitacoes() {
                             </select>
                         </div>
                         <div className="col-md-6 d-flex align-items-end">
-                            <div className="text-muted">
-                                Total: {solicitacoesFiltradas.length} solicitações
+                            <div>
+                                <div className="text-muted mb-1">Total: {solicitacoesFiltradas.length} solicitações</div>
+                                <button className="btn btn-outline-primary btn-sm" onClick={() => alert('Exportando dados...')}>📄 Exportar</button>
                             </div>
                         </div>
                     </div>

@@ -28,7 +28,8 @@ export default function AdminRelatorios() {
             });
             setRelatorio(resultado);
         } catch (error) {
-            alert('Erro ao gerar relatório: ' + error.message);
+            console.error('Erro ao gerar relatório:', error);
+            alert('Erro ao gerar relatório: ' + error.message + '. Verifique os filtros e tente novamente.');
         } finally {
             setLoading(false);
         }
@@ -57,14 +58,54 @@ export default function AdminRelatorios() {
     return (
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2 style={{ color: "#4F732C" }}>📊 Relatórios</h2>
-                <Link to="/admin/dashboard" className="btn btn-outline-secondary">← Voltar</Link>
+                <div>
+                    <h2 style={{ color: "#4F732C" }}>📊 Relatórios</h2>
+                    <div className="badge bg-danger">SISTEMA DE RELATÓRIOS ADMINISTRATIVO</div>
+                </div>
+                <div>
+                    <button className="btn btn-warning btn-sm me-2" onClick={() => alert('Agendando relatório automático...')}>⏰ Agendar</button>
+                    <Link to="/admin/dashboard" className="btn btn-outline-secondary">← Voltar</Link>
+                </div>
+            </div>
+
+            {/* Painel de Controle de Relatórios */}
+            <div className="row mb-4">
+                <div className="col-md-4">
+                    <div className="card border-info">
+                        <div className="card-body text-center">
+                            <h6 className="text-info">📈 Relatórios Rápidos</h6>
+                            <button className="btn btn-info btn-sm mb-1 w-100" onClick={() => alert('Gerando relatório diário...')}>Diário</button>
+                            <button className="btn btn-outline-info btn-sm w-100" onClick={() => alert('Gerando relatório semanal...')}>Semanal</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card border-success">
+                        <div className="card-body text-center">
+                            <h6 className="text-success">📊 Análises</h6>
+                            <button className="btn btn-success btn-sm mb-1 w-100" onClick={() => alert('Gerando análise de crescimento...')}>Crescimento</button>
+                            <button className="btn btn-outline-success btn-sm w-100" onClick={() => alert('Gerando análise de engajamento...')}>Engajamento</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4">
+                    <div className="card border-warning">
+                        <div className="card-body text-center">
+                            <h6 className="text-warning">📧 Exportação</h6>
+                            <button className="btn btn-warning btn-sm mb-1 w-100" onClick={() => alert('Exportando para PDF...')}>PDF</button>
+                            <button className="btn btn-outline-warning btn-sm w-100" onClick={() => alert('Enviando por email...')}>Email</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Filtros */}
-            <div className="card mb-4">
+            <div className="card mb-4 border-primary">
+                <div className="card-header bg-primary text-white">
+                    <h5 className="mb-0">⚙️ Gerador de Relatórios Personalizado</h5>
+                </div>
                 <div className="card-body">
-                    <h5>Gerar Relatório</h5>
+                    <h6 className="text-primary">🔧 Configurações Avançadas</h6>
                     <div className="row">
                         <div className="col-md-4">
                             <label className="form-label">Tipo de Relatório:</label>
@@ -112,7 +153,10 @@ export default function AdminRelatorios() {
 
             {/* Resultado do Relatório */}
             {relatorio && (
-                <div className="card">
+                <div className="card border-success">
+                    <div className="card-header bg-success text-white">
+                        <h5 className="mb-0">📈 Relatório Gerado - Acesso Administrativo</h5>
+                    </div>
                     <div className="card-body">
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h5>Relatório de {relatorio.tipo}</h5>
