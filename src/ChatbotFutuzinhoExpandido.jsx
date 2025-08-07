@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ChatbotFutuzinhoExpandido() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
         { id: 1, text: 'Olá! 👋 Sou o Goat, seu assistente do Alimentando o Futuro!', isBot: true },
-        { id: 2, text: 'Posso te ajudar com cultivo, receitas, nutrição e muito mais! O que você gostaria de saber?', isBot: true }
+        { id: 2, text: 'Sobre o que você quer saber hoje?\n\n🌱 Cultivo e Manejo de Hortas\n🍲 Reaproveitamento e Receitas\n💚 Nutrição e Saúde\n🏘️ Apoio Comunitário\n📈 Relatórios\n🧠 Educação\n🔧 Suporte Técnico', isBot: true }
     ]);
     const [inputText, setInputText] = useState('');
     const [isTyping, setIsTyping] = useState(false);
@@ -305,7 +305,29 @@ export default function ChatbotFutuzinhoExpandido() {
     const getBotResponse = (userMessage) => {
         const message = userMessage.toLowerCase().trim();
         
-        // Busca por padrões específicos
+        // Verifica se é uma categoria da árvore de decisão
+        const categorias = getCategorias();
+        for (const categoria of categorias) {
+            if (message.includes(categoria.toLowerCase()) || message === categoria) {
+                setCurrentCategory(categoria);
+                const perguntas = getPerguntas(categoria);
+                return `Você escolheu: ${categoria}\n\nVocê quer ajuda com:\n${perguntas.slice(0, 5).map((p, i) => `${i + 1}. ${p}`).join('\n')}\n\nOu me diga especificamente o que precisa! 🌱`;
+            }
+        }
+        
+        // Verifica se é uma pergunta específica de uma categoria
+        if (currentCategory) {
+            const perguntas = getPerguntas(currentCategory);
+            for (const pergunta of perguntas) {
+                if (message.includes(pergunta.toLowerCase().replace(/\[.*?\]/g, '')) || 
+                    pergunta.toLowerCase().includes(message)) {
+                    const resposta = getRespostaFluxo(currentCategory, pergunta);
+                    return resposta || 'Posso te ajudar com isso! Me dê mais detalhes específicos.';
+                }
+            }
+        }
+        
+        // Busca por padrões específicos nas respostas antigas
         for (const [pattern, response] of Object.entries(respostasInteligentes)) {
             if (pattern === 'default') continue;
             
@@ -319,6 +341,11 @@ export default function ChatbotFutuzinhoExpandido() {
                 }
                 return response;
             }
+        }
+        
+        // Se não encontrou nada, sugere categorias
+        if (messages.length <= 3) {
+            return `Sobre o que você quer saber hoje? Escolha uma categoria:\n\n${getCategorias().join('\n')}\n\nOu me faça uma pergunta específica! 🤖`;
         }
         
         // Resposta padrão
@@ -360,14 +387,32 @@ export default function ChatbotFutuzinhoExpandido() {
         }
     };
 
-    const sugestoesPredefinidas = [
-        "Como plantar alface?",
-        "Receita com casca de banana",
-        "Dicas para pulgões",
-        "O que é ODS 3?",
-        "Como ganhar pontos?",
-        "Plantas para iniciantes"
-    ];
+    // Carrega árvore de decisões do arquivo JSON
+    const [chatFlows, setChatFlows] = useState({});
+    const [currentCategory, setCurrentCategory] = useState(null);
+    
+    useEffect(() => {
+        import('./chatFlows.json')
+            .then(data => setChatFlows(data.default))
+            .catch(err => console.log('Erro ao carregar chatFlows:', err));
+    }, []);
+    
+    const getCategorias = () => {
+        if (!chatFlows.extras) return [];
+        return chatFlows.extras.categorias_iniciais || [];
+    };
+    
+    const getPerguntas = (categoria) => {
+        if (!chatFlows.ConversasInteligentes || !chatFlows.ConversasInteligentes[categoria]) return [];
+        return Object.keys(chatFlows.ConversasInteligentes[categoria]);
+    };
+    
+    const getRespostaFluxo = (categoria, pergunta) => {
+        if (!chatFlows.ConversasInteligentes || !chatFlows.ConversasInteligentes[categoria]) return null;
+        return chatFlows.ConversasInteligentes[categoria][pergunta];
+    };
+    
+    const sugestoesPredefinidas = getCategorias().slice(0, 3);
 
     return (
         <>
@@ -477,25 +522,28 @@ export default function ChatbotFutuzinhoExpandido() {
                         )}
                     </div>
 
-                    {/* Sugestões rápidas */}
+                    {/* Categorias da árvore de decisões */}
                     {messages.length <= 2 && (
                         <div style={{ padding: '10px', backgroundColor: '#f8f9fa', borderTop: '1px solid #dee2e6' }}>
-                            <small style={{ color: '#666', marginBottom: '5px', display: 'block' }}>Sugestões:</small>
+                            <small style={{ color: '#666', marginBottom: '5px', display: 'block' }}>Categorias:</small>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                                {sugestoesPredefinidas.slice(0, 3).map((sugestao, index) => (
+                                {getCategorias().slice(0, 3).map((categoria, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => setInputText(sugestao)}
+                                        onClick={() => {
+                                            setInputText(categoria);
+                                            setCurrentCategory(categoria);
+                                        }}
                                         style={{
-                                            fontSize: '11px',
-                                            padding: '4px 8px',
+                                            fontSize: '10px',
+                                            padding: '4px 6px',
                                             backgroundColor: '#e9ecef',
                                             border: '1px solid #dee2e6',
                                             borderRadius: '12px',
                                             cursor: 'pointer'
                                         }}
                                     >
-                                        {sugestao}
+                                        {categoria}
                                     </button>
                                 ))}
                             </div>
