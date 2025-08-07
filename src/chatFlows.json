@@ -1,63 +1,65 @@
 {
-  "cultivo_manejo": [
-    "Como plantar [planta]",
-    "Quando plantar [fruta]",
-    "Pode plantar [nome da planta] em vaso?",
-    "Como cuidar de [planta] no verão?",
-    "Que tipo de solo precisa para [legume]?",
-    "Qual a profundidade ideal do canteiro para [raiz]?",
-    "Quais plantas combinam para plantar juntas?",
-    "Como evitar pragas naturalmente?",
-    "O que fazer com folhas murchas?",
-    "Como colher e armazenar [planta]?"
-  ],
-  "reaproveitamento_receitas": [
-    "O que posso fazer com casca de banana?",
-    "Me ensina uma receita com talo de beterraba",
-    "Dá pra fazer chá de folha de goiabeira?",
-    "Receitas saudáveis com sobras da horta",
-    "Posso fazer doce com casca de laranja?",
-    "Como aproveitar o caroço de abacate?",
-    "Receita com abobrinha para crianças",
-    "Como fazer chips de batata-doce?",
-    "Receita de suco detox com hortelã"
-  ],
-  "nutricao_saude": [
-    "Qual planta é boa para imunidade?",
-    "O que é rico em ferro?",
-    "Frutas para quem tem diabetes?",
-    "O que comer para ter mais energia?",
-    "Quais hortaliças ajudam no intestino?",
-    "Quais são anti-inflamatórios naturais?",
-    "Diferença entre alimentos crus e cozidos?",
-    "Qual o legume mais nutritivo?"
-  ],
-  "apoio_comunitario": [
-    "Como posso pedir ajuda para minha horta?",
-    "Posso doar sementes para alguém?",
-    "Onde peço insumos comunitários?",
-    "Como funciona a rede de apoio do projeto?",
-    "Preciso de ajuda para montar canteiros"
-  ],
-  "relatorios_acompanhamento": [
-    "Quantos quilos já colhi?",
-    "Onde vejo meu progresso?",
-    "Como enviar um relatório?",
-    "Como registrar uma colheita?",
-    "Como mostrar impacto da horta?"
-  ],
-  "educacao": [
-    "Como ensinar crianças a plantar?",
-    "Tem atividades para usar na escola?",
-    "Dicas para educação ambiental",
-    "O que é segurança alimentar?",
-    "Quais são os 3 R's da sustentabilidade?"
-  ],
-  "suporte_tecnico": [
-    "Não consigo me cadastrar",
-    "Meu chat travou",
-    "Como mudar minha senha",
-    "Página não carrega",
-    "Botão não está funcionando"
-  ]
+  "ConversasInteligentes": {
+    "🌱 Cultivo e Manejo de Hortas": {
+      "Como plantar [planta]": {},
+      "Quando plantar [fruta]": {},
+      "Pode plantar [nome da planta] em vaso?": {},
+      "Como cuidar de [planta] no verão?": {},
+      "Que tipo de solo precisa para [legume]?": {},
+      "Qual a profundidade ideal do canteiro para [raiz]?": {},
+      "Quais plantas combinam para plantar juntas?": {},
+      "Como evitar pragas naturalmente?": {},
+      "O que fazer com folhas murchas?": {},
+      "Como colher e armazenar [planta]?": {}
+    },
+    "🍲 Reaproveitamento e Receitas": {
+      "O que posso fazer com casca de banana?": {},
+      "Me ensina uma receita com talo de beterraba": {},
+      "Dá pra fazer chá de folha de goiabeira?": {},
+      "Receitas saudáveis com sobras da horta": {},
+      "Posso fazer doce com casca de laranja?": {},
+      "Como aproveitar o caroço de abacate?": {},
+      "Receita com abobrinha para crianças": {},
+      "Como fazer chips de batata-doce?": {},
+      "Receita de suco detox com hortelã": {}
+    },
+    "💚 Nutrição e Saúde": {
+      "Qual planta é boa para imunidade?": {},
+      "O que é rico em ferro?": {},
+      "Frutas para quem tem diabetes?": {},
+      "O que comer para ter mais energia?": {},
+      "Quais hortaliças ajudam no intestino?": {},
+      "Quais são anti-inflamatórios naturais?": {},
+      "Diferença entre alimentos crus e cozidos?": {},
+      "Qual o legume mais nutritivo?": {}
+    },
+    "🏘️ Apoio Comunitário e Solicitações": {
+      "Como posso pedir ajuda para minha horta?": {},
+      "Posso doar sementes para alguém?": {},
+      "Onde peço insumos comunitários?": {},
+      "Como funciona a rede de apoio do projeto?": {},
+      "Preciso de ajuda para montar canteiros": {}
+    },
+    "📈 Relatórios e Acompanhamento": {
+      "Quantos quilos já colhi?": {},
+      "Onde vejo meu progresso?": {},
+      "Como enviar um relatório?": {},
+      "Como registrar uma colheita?": {},
+      "Como mostrar impacto da horta?": {}
+    },
+    "🧠 Educação": {
+      "Como ensinar crianças a plantar?": {},
+      "Tem atividades para usar na escola?": {},
+      "Dicas para educação ambiental": {},
+      "O que é segurança alimentar?": {},
+      "Quais são os 3 R's da sustentabilidade?": {}
+    },
+    "🔧 Suporte Técnico": {
+      "Não consigo me cadastrar": {},
+      "Meu chat travou": {},
+      "Como mudar minha senha": {},
+      "Página não carrega": {},
+      "Botão não está funcionando": {}
+    }
+  }
 }
