@@ -219,39 +219,15 @@ export default function HortaDigital() {
           </div>
           
           <div className="col-md-6">
-            {plantaSelecionada ? (
+            {plantaSelecionada && (
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title" style={{ color: "#4F732C" }}>
-                    {plantaSelecionada.nome}
-                  </h5>
-                  <p className="text-muted"><em>{plantaSelecionada.cientifico}</em></p>
-                  <p><strong>Dificuldade:</strong> 
-                    <span className={`badge ms-2 ${
-                      plantaSelecionada.dificuldade === 'Muito Fácil' ? 'bg-success' :
-                      plantaSelecionada.dificuldade === 'Fácil' ? 'bg-info' :
-                      plantaSelecionada.dificuldade === 'Médio' ? 'bg-warning' : 'bg-danger'
-                    }`}>
-                      {plantaSelecionada.dificuldade}
-                    </span>
-                  </p>
+                  <h5 className="card-title" style={{ color: "#4F732C" }}>{plantaSelecionada.nome}</h5>
+                  <p><strong>Dificuldade:</strong> {plantaSelecionada.dificuldade}</p>
                   <p><strong>Tempo para colheita:</strong> {plantaSelecionada.tempo}</p>
                   <p><strong>Cuidados:</strong> {plantaSelecionada.cuidados}</p>
                   <div className="alert alert-info">
                     <strong>💡 Dica:</strong> {plantaSelecionada.dicas}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="card">
-                <div className="card-body text-center">
-                  <h5 className="text-muted">Selecione uma planta</h5>
-                  <p>Clique em uma planta da lista para ver os detalhes de cultivo.</p>
-                  <div className="mt-3">
-                    <span className="badge bg-success me-2">Muito Fácil</span>
-                    <span className="badge bg-info me-2">Fácil</span>
-                    <span className="badge bg-warning me-2">Médio</span>
-                    <span className="badge bg-danger">Difícil</span>
                   </div>
                 </div>
               </div>

@@ -360,26 +360,14 @@ export default function ChatbotFutuzinhoExpandido() {
         }
     };
 
-    // Carrega árvore de decisões do arquivo JSON
-    const [chatFlows, setChatFlows] = useState({});
-    
-    useEffect(() => {
-        import('./chatFlows.json')
-            .then(data => setChatFlows(data.default))
-            .catch(err => console.log('Erro ao carregar chatFlows:', err));
-    }, []);
-    
-    const getCategorias = () => {
-        if (!chatFlows.ConversasInteligentes) return [];
-        return Object.keys(chatFlows.ConversasInteligentes);
-    };
-    
-    const getPerguntas = (categoria) => {
-        if (!chatFlows.ConversasInteligentes || !chatFlows.ConversasInteligentes[categoria]) return [];
-        return Object.keys(chatFlows.ConversasInteligentes[categoria]);
-    };
-    
-    const sugestoesPredefinidas = getCategorias().slice(0, 3);
+    const sugestoesPredefinidas = [
+        "Como plantar alface?",
+        "Receita com casca de banana",
+        "Dicas para pulgões",
+        "O que é ODS 3?",
+        "Como ganhar pontos?",
+        "Plantas para iniciantes"
+    ];
 
     return (
         <>
@@ -489,29 +477,25 @@ export default function ChatbotFutuzinhoExpandido() {
                         )}
                     </div>
 
-                    {/* Categorias da árvore de decisões */}
+                    {/* Sugestões rápidas */}
                     {messages.length <= 2 && (
                         <div style={{ padding: '10px', backgroundColor: '#f8f9fa', borderTop: '1px solid #dee2e6' }}>
-                            <small style={{ color: '#666', marginBottom: '5px', display: 'block' }}>Categorias:</small>
+                            <small style={{ color: '#666', marginBottom: '5px', display: 'block' }}>Sugestões:</small>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-                                {getCategorias().slice(0, 3).map((categoria, index) => (
+                                {sugestoesPredefinidas.slice(0, 3).map((sugestao, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => {
-                                            const perguntas = getPerguntas(categoria);
-                                            const perguntaAleatoria = perguntas[Math.floor(Math.random() * perguntas.length)];
-                                            setInputText(perguntaAleatoria || categoria);
-                                        }}
+                                        onClick={() => setInputText(sugestao)}
                                         style={{
-                                            fontSize: '10px',
-                                            padding: '4px 6px',
+                                            fontSize: '11px',
+                                            padding: '4px 8px',
                                             backgroundColor: '#e9ecef',
                                             border: '1px solid #dee2e6',
                                             borderRadius: '12px',
                                             cursor: 'pointer'
                                         }}
                                     >
-                                        {categoria}
+                                        {sugestao}
                                     </button>
                                 ))}
                             </div>
