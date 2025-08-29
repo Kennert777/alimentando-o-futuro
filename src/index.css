@@ -1,46 +1,13 @@
 /* index.css */
 
-/* Fontes Unicode especiais */
-@font-face {
-  font-family: 'Mathematical Bold Italic';
-  src: local('serif');
-  unicode-range: U+1D4D0-1D4FF;
-}
-
-@font-face {
-  font-family: 'Mathematical Bold Fraktur';
-  src: local('serif');
-  unicode-range: U+1D56C-1D59F;
-}
-
-/* Aplicação automática das fontes especiais */
-h1, .display-title, .stylish-text {
-  font-variant: small-caps;
-  letter-spacing: 0.05em;
-}
-
-.clean-text, p, span {
-  font-style: italic;
-  font-weight: bold;
-}
-
-/* Classes utilitárias */
-.serif-bold-italic {
-  font-style: italic;
-  font-weight: bold;
-}
-
-.fraktur-bold {
-  font-weight: bold;
-  font-variant: small-caps;
-}
-
 body {
-    font-family: 'Mathematical Bold Italic', 'Nunito', Arial, sans-serif;
+    font-family: serif;
     background-color: #F9F9F9;
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    font-style: italic;
+    font-weight: bold;
   }
   
   /* Cores temáticas do projeto */
@@ -52,29 +19,51 @@ body {
     --rosado: #D9AE89;
   }
   
+  /* Aplicação das fontes Unicode */
+  * {
+    font-family: serif !important;
+  }
+  
+  p, span, div, a {
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    font-variant: small-caps;
+  }
+  
   h1 {
-    font-family: 'Mathematical Bold Fraktur', 'Poppins', Arial, sans-serif;
+    font-family: serif;
     color: var(--verde-escuro);
-    font-weight: 700;
+    font-weight: bold;
+    font-variant: small-caps;
   }
   
   h2, h3 {
-    font-family: 'Mathematical Bold Fraktur', 'Poppins', Arial, sans-serif;
+    font-family: serif;
     color: var(--verde-escuro);
-    font-weight: 600;
+    font-weight: bold;
+    font-variant: small-caps;
   }
   
   .display-title {
-    font-family: 'Mathematical Bold Fraktur', 'Poppins', Arial, sans-serif;
-    font-weight: 700;
+    font-family: serif;
+    font-weight: bold;
+    font-variant: small-caps;
   }
   
   .clean-text {
-    font-family: 'Mathematical Bold Italic', 'Nunito', Arial, sans-serif;
+    font-family: serif;
+    font-style: italic;
+    font-weight: bold;
   }
   
   .stylish-text {
-    font-family: 'Mathematical Bold Fraktur', 'Poppins', Arial, sans-serif;
+    font-family: serif;
+    font-weight: bold;
+    font-variant: small-caps;
   }
   
   .btn-custom {
