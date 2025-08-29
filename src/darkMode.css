@@ -11,8 +11,22 @@
   --bubble-font: 'DynaPuff', cursive;
 }
 
-/* Aplicação da fonte bubble em todo o site */
-body, * {
+/* Aplicação das fontes personalizadas */
+body {
+  font-family: 'Nunito', Arial, sans-serif !important;
+}
+
+h1 {
+  font-family: 'Poppins', Arial, sans-serif !important;
+  font-weight: 700;
+}
+
+h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', Arial, sans-serif !important;
+  font-weight: 600;
+}
+
+.bubble-text {
   font-family: var(--bubble-font) !important;
 }
 
