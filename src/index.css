@@ -1,13 +1,12 @@
 /* index.css */
+@import url('/fonts.css');
 
 body {
-    font-family: serif;
+    font-family: 'Caviar Dreams', 'Nunito', Arial, sans-serif;
     background-color: #F9F9F9;
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    font-style: italic;
-    font-weight: bold;
   }
   
   /* Cores temáticas do projeto */
@@ -19,51 +18,32 @@ body {
     --rosado: #D9AE89;
   }
   
-  /* Aplicação das fontes Unicode */
+  /* Aplicação global das fontes */
   * {
-    font-family: serif !important;
-  }
-  
-  p, span, div, a {
-    font-style: italic;
-    font-weight: bold;
+    font-family: inherit;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
-    font-variant: small-caps;
-  }
-  
-  h1 {
-    font-family: serif;
+    font-family: 'Vogue', 'Playfair Display', serif;
     color: var(--verde-escuro);
-    font-weight: bold;
-    font-variant: small-caps;
-  }
-  
-  h2, h3 {
-    font-family: serif;
-    color: var(--verde-escuro);
-    font-weight: bold;
-    font-variant: small-caps;
+    font-weight: 700;
   }
   
   .display-title {
-    font-family: serif;
-    font-weight: bold;
-    font-variant: small-caps;
+    font-family: 'Vogue', 'Playfair Display', serif;
+    font-weight: 700;
   }
   
   .clean-text {
-    font-family: serif;
-    font-style: italic;
-    font-weight: bold;
+    font-family: 'Caviar Dreams', 'Nunito', Arial, sans-serif;
   }
   
   .stylish-text {
-    font-family: serif;
-    font-weight: bold;
-    font-variant: small-caps;
+    font-family: 'Vogue', 'Playfair Display', serif;
+  }
+  
+  p, span, div, a, li {
+    font-family: 'Caviar Dreams', 'Nunito', Arial, sans-serif;
   }
   
   .btn-custom {

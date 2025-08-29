@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Caviar+Dreams:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vogue:wght@400;700&display=swap');
+
+/* Fallback para fontes similares caso não carregue */
+@font-face {
+  font-family: 'Vogue';
+  src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Caviar Dreams';
+  src: url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+  font-display: swap;
+}
