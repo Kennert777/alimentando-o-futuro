@@ -24,7 +24,7 @@ export default function Sobre() {
                       <span className="me-3 fs-4">🌱</span>
                       <div>
                         <h6 className="mb-1">Horta Digital</h6>
-                        <small className="text-muted">12 plantas com guias completos</small>
+                        <small className="text-muted">100 plantas com guias completos</small>
                       </div>
                     </div>
                   </div>
