@@ -90,7 +90,7 @@ export default function Sobre() {
                 <h5 className="mb-3">📊 Estatísticas</h5>
                 <div className="small">
                   <div className="d-flex justify-content-between mb-1">
-                    <span>Plantas:</span><strong>12</strong>
+                    <span>Plantas:</span><strong>100</strong>
                   </div>
                   <div className="d-flex justify-content-between mb-1">
                     <span>Receitas:</span><strong>50</strong>
