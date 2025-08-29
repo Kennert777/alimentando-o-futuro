@@ -24,13 +24,13 @@ body {
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Vogue', 'Playfair Display', serif;
+    font-family: 'Momster', 'Playfair Display', serif;
     color: var(--verde-escuro);
     font-weight: 700;
   }
   
   .display-title {
-    font-family: 'Vogue', 'Playfair Display', serif;
+    font-family: 'Momster', 'Playfair Display', serif;
     font-weight: 700;
   }
   
@@ -39,7 +39,7 @@ body {
   }
   
   .stylish-text {
-    font-family: 'Vogue', 'Playfair Display', serif;
+    font-family: 'Momster', 'Playfair Display', serif;
   }
   
   p, span, div, a, li {
