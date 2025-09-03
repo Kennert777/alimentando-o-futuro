@@ -1,12 +1,84 @@
-# React + Vite
+# Alimentando o Futuro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Plataforma completa para agricultura urbana e sustentabilidade alimentar.
 
-Currently, two official plugins are available:
+## Estrutura do Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+alimentando-o-futuro/
+├── frontend/          # React + Vite (localhost:5173)
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+└── backend/           # Spring Boot Java (localhost:8080)
+    ├── src/main/java/
+    ├── src/main/resources/
+    └── pom.xml
+```
 
-## Expanding the ESLint configuration
+## Frontend (React + Vite)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Porta:** `localhost:5173`
+
+### Executar Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Funcionalidades
+- 100 plantas catalogadas
+- Sistema de usuários
+- Horta digital
+- 50 receitas sustentáveis
+- Dashboard personalizado
+- Chat integrado
+
+## Backend (Spring Boot Java)
+
+**Porta:** `localhost:8080`
+
+### Executar Backend
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+### API Endpoints
+- `POST /api/usuarios/cadastro` - Cadastrar usuário
+- `POST /api/usuarios/login` - Login
+- `GET /api/usuarios` - Listar usuários
+- `POST /api/hortas` - Criar horta
+- `GET /api/hortas` - Listar hortas
+
+### Banco de Dados
+- SQL Server
+- JPA/Hibernate
+- Configuração em `application.properties`
+
+## Tecnologias
+
+### Frontend
+- React 19
+- Vite 7
+- Bootstrap 5
+- React Router DOM
+
+### Backend
+- Spring Boot 3.2
+- Spring Data JPA
+- Spring Security
+- SQL Server
+- Maven
+
+## Deploy
+
+### Frontend
+- Vercel (configurado)
+- Build: `npm run build`
+
+### Backend
+- Heroku/AWS
+- Build: `mvn clean package`
