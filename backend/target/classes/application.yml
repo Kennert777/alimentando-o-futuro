@@ -1,11 +1,12 @@
 server:
   port: 8080
+  address: 0.0.0.0
 
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=AlimentandoOFuturo;encrypt=true;trustServerCertificate=true
-    username: sa
-    password: SuaSenhaAqui
+    url: jdbc:sqlserver://AlimentandoOFuturo.mssql.somee.com;databaseName=AlimentandoOFuturo;encrypt=true;trustServerCertificate=true
+    username: alimentandoofuturo
+    password: "@ITB123456"
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   
   jpa:

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from './config/api.js';
 
 export default function Dashboard() {
@@ -20,16 +21,21 @@ export default function Dashboard() {
     
     const loadUserStats = async (userId) => {
         try {
-            const hortas = await db.buscarHortasPorUsuario(userId);
-            const colheitas = await db.buscarColheitasPorUsuario(userId);
+            const hortasResponse = await axios.get(api.hortas.porUsuario(userId));
             
             setStats({
-                hortas: hortas.length,
-                colheitas: colheitas.length,
+                hortas: hortasResponse.data.length,
+                colheitas: 0, // Será implementado quando houver endpoint de colheitas
                 pontos: user?.pontos || 0
             });
         } catch (error) {
             console.error('Erro ao carregar estatísticas:', error);
+            // Define valores padrão em caso de erro
+            setStats({
+                hortas: 0,
+                colheitas: 0,
+                pontos: user?.pontos || 0
+            });
         }
     };
 

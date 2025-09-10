@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from './config/api.js';
 
 export default function Register() {
+    console.log('API URL:', api.usuarios.cadastro);
     const [formData, setFormData] = useState({
         nome: '', email: '', telefone: '', password: '', confirmPassword: ''
     });
@@ -22,19 +24,16 @@ export default function Register() {
         }
 
         try {
-            const novoUsuario = await db.criarUsuario({
+            const response = await axios.post(api.usuarios.cadastro, {
                 nome: formData.nome,
                 email: formData.email,
                 telefone: formData.telefone,
                 senha: formData.password
             });
             
-            // Adicionar pontos de boas-vindas
-            await db.adicionarPontos(novoUsuario.id, 10, 'cadastro');
-            
             setSucesso(true);
         } catch (error) {
-            setErro(error.message);
+            setErro(error.response?.data?.message || 'Erro ao cadastrar usuário');
         } finally {
             setLoading(false);
         }

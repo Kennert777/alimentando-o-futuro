@@ -1,5 +1,15 @@
 // Configuração da API para conectar com o backend Spring Boot
-const API_BASE_URL = 'http://localhost:8080/api';
+const getApiUrl = () => {
+  if (window.location.hostname === 'localhost') {
+    return 'http://localhost:8080/api';
+  }
+  // Para Codespaces: substitui a porta do frontend pela porta do backend
+  const hostname = window.location.hostname;
+  const backendHostname = hostname.replace(/-\d+\./, '-8080.');
+  return `https://${backendHostname}/api`;
+};
+
+const API_BASE_URL = getApiUrl();
 
 export const api = {
   // Usuários

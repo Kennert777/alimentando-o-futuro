@@ -11,5 +11,6 @@ com/alimentandoofuturo/backend/model/Usuario$TipoPerfil.class
 com/alimentandoofuturo/backend/BackendApplication.class
 com/alimentandoofuturo/backend/service/UsuarioService.class
 com/alimentandoofuturo/backend/repository/UsuarioRepository.class
+com/alimentandoofuturo/backend/config/CorsConfig.class
 com/alimentandoofuturo/backend/model/Horta$Status.class
 com/alimentandoofuturo/backend/controller/HortaController.class

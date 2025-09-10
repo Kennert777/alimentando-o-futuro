@@ -9,3 +9,4 @@
 /workspaces/alimentando-o-futuro/backend/src/main/java/com/alimentandoofuturo/backend/config/SecurityConfig.java
 /workspaces/alimentando-o-futuro/backend/src/main/java/com/alimentandoofuturo/backend/service/HortaService.java
 /workspaces/alimentando-o-futuro/backend/src/main/java/com/alimentandoofuturo/backend/controller/HortaController.java
+/workspaces/alimentando-o-futuro/backend/src/main/java/com/alimentandoofuturo/backend/config/CorsConfig.java

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from './config/api.js';
 import { useAuth } from './useAuth.js';
 
@@ -15,11 +16,14 @@ export default function Login() {
         setErro('');
 
         try {
-            const usuario = await db.autenticarUsuario(formData.email, formData.password);
-            login(usuario);
+            const response = await axios.post(api.usuarios.login, {
+                email: formData.email,
+                senha: formData.password
+            });
+            login(response.data);
             window.location.href = '/dashboard';
         } catch (error) {
-            setErro(error.message);
+            setErro(error.response?.data?.erro || 'Erro ao fazer login');
         } finally {
             setLoading(false);
         }
