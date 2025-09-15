@@ -3,10 +3,14 @@ const getApiUrl = () => {
   if (window.location.hostname === 'localhost') {
     return 'http://localhost:8080/api';
   }
-  // Para Codespaces: substitui a porta do frontend pela porta do backend
-  const hostname = window.location.hostname;
-  const backendHostname = hostname.replace(/-\d+\./, '-8080.');
-  return `https://${backendHostname}/api`;
+  // Para Codespaces
+  if (window.location.hostname.includes('github.dev')) {
+    const hostname = window.location.hostname;
+    const backendHostname = hostname.replace(/-\d+\./, '-8080.');
+    return `https://${backendHostname}/api`;
+  }
+  // Para produção (Vercel) - substitua pela URL do seu backend em produção
+  return 'https://your-backend-url.herokuapp.com/api';
 };
 
 const API_BASE_URL = getApiUrl();
