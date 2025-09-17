@@ -11,8 +11,7 @@ export default function AdminRegister() {
     const [erro, setErro] = useState('');
     const [sucesso, setSucesso] = useState(false);
 
-    // Código secreto para criar admin (em produção seria mais seguro)
-    const CODIGO_ADMIN_SECRETO = 'ADMIN2025ITB';
+    // Validação do código admin será feita no backend
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,11 +24,7 @@ export default function AdminRegister() {
             return;
         }
 
-        if (formData.codigoAdmin !== CODIGO_ADMIN_SECRETO) {
-            setErro('Código de administrador inválido');
-            setLoading(false);
-            return;
-        }
+        // Validação do código será feita no backend
 
         try {
             const response = await axios.post(api.usuarios.cadastro, {

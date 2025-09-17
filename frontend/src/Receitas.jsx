@@ -81,10 +81,10 @@ export default function Receitas() {
         { id: 50, nome: "Hambúrguer vegetal com sobras da horta", categoria: "Prato principal", ingredienteAproveitado: "sobras da horta", temVideo: false }
     ];
     
-    // Categorias únicas para filtro
-    const categorias = [...new Set(receitas.map(r => r.categoria))];
-    // Ingredientes únicos para filtro
-    const ingredientes = [...new Set(receitas.map(r => r.ingredienteAproveitado))];
+    // Categorias únicas para filtro - otimizado com useMemo
+    const categorias = useMemo(() => [...new Set(receitas.map(r => r.categoria))], []);
+    // Ingredientes únicos para filtro - otimizado com useMemo
+    const ingredientes = useMemo(() => [...new Set(receitas.map(r => r.ingredienteAproveitado))], []);
     
     // useMemo: Otimiza a filtragem - só recalcula quando filtros mudam
     const receitasFiltradas = useMemo(() => {

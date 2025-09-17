@@ -43,7 +43,7 @@ export default function Chat() {
         if (!newMessage.trim()) return;
 
         const message = {
-            id: Date.now(),
+            id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             userId: user.id,
             userName: user.nome,
             text: newMessage,
@@ -66,7 +66,7 @@ export default function Chat() {
         if (activeRoom === 'suporte') {
             setTimeout(() => {
                 const supportMessage = {
-                    id: Date.now() + 1,
+                    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
                     userId: 'support',
                     userName: 'Suporte',
                     text: 'Obrigado pela sua mensagem! Nossa equipe irá responder em breve.',

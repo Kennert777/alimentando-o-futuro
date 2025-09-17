@@ -59,12 +59,18 @@ export default function Dicas() {
     ];
 
     useEffect(() => {
-        const dicasSalvas = JSON.parse(localStorage.getItem('dicas') || '[]');
-        if (dicasSalvas.length === 0) {
+        try {
+            const dicasSalvas = JSON.parse(localStorage.getItem('dicas') || '[]');
+            if (dicasSalvas.length === 0) {
+                localStorage.setItem('dicas', JSON.stringify(dicasIniciais));
+                setDicas(dicasIniciais);
+            } else {
+                setDicas(dicasSalvas);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar dicas do localStorage:', error);
             localStorage.setItem('dicas', JSON.stringify(dicasIniciais));
             setDicas(dicasIniciais);
-        } else {
-            setDicas(dicasSalvas);
         }
     }, []);
 

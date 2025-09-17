@@ -2,7 +2,8 @@ package com.alimentandoofuturo.backend.controller;
 
 import com.alimentandoofuturo.backend.model.Horta;
 import com.alimentandoofuturo.backend.service.HortaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -14,18 +15,21 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class HortaController {
 
-    @Autowired
-    private HortaService hortaService;
+    private static final Logger logger = LoggerFactory.getLogger(HortaController.class);
+    private final HortaService hortaService;
+
+    public HortaController(HortaService hortaService) {
+        this.hortaService = hortaService;
+    }
 
     @PostMapping
     public ResponseEntity<?> criarHorta(@RequestBody Horta horta) {
         try {
-            System.out.println("Criando horta: " + horta.getNome());
+            logger.info("Criando horta: {}", horta.getNome());
             Horta novaHorta = hortaService.criarHorta(horta, horta.getUsuarioResponsavel().getId());
             return ResponseEntity.ok(novaHorta);
         } catch (Exception e) {
-            System.out.println("Erro ao criar horta: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Erro ao criar horta: {}", e.getMessage(), e);
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }

@@ -4,7 +4,8 @@ import com.alimentandoofuturo.backend.model.Horta;
 import com.alimentandoofuturo.backend.model.Usuario;
 import com.alimentandoofuturo.backend.repository.HortaRepository;
 import com.alimentandoofuturo.backend.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alimentandoofuturo.backend.exception.UserNotFoundException;
+import com.alimentandoofuturo.backend.config.AppConstants;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,18 +14,19 @@ import java.util.Optional;
 @Service
 public class HortaService {
 
-    @Autowired
-    private HortaRepository hortaRepository;
+    private final HortaRepository hortaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private UsuarioService usuarioService;
+    public HortaService(HortaRepository hortaRepository, UsuarioRepository usuarioRepository, UsuarioService usuarioService) {
+        this.hortaRepository = hortaRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioService = usuarioService;
+    }
 
     public Horta criarHorta(Horta horta, Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
         
         horta.setUsuarioResponsavel(usuario);
         horta.setDataCriacao(LocalDateTime.now());
@@ -33,7 +35,7 @@ public class HortaService {
         Horta novaHorta = hortaRepository.save(horta);
         
         // Adicionar pontos ao usuário
-        usuarioService.adicionarPontos(usuarioId, 50);
+        usuarioService.adicionarPontos(usuarioId, AppConstants.POINTS_FOR_CREATING_HORTA);
         
         return novaHorta;
     }

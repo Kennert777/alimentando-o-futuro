@@ -2,7 +2,9 @@ package com.alimentandoofuturo.backend.service;
 
 import com.alimentandoofuturo.backend.model.Usuario;
 import com.alimentandoofuturo.backend.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alimentandoofuturo.backend.exception.EmailAlreadyExistsException;
+import com.alimentandoofuturo.backend.exception.InvalidCredentialsException;
+import com.alimentandoofuturo.backend.exception.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -12,15 +14,17 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Usuario criarUsuario(Usuario usuario) {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+            throw new EmailAlreadyExistsException("Email já cadastrado");
         }
         
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
@@ -32,8 +36,8 @@ public class UsuarioService {
     public Usuario autenticarUsuario(String email, String senha) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
         
-        if (usuarioOpt.isEmpty() || !passwordEncoder.matches(senha, usuarioOpt.get().getSenha())) {
-            throw new RuntimeException("Email ou senha incorretos");
+        if (usuarioOpt.isEmpty()) {
+            throw new InvalidCredentialsException("Email ou senha incorretos");
         }
         
         Usuario usuario = usuarioOpt.get();
@@ -55,7 +59,7 @@ public class UsuarioService {
 
     public Usuario atualizarUsuario(Long id, Usuario dadosAtualizacao) {
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
         
         if (dadosAtualizacao.getNome() != null) {
             usuario.setNome(dadosAtualizacao.getNome());

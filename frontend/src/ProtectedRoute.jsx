@@ -1,4 +1,5 @@
-import { useAdminAuth } from './useAuth.js';
+import { useAdminAuth, useAuth } from './useAuth.js';
+import { Navigate } from 'react-router-dom';
 
 // Componente para proteger rotas administrativas
 export function AdminRoute({ children }) {
@@ -18,7 +19,31 @@ export function AdminRoute({ children }) {
     }
     
     if (!isAuthenticated) {
-        return null; // O hook já redireciona
+        return <Navigate to="/admin/login" replace />;
+    }
+    
+    return children;
+}
+
+// Componente para proteger rotas de usuários comuns
+export function UserRoute({ children }) {
+    const { currentUser, loading } = useAuth();
+    
+    if (loading) {
+        return (
+            <div className="container mt-5">
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Carregando...</span>
+                    </div>
+                    <p className="mt-2">Verificando autenticação...</p>
+                </div>
+            </div>
+        );
+    }
+    
+    if (!currentUser) {
+        return <Navigate to="/login" replace />;
     }
     
     return children;

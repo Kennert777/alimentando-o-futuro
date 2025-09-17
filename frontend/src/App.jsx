@@ -39,6 +39,7 @@ import AdminDicas from './AdminDicas';
 import AdminRegister from './AdminRegister';
 import AdminNotificacoes from './AdminNotificacoes';
 import AdminHortas from './AdminHortas';
+import { AdminRoute, UserRoute } from './ProtectedRoute';
 
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -75,23 +76,23 @@ export default function App() {
             <Route path="/sobre" element={<Sobre />} />              {/* Página sobre */}
             <Route path="/login" element={<Login />} />              {/* Página de login */}
             <Route path="/register" element={<Register />} />        {/* Página de registro */}
-            <Route path="/dashboard" element={<Dashboard />} />      {/* Dashboard do usuário */}
-            <Route path="/hortas-usuario" element={<HortasUsuario />} /> {/* Hortas do usuário */}
-            <Route path="/chat" element={<Chat />} />                {/* Sistema de chat */}
+            <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />      {/* Dashboard do usuário */}
+            <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} /> {/* Hortas do usuário */}
+            <Route path="/chat" element={<UserRoute><Chat /></UserRoute>} />                {/* Sistema de chat */}
             <Route path="/admin" element={<Admin />} />              {/* Painel administrativo */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
-            <Route path="/colheitas" element={<Colheitas />} />      {/* Controle de colheitas */}
+            <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />      {/* Controle de colheitas */}
             {/* ROTAS ADMINISTRATIVAS - Requerem autenticação de admin */}
             <Route path="/admin/login" element={<AdminLogin />} />   {/* Login admin */}
             <Route path="/admin/register" element={<AdminRegister />} /> {/* Cadastro admin */}
-            <Route path="/admin/dashboard" element={<AdminDashboard />} /> {/* Dashboard admin */}
-            <Route path="/admin/usuarios" element={<AdminUsuarios />} /> {/* Gerenciar usuários */}
-            <Route path="/admin/hortas" element={<AdminHortas />} />   {/* Gerenciar hortas */}
-            <Route path="/admin/solicitacoes" element={<AdminSolicitacoes />} /> {/* Solicitações */}
-            <Route path="/admin/dicas" element={<AdminDicas />} />       {/* Gerenciar dicas */}
-            <Route path="/admin/relatorios" element={<AdminRelatorios />} /> {/* Relatórios */}
-            <Route path="/admin/notificacoes" element={<AdminNotificacoes />} /> {/* Notificações */}
-            <Route path="/admin/gamificacao" element={<AdminDashboard />} /> {/* Gamificação */}
+            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> {/* Dashboard admin */}
+            <Route path="/admin/usuarios" element={<AdminRoute><AdminUsuarios /></AdminRoute>} /> {/* Gerenciar usuários */}
+            <Route path="/admin/hortas" element={<AdminRoute><AdminHortas /></AdminRoute>} />   {/* Gerenciar hortas */}
+            <Route path="/admin/solicitacoes" element={<AdminRoute><AdminSolicitacoes /></AdminRoute>} /> {/* Solicitações */}
+            <Route path="/admin/dicas" element={<AdminRoute><AdminDicas /></AdminRoute>} />       {/* Gerenciar dicas */}
+            <Route path="/admin/relatorios" element={<AdminRoute><AdminRelatorios /></AdminRoute>} /> {/* Relatórios */}
+            <Route path="/admin/notificacoes" element={<AdminRoute><AdminNotificacoes /></AdminRoute>} /> {/* Notificações */}
+            <Route path="/admin/gamificacao" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> {/* Gamificação */}
 
           </Routes>
         </main>
