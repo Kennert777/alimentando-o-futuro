@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { api } from './config/api.js';
+import { plantas } from './data/plantas.js';
 
 export default function Colheitas() {
     const [user, setUser] = useState(null);
@@ -9,7 +11,7 @@ export default function Colheitas() {
         tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: ''
     });
 
-    const plantas = ['Alface', 'Tomate', 'Manjericão', 'Cebolinha', 'Rúcula', 'Espinafre', 'Couve', 'Beterraba'];
+
     const qualidades = ['excelente', 'boa', 'regular', 'ruim'];
     const destinos = ['consumo_proprio', 'doacao', 'venda', 'troca', 'compostagem'];
 
@@ -25,10 +27,11 @@ export default function Colheitas() {
 
     const loadColheitas = async (userId) => {
         try {
-            const userColheitas = await db.buscarColheitasPorUsuario(userId);
-            setColheitas(userColheitas);
+            const response = await axios.get(api.colheitas.porUsuario(userId));
+            setColheitas(response.data);
         } catch (error) {
             console.error('Erro ao carregar colheitas:', error);
+            setColheitas([]);
         }
     };
 
@@ -36,8 +39,8 @@ export default function Colheitas() {
         e.preventDefault();
         
         try {
-            // Buscar primeira horta do usuário
-            const hortas = await db.buscarHortasPorUsuario(user.id);
+            const hortasResponse = await axios.get(api.hortas.porUsuario(user.id));
+            const hortas = hortasResponse.data;
             const hortaId = hortas.length > 0 ? hortas[0].id : null;
             
             if (!hortaId) {
@@ -45,38 +48,44 @@ export default function Colheitas() {
                 return;
             }
             
-            await db.criarColheita({
-                horta_id: hortaId,
-                tipo_planta: formData.tipo_planta,
-                quantidade_kg: parseFloat(formData.quantidade_kg),
-                data_colheita: formData.data_colheita,
-                qualidade: formData.qualidade,
+            await axios.post(api.colheitas.criar, {
+                horta: { id: hortaId },
+                usuario: { id: user.id },
+                tipoPlanta: formData.tipo_planta,
+                quantidadeKg: parseFloat(formData.quantidade_kg),
+                dataColheita: formData.data_colheita,
+                qualidade: formData.qualidade.toUpperCase(),
                 destino: formData.destino,
                 observacoes: formData.observacoes
-            }, user.id);
+            });
             
-            // Atualizar pontos do usuário
-            const updatedUser = await db.buscarUsuarioPorId(user.id);
-            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-            setUser(updatedUser);
-
+            alert('Colheita registrada com sucesso!');
             loadColheitas(user.id);
             setShowForm(false);
             setFormData({ tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: '' });
         } catch (error) {
-            alert('Erro ao registrar colheita: ' + error.message);
+            alert('Erro ao registrar colheita: ' + (error.response?.data?.erro || error.message));
         }
     };
 
     const getTotalColheitas = () => {
-        return colheitas.reduce((total, colheita) => total + colheita.quantidade_kg, 0).toFixed(2);
+        if (!colheitas || colheitas.length === 0) return '0.00';
+        return colheitas.reduce((total, colheita) => {
+            const kg = parseFloat(colheita.quantidadeKg || colheita.quantidade_kg || 0);
+            return total + (isNaN(kg) ? 0 : kg);
+        }, 0).toFixed(2);
     };
 
     const getColheitasPorMes = () => {
+        if (!colheitas || colheitas.length === 0) return {};
         const agrupadas = {};
         colheitas.forEach(colheita => {
-            const mes = new Date(colheita.data_colheita).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-            agrupadas[mes] = (agrupadas[mes] || 0) + colheita.quantidade_kg;
+            const dataColheita = colheita.dataColheita || colheita.data_colheita;
+            if (dataColheita) {
+                const mes = new Date(dataColheita).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                const kg = parseFloat(colheita.quantidadeKg || colheita.quantidade_kg || 0);
+                agrupadas[mes] = (agrupadas[mes] || 0) + (isNaN(kg) ? 0 : kg);
+            }
         });
         return agrupadas;
     };
@@ -225,7 +234,7 @@ export default function Colheitas() {
                             <div className="card">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between align-items-start mb-2">
-                                        <h5 className="card-title">{colheita.tipo_planta}</h5>
+                                        <h5 className="card-title">{colheita.tipoPlanta || colheita.tipo_planta}</h5>
                                         <span className={`badge ${
                                             colheita.qualidade === 'excelente' ? 'bg-success' :
                                             colheita.qualidade === 'boa' ? 'bg-primary' :
@@ -234,14 +243,14 @@ export default function Colheitas() {
                                             {colheita.qualidade}
                                         </span>
                                     </div>
-                                    <p><strong>📊 Quantidade:</strong> {colheita.quantidade_kg} kg</p>
-                                    <p><strong>📅 Data:</strong> {new Date(colheita.data_colheita).toLocaleDateString()}</p>
-                                    <p><strong>🎯 Destino:</strong> {colheita.destino.replace('_', ' ')}</p>
+                                    <p><strong>📊 Quantidade:</strong> {colheita.quantidadeKg || colheita.quantidade_kg || 0} kg</p>
+                                    <p><strong>📅 Data:</strong> {new Date(colheita.dataColheita || colheita.data_colheita).toLocaleDateString()}</p>
+                                    <p><strong>🎯 Destino:</strong> {(colheita.destino || '').replace('_', ' ')}</p>
                                     {colheita.observacoes && (
                                         <p><strong>📝 Observações:</strong> {colheita.observacoes}</p>
                                     )}
                                     <small className="text-muted">
-                                        Registrado em: {new Date(colheita.data_registro).toLocaleDateString()}
+                                        Registrado em: {new Date(colheita.dataRegistro || colheita.data_registro || new Date()).toLocaleDateString()}
                                     </small>
                                 </div>
                             </div>

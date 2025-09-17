@@ -11,19 +11,22 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
     @PostMapping("/cadastro")
-    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody Usuario usuario) {
+    public ResponseEntity<?> cadastrarUsuario(@RequestBody Usuario usuario) {
         try {
+            System.out.println("Dados recebidos: " + usuario.getNome() + ", " + usuario.getEmail());
             Usuario novoUsuario = usuarioService.criarUsuario(usuario);
             novoUsuario.setSenha(null); // Não retornar senha
             return ResponseEntity.ok(novoUsuario);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
+            System.out.println("Erro no cadastro: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }

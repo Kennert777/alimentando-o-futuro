@@ -1,8 +1,11 @@
 com/alimentandoofuturo/backend/model/Usuario.class
 com/alimentandoofuturo/backend/model/Colheita$Qualidade.class
+com/alimentandoofuturo/backend/service/ColheitaService.class
+com/alimentandoofuturo/backend/repository/ColheitaRepository.class
 com/alimentandoofuturo/backend/service/HortaService.class
 com/alimentandoofuturo/backend/controller/UsuarioController.class
 com/alimentandoofuturo/backend/model/Horta$TipoCultivo.class
+com/alimentandoofuturo/backend/controller/ColheitaController.class
 com/alimentandoofuturo/backend/model/Horta.class
 com/alimentandoofuturo/backend/config/SecurityConfig.class
 com/alimentandoofuturo/backend/repository/HortaRepository.class

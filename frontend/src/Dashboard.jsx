@@ -21,16 +21,23 @@ export default function Dashboard() {
     
     const loadUserStats = async (userId) => {
         try {
-            const hortasResponse = await axios.get(api.hortas.porUsuario(userId));
+            const [hortasResponse, colheitasResponse, userResponse] = await Promise.all([
+                axios.get(api.hortas.porUsuario(userId)),
+                axios.get(api.colheitas.porUsuario(userId)),
+                axios.get(api.usuarios.buscar(userId))
+            ]);
+            
+            const updatedUser = userResponse.data;
+            setUser(updatedUser);
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
             
             setStats({
                 hortas: hortasResponse.data.length,
-                colheitas: 0, // Será implementado quando houver endpoint de colheitas
-                pontos: user?.pontos || 0
+                colheitas: colheitasResponse.data.length,
+                pontos: updatedUser.pontos || 0
             });
         } catch (error) {
             console.error('Erro ao carregar estatísticas:', error);
-            // Define valores padrão em caso de erro
             setStats({
                 hortas: 0,
                 colheitas: 0,

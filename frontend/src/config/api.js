@@ -1,19 +1,5 @@
 // Configuração da API para conectar com o backend Spring Boot
-const getApiUrl = () => {
-  if (window.location.hostname === 'localhost') {
-    return 'http://localhost:8080/api';
-  }
-  // Para Codespaces
-  if (window.location.hostname.includes('github.dev')) {
-    const hostname = window.location.hostname;
-    const backendHostname = hostname.replace(/-\d+\./, '-8080.');
-    return `https://${backendHostname}/api`;
-  }
-  // Para produção (Vercel) - substitua pela URL do seu backend em produção
-  return 'https://your-backend-url.herokuapp.com/api';
-};
-
-const API_BASE_URL = getApiUrl();
+const API_BASE_URL = '/api';
 
 export const api = {
   // Usuários
@@ -34,6 +20,13 @@ export const api = {
     porUsuario: (usuarioId) => `${API_BASE_URL}/hortas/usuario/${usuarioId}`,
     buscar: (id) => `${API_BASE_URL}/hortas/${id}`,
     atualizar: (id) => `${API_BASE_URL}/hortas/${id}`
+  },
+  
+  // Colheitas
+  colheitas: {
+    criar: `${API_BASE_URL}/colheitas`,
+    listar: `${API_BASE_URL}/colheitas`,
+    porUsuario: (usuarioId) => `${API_BASE_URL}/colheitas/usuario/${usuarioId}`
   }
 };
 

@@ -11,18 +11,21 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/hortas")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class HortaController {
 
     @Autowired
     private HortaService hortaService;
 
     @PostMapping
-    public ResponseEntity<?> criarHorta(@Valid @RequestBody Horta horta, @RequestParam Long usuarioId) {
+    public ResponseEntity<?> criarHorta(@RequestBody Horta horta) {
         try {
-            Horta novaHorta = hortaService.criarHorta(horta, usuarioId);
+            System.out.println("Criando horta: " + horta.getNome());
+            Horta novaHorta = hortaService.criarHorta(horta, horta.getUsuarioResponsavel().getId());
             return ResponseEntity.ok(novaHorta);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
+            System.out.println("Erro ao criar horta: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }

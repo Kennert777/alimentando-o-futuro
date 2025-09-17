@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { api } from './config/api.js';
 
 export default function HortasUsuario() {
@@ -21,8 +22,8 @@ export default function HortasUsuario() {
 
     const loadHortas = async (userId) => {
         try {
-            const userHortas = await db.buscarHortasPorUsuario(userId);
-            setHortas(userHortas);
+            const response = await axios.get(api.hortas.porUsuario(userId));
+            setHortas(response.data);
         } catch (error) {
             console.error('Erro ao carregar hortas:', error);
         }
@@ -32,42 +33,34 @@ export default function HortasUsuario() {
         e.preventDefault();
         
         try {
-            await db.criarHorta({
+            await axios.post(api.hortas.criar, {
                 nome: formData.nome,
                 localizacao: formData.localizacao,
-                tipo_cultivo: formData.tipo,
+                tipoCultivo: formData.tipo.toUpperCase(),
                 descricao: formData.descricao,
-                status: formData.status
-            }, user.id);
+                status: formData.status.toUpperCase(),
+                usuarioResponsavel: { id: user.id }
+            });
             
-            // Atualizar pontos do usuário
-            const updatedUser = await db.buscarUsuarioPorId(user.id);
-            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-            setUser(updatedUser);
-
+            alert('Horta cadastrada com sucesso!');
             loadHortas(user.id);
             setShowForm(false);
             setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
         } catch (error) {
-            alert('Erro ao cadastrar horta: ' + error.message);
+            alert('Erro ao cadastrar horta: ' + (error.response?.data?.erro || error.message));
         }
     };
 
     const updateStatus = async (hortaId, newStatus) => {
         try {
-            await db.atualizarHorta(hortaId, { status: newStatus });
+            await axios.put(api.hortas.atualizar(hortaId), {
+                status: newStatus.toUpperCase()
+            });
             
-            // Adiciona pontos por atualizar status para colheita
-            if (newStatus === 'colheita') {
-                await db.adicionarPontos(user.id, 100, 'status_colheita');
-                const updatedUser = await db.buscarUsuarioPorId(user.id);
-                localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-                setUser(updatedUser);
-            }
-            
+            alert('Status atualizado com sucesso!');
             loadHortas(user.id);
         } catch (error) {
-            alert('Erro ao atualizar status: ' + error.message);
+            alert('Erro ao atualizar status: ' + (error.response?.data?.erro || error.message));
         }
     };
 

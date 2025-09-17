@@ -24,16 +24,21 @@ export default function Register() {
         }
 
         try {
-            const response = await axios.post(api.usuarios.cadastro, {
+            const userData = {
                 nome: formData.nome,
                 email: formData.email,
                 telefone: formData.telefone,
                 senha: formData.password
-            });
+            };
+            console.log('Enviando dados:', userData);
+            
+            const response = await axios.post(api.usuarios.cadastro, userData);
+            console.log('Resposta:', response.data);
             
             setSucesso(true);
         } catch (error) {
-            setErro(error.response?.data?.message || 'Erro ao cadastrar usuário');
+            console.error('Erro completo:', error.response);
+            setErro(error.response?.data?.erro || error.response?.data?.message || 'Erro ao cadastrar usuário');
         } finally {
             setLoading(false);
         }
