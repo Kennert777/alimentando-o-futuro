@@ -1,5 +1,6 @@
 package com.alimentandoofuturo.backend.controller;
 
+// Importações necessárias para o controller REST
 import com.alimentandoofuturo.backend.model.Usuario;
 import com.alimentandoofuturo.backend.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,39 +10,78 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller REST para gerenciamento de usuários
+ * 
+ * Endpoints disponíveis:
+ * - POST /api/usuarios/cadastro - Cadastrar novo usuário
+ * - POST /api/usuarios/login - Autenticar usuário
+ * - GET /api/usuarios - Listar todos os usuários
+ * - GET /api/usuarios/{id} - Buscar usuário por ID
+ * - PUT /api/usuarios/{id} - Atualizar usuário
+ * - DELETE /api/usuarios/{id} - Excluir usuário
+ * - POST /api/usuarios/{id}/pontos - Adicionar pontos ao usuário
+ */
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*") // Permite requisições de qualquer origem
 public class UsuarioController {
 
+    // Injeção de dependência do service de usuários
     @Autowired
     private UsuarioService usuarioService;
 
+    /**
+     * Endpoint para cadastro de novos usuários
+     * 
+     * @param usuario Dados do usuário a ser cadastrado
+     * @return ResponseEntity com o usuário criado ou erro
+     */
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrarUsuario(@RequestBody Usuario usuario) {
         try {
+            // Log para debug (remover em produção)
             System.out.println("Dados recebidos: " + usuario.getNome() + ", " + usuario.getEmail());
+            
+            // Cria o usuário usando o service
             Usuario novoUsuario = usuarioService.criarUsuario(usuario);
-            novoUsuario.setSenha(null); // Não retornar senha
+            
+            // Remove a senha da resposta por segurança
+            novoUsuario.setSenha(null);
+            
             return ResponseEntity.ok(novoUsuario);
         } catch (Exception e) {
+            // Log do erro para debug
             System.out.println("Erro no cadastro: " + e.getMessage());
             e.printStackTrace();
+            
+            // Retorna erro 400 com mensagem
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }
 
+    /**
+     * Endpoint para autenticação de usuários
+     * 
+     * @param credentials Map contendo email e senha
+     * @return ResponseEntity com dados do usuário autenticado ou erro
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         try {
+            // Extrai email e senha do corpo da requisição
             String email = credentials.get("email");
             String senha = credentials.get("senha");
             
+            // Autentica o usuário usando o service
             Usuario usuario = usuarioService.autenticarUsuario(email, senha);
-            usuario.setSenha(null); // Não retornar senha
+            
+            // Remove a senha da resposta por segurança
+            usuario.setSenha(null);
             
             return ResponseEntity.ok(usuario);
         } catch (RuntimeException e) {
+            // Retorna erro 400 para credenciais inválidas
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
         }
     }

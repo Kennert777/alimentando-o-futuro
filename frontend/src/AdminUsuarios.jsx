@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from './config/api.js';
 import { useAdminAuth } from './useAuth.js';
 import { AdminSessionInfo } from './ProtectedRoute.jsx';
@@ -19,7 +20,8 @@ export default function AdminUsuarios() {
 
     const loadUsuarios = async () => {
         try {
-            const todosUsuarios = await db.buscarTodosUsuarios();
+            const response = await axios.get(api.usuarios.listar);
+            const todosUsuarios = response.data;
             setUsuarios(todosUsuarios);
         } catch (error) {
             console.error('Erro ao carregar usuários:', error);
@@ -42,7 +44,7 @@ export default function AdminUsuarios() {
 
     const handleSave = async () => {
         try {
-            await db.atualizarUsuario(editando, formData);
+            await axios.put(`${api.usuarios.listar}/${editando}`, formData);
             setEditando(null);
             loadUsuarios();
         } catch (error) {
@@ -53,7 +55,7 @@ export default function AdminUsuarios() {
     const handleDelete = async (id) => {
         if (confirm('Tem certeza que deseja excluir este usuário?')) {
             try {
-                await db.excluirUsuario(id);
+                await axios.delete(`${api.usuarios.listar}/${id}`);
                 loadUsuarios();
             } catch (error) {
                 alert('Erro ao excluir usuário: ' + error.message);
@@ -64,7 +66,7 @@ export default function AdminUsuarios() {
     const resetPassword = async (id) => {
         if (confirm('Redefinir senha para "123456"?')) {
             try {
-                await db.atualizarUsuario(id, { senha: '123456' });
+                await axios.put(`${api.usuarios.listar}/${id}`, { senha: '123456' });
                 alert('Senha redefinida para: 123456');
             } catch (error) {
                 alert('Erro ao redefinir senha: ' + error.message);

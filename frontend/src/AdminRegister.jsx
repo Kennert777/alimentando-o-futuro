@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from './config/api.js';
 
 export default function AdminRegister() {
@@ -31,19 +32,17 @@ export default function AdminRegister() {
         }
 
         try {
-            const novoAdmin = await db.criarUsuario({
+            const response = await axios.post(api.usuarios.cadastro, {
                 nome: formData.nome,
                 email: formData.email,
                 telefone: formData.telefone,
-                senha: formData.password
+                senha: formData.password,
+                tipoPerfil: 'ADMIN'
             });
-            
-            // Atualizar para tipo admin
-            await db.atualizarUsuario(novoAdmin.id, { tipo_perfil: 'admin' });
             
             setSucesso(true);
         } catch (error) {
-            setErro(error.message);
+            setErro(error.response?.data?.erro || error.response?.data?.message || 'Erro ao cadastrar admin');
         } finally {
             setLoading(false);
         }

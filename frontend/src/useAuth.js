@@ -16,12 +16,12 @@ export function useAuth() {
             const admin = JSON.parse(localStorage.getItem('currentAdmin') || 'null');
             
             // Prioriza admin se estiver logado
-            if (admin && admin.tipo_perfil === 'admin') {
+            if (admin && (admin.tipoPerfil === 'ADMIN' || admin.tipo_perfil === 'admin')) {
                 setCurrentUser(admin);
                 setIsAdmin(true);
             } else if (user) {
                 setCurrentUser(user);
-                setIsAdmin(user.tipo_perfil === 'admin');
+                setIsAdmin(user.tipoPerfil === 'ADMIN' || user.tipo_perfil === 'admin');
             } else {
                 setCurrentUser(null);
                 setIsAdmin(false);
@@ -36,7 +36,7 @@ export function useAuth() {
     };
 
     const login = (userData) => {
-        if (userData.tipo_perfil === 'admin') {
+        if (userData.tipoPerfil === 'ADMIN' || userData.tipo_perfil === 'admin') {
             localStorage.setItem('currentAdmin', JSON.stringify(userData));
             setIsAdmin(true);
         } else {

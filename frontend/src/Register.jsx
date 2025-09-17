@@ -1,22 +1,40 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { api } from './config/api.js';
+// Importações necessárias do React e bibliotecas
+import { useState } from 'react'; // Hook para gerenciar estado
+import { Link } from 'react-router-dom'; // Componente para navegação
+import axios from 'axios'; // Cliente HTTP para requisições
+import { api } from './config/api.js'; // Configuração das URLs da API
 
+/**
+ * Componente de Cadastro de Usuários
+ * 
+ * Funcionalidades:
+ * - Formulário de cadastro com validação
+ * - Confirmação de senha
+ * - Integração com API backend
+ * - Feedback visual de sucesso/erro
+ * - Redirecionamento após cadastro
+ */
 export default function Register() {
     console.log('API URL:', api.usuarios.cadastro);
+    // Estados do componente
     const [formData, setFormData] = useState({
         nome: '', email: '', telefone: '', password: '', confirmPassword: ''
-    });
-    const [loading, setLoading] = useState(false);
-    const [erro, setErro] = useState('');
-    const [sucesso, setSucesso] = useState(false);
+    }); // Dados do formulário
+    const [loading, setLoading] = useState(false); // Estado de carregamento
+    const [erro, setErro] = useState(''); // Mensagens de erro
+    const [sucesso, setSucesso] = useState(false); // Estado de sucesso
 
+    /**
+     * Função para processar o envio do formulário
+     * 
+     * @param {Event} e - Evento do formulário
+     */
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setErro('');
+        e.preventDefault(); // Previne o comportamento padrão do formulário
+        setLoading(true); // Ativa estado de carregamento
+        setErro(''); // Limpa erros anteriores
 
+        // Validação: verifica se as senhas coincidem
         if (formData.password !== formData.confirmPassword) {
             setErro('Senhas não coincidem');
             setLoading(false);

@@ -1,6 +1,18 @@
+/**
+ * Arquivo principal da aplicação React - Alimentando o Futuro
+ * 
+ * Este arquivo configura:
+ * - Roteamento da aplicação (React Router)
+ * - Layout principal (Navbar, Main, Footer)
+ * - Todas as rotas públicas e administrativas
+ * - Integração do chatbot
+ * - Estilos globais (Bootstrap + CSS customizado)
+ */
+
 // Importações necessárias do React Router para navegação entre páginas
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// Importação dos componentes da aplicação
+
+// Importação dos componentes principais da aplicação
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Home from './Home';
@@ -37,10 +49,18 @@ import './darkMode.css';
 // Inicializa sistema de autenticação
 import './authInit.js';
 
-// Componente principal da aplicação
+/**
+ * Componente principal da aplicação
+ * 
+ * Estrutura:
+ * - Router: Gerencia navegação SPA
+ * - Layout: Navbar + Main + Footer
+ * - Routes: Define todas as rotas da aplicação
+ * - Chatbot: Assistente virtual flutuante
+ */
 export default function App() {
   return (
-    // Router: Habilita navegação entre páginas sem recarregar
+    // Router: Habilita navegação entre páginas sem recarregar (SPA)
     <Router>
       {/* Container principal com layout flexbox */}
       <div className="d-flex flex-column min-vh-100">
@@ -51,7 +71,7 @@ export default function App() {
         <main className="flex-grow-1">
           {/* Routes: Define as rotas da aplicação */}
           <Routes>
-            {/* Cada Route mapeia uma URL para um componente */}
+            {/* ROTAS PÚBLICAS - Acessíveis a todos os usuários */}
             <Route path="/" element={<Home />} />                    {/* Página inicial */}
             <Route path="/horta" element={<HortaDigital />} />       {/* Página da horta */}
             <Route path="/receitas" element={<Receitas />} />        {/* Página de receitas */}
@@ -65,7 +85,7 @@ export default function App() {
             <Route path="/admin" element={<Admin />} />              {/* Painel administrativo */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
             <Route path="/colheitas" element={<Colheitas />} />      {/* Controle de colheitas */}
-            {/* Rotas Administrativas */}
+            {/* ROTAS ADMINISTRATIVAS - Requerem autenticação de admin */}
             <Route path="/admin/login" element={<AdminLogin />} />   {/* Login admin */}
             <Route path="/admin/register" element={<AdminRegister />} /> {/* Cadastro admin */}
             <Route path="/admin/dashboard" element={<AdminDashboard />} /> {/* Dashboard admin */}

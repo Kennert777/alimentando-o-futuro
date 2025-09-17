@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from './config/api.js';
 import { useAdminAuth } from './useAuth.js';
-import { AdminSessionInfo } from './ProtectedRoute.jsx';
 
 export default function AdminDashboard() {
     const { admin, loading: authLoading, isAuthenticated } = useAdminAuth();
@@ -18,20 +18,20 @@ export default function AdminDashboard() {
 
     const loadStats = async () => {
         try {
-            const estatisticas = await db.obterEstatisticas();
-            const solicitacoes = await db.buscarTodasSolicitacoes();
-            const pendentes = solicitacoes.filter(s => s.status === 'pendente').length;
-            
-            const notificacoesAdmin = await db.buscarNotificacoesAdmin();
-            const naoLidas = notificacoesAdmin.filter(n => !n.lida).length;
+            const [usuariosResponse, hortasResponse] = await Promise.all([
+                axios.get(api.usuarios.listar),
+                axios.get(api.hortas.listar)
+            ]);
             
             setStats({
-                ...estatisticas,
-                solicitacoesPendentes: pendentes,
-                notificacoesNaoLidas: naoLidas
+                totalUsuarios: usuariosResponse.data.length,
+                totalHortas: hortasResponse.data.length,
+                totalColheitas: 0,
+                solicitacoesPendentes: 0,
+                notificacoesNaoLidas: 0
             });
             
-            setNotificacoes(notificacoesAdmin.slice(0, 5)); // Últimas 5
+            setNotificacoes([]);
         } catch (error) {
             console.error('Erro ao carregar estatísticas:', error);
             setStats({
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
 
     return (
         <div className="container mt-4">
-            <AdminSessionInfo />
+
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2 style={{ color: "#4F732C" }}>🔐 Painel Administrativo</h2>
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
                 <div className="text-end">
                     <div className="mb-2">
                         <span className="badge bg-success me-2">👨‍💼 {admin?.nome}</span>
-                        <span className="badge bg-info">🔑 {admin?.tipo_perfil}</span>
+                        <span className="badge bg-info">🔑 {admin?.tipoPerfil || admin?.tipo_perfil}</span>
                     </div>
                     <button onClick={logout} className="btn btn-outline-danger btn-sm">Sair do Admin</button>
                 </div>

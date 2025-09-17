@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { api } from './config/api.js';
 
@@ -20,7 +21,8 @@ export default function AdminHortas() {
 
     const loadHortas = async () => {
         try {
-            const todasHortas = await db.buscarTodasHortas();
+            const response = await axios.get(api.hortas.listar);
+            const todasHortas = response.data;
             setHortas(todasHortas);
         } catch (error) {
             console.error('Erro ao carregar hortas:', error);
@@ -32,7 +34,7 @@ export default function AdminHortas() {
 
     const aprovarHorta = async (id) => {
         try {
-            await db.atualizarHorta(id, { aprovada: true });
+            await axios.put(api.hortas.atualizar(id), { aprovada: true });
             loadHortas();
         } catch (error) {
             alert('Erro ao aprovar horta: ' + error.message);
@@ -43,7 +45,7 @@ export default function AdminHortas() {
         const motivo = prompt('Motivo da rejeição:');
         if (motivo) {
             try {
-                await db.atualizarHorta(id, { 
+                await axios.put(api.hortas.atualizar(id), { 
                     aprovada: false, 
                     status: 'rejeitada',
                     motivo_rejeicao: motivo 
@@ -58,7 +60,7 @@ export default function AdminHortas() {
     const excluirHorta = async (id) => {
         if (confirm('Tem certeza que deseja excluir esta horta?')) {
             try {
-                await db.excluirHorta(id);
+                await axios.delete(api.hortas.atualizar(id));
                 loadHortas();
             } catch (error) {
                 alert('Erro ao excluir horta: ' + error.message);
