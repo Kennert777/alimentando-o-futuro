@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32">
+  <!-- Fundo circular -->
+  <circle cx="50" cy="50" r="45" fill="#D4A574" stroke="#4F732C" stroke-width="3"/>
+  
+  <!-- Planta central -->
+  <g transform="translate(50,35)">
+    <!-- Caule -->
+    <rect x="-1" y="10" width="2" height="15" fill="#4F732C"/>
+    
+    <!-- Folhas -->
+    <ellipse cx="-8" cy="5" rx="6" ry="10" fill="#558C03" transform="rotate(-30)"/>
+    <ellipse cx="8" cy="5" rx="6" ry="10" fill="#558C03" transform="rotate(30)"/>
+    <ellipse cx="-5" cy="0" rx="5" ry="8" fill="#AEBF2C" transform="rotate(-15)"/>
+    <ellipse cx="5" cy="0" rx="5" ry="8" fill="#AEBF2C" transform="rotate(15)"/>
+  </g>
+  
+  <!-- Linhas de cultivo -->
+  <g transform="translate(50,65)">
+    <path d="M -25,0 Q -15,5 0,0 Q 15,-5 25,0" stroke="#4F732C" stroke-width="2" fill="none"/>
+    <path d="M -20,5 Q -10,8 0,5 Q 10,2 20,5" stroke="#558C03" stroke-width="2" fill="none"/>
+    <path d="M -15,10 Q -8,12 0,10 Q 8,8 15,10" stroke="#AEBF2C" stroke-width="2" fill="none"/>
+  </g>
+</svg>
