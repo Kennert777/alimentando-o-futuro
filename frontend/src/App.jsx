@@ -25,7 +25,7 @@ import Register from './Register';
 import Dashboard from './Dashboard';
 import HortasUsuario from './HortasUsuario';
 import Chat from './Chat';
-import Admin from './Admin';
+import AdminRedirect from './AdminRedirect';
 import ChatbotFutuzinhoExpandido from './ChatbotFutuzinhoExpandido';
 import Dicas from './Dicas';
 import Colheitas from './Colheitas';
@@ -79,7 +79,7 @@ export default function App() {
             <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />      {/* Dashboard do usuário */}
             <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} /> {/* Hortas do usuário */}
             <Route path="/chat" element={<UserRoute><Chat /></UserRoute>} />                {/* Sistema de chat */}
-            <Route path="/admin" element={<Admin />} />              {/* Painel administrativo */}
+            <Route path="/admin" element={<AdminRedirect />} />              {/* Redirecionamento admin */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
             <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />      {/* Controle de colheitas */}
             {/* ROTAS ADMINISTRATIVAS - Requerem autenticação de admin */}

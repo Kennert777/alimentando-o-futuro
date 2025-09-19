@@ -2,22 +2,20 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { api } from './config/api.js';
+import { useAdminAuth } from './useAuth.js';
+import { AdminSessionInfo } from './ProtectedRoute.jsx';
 
 export default function AdminHortas() {
+    const { admin, loading: authLoading, isAuthenticated } = useAdminAuth();
     const [hortas, setHortas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filtro, setFiltro] = useState('todas');
-    const [admin, setAdmin] = useState(null);
 
     useEffect(() => {
-        const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin') || 'null');
-        if (!currentAdmin || currentAdmin.tipo_perfil !== 'admin') {
-            window.location.href = '/admin/login';
-            return;
+        if (!authLoading && isAuthenticated) {
+            loadHortas();
         }
-        setAdmin(currentAdmin);
-        loadHortas();
-    }, []);
+    }, [authLoading, isAuthenticated]);
 
     const loadHortas = async () => {
         try {
@@ -76,10 +74,13 @@ export default function AdminHortas() {
         return true;
     });
 
-    if (loading) return <div className="container mt-5"><div className="text-center">Carregando...</div></div>;
+    if (authLoading || loading) return <div className="container mt-5"><div className="text-center">Carregando...</div></div>;
+    
+    if (!isAuthenticated) return null;
 
     return (
         <div className="container mt-4">
+            <AdminSessionInfo />
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2 style={{ color: "#4F732C" }}>🌱 Gerenciar Hortas</h2>

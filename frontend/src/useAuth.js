@@ -83,17 +83,11 @@ export function useAuth() {
 
 // Hook específico para componentes admin
 export function useAdminAuth() {
-    const { currentUser, isAdmin, loading, requireAdmin } = useAuth();
+    const { currentUser, isAdmin, loading } = useAuth();
     
-    useEffect(() => {
-        if (!loading && !requireAdmin()) {
-            return;
-        }
-    }, [loading, isAdmin]);
-
     return {
         admin: currentUser,
         loading,
-        isAuthenticated: isAdmin
+        isAuthenticated: isAdmin && currentUser !== null
     };
 }

@@ -34,9 +34,7 @@ export default function AdminLogin() {
             
             console.log('Login admin bem-sucedido, redirecionando...');
             login(usuario);
-            setTimeout(() => {
-                window.location.href = '/admin/dashboard';
-            }, 100);
+            window.location.href = '/admin/dashboard';
         } catch (error) {
             console.error('Erro no login admin:', error);
             setErro(error.response?.data?.erro || 'Erro ao fazer login');
