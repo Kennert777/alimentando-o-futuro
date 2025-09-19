@@ -68,7 +68,7 @@ public class Usuario {
     public String getTelefone() { return telefone; }
     public void setTelefone(String telefone) { this.telefone = telefone; }
 
-    // Senha não deve ser exposta via getter por segurança
+    public String getSenha() { return senha; }
     public void setSenha(String senha) { this.senha = senha; }
 
     public TipoPerfil getTipoPerfil() { return tipoPerfil; }

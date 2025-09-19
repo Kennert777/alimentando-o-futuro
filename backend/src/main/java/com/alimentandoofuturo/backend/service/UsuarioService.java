@@ -5,7 +5,7 @@ import com.alimentandoofuturo.backend.repository.UsuarioRepository;
 import com.alimentandoofuturo.backend.exception.EmailAlreadyExistsException;
 import com.alimentandoofuturo.backend.exception.InvalidCredentialsException;
 import com.alimentandoofuturo.backend.exception.UserNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,11 +15,8 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     public Usuario criarUsuario(Usuario usuario) {
@@ -27,7 +24,6 @@ public class UsuarioService {
             throw new EmailAlreadyExistsException("Email já cadastrado");
         }
         
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setDataCadastro(LocalDateTime.now());
         
         return usuarioRepository.save(usuario);
@@ -41,6 +37,11 @@ public class UsuarioService {
         }
         
         Usuario usuario = usuarioOpt.get();
+        
+        if (!senha.equals(usuario.getSenha())) {
+            throw new InvalidCredentialsException("Email ou senha incorretos");
+        }
+        
         usuario.setDataUltimoAcesso(LocalDateTime.now());
         return usuarioRepository.save(usuario);
     }

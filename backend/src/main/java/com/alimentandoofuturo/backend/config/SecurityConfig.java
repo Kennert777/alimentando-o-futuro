@@ -5,8 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -55,36 +54,16 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * Configura o encoder de senhas usando BCrypt
-     * 
-     * BCrypt é um algoritmo de hash seguro que inclui salt automático
-     * e é resistente a ataques de força bruta
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    /**
-     * Configura CORS (Cross-Origin Resource Sharing)
-     * 
-     * Permite que o frontend React (rodando em porta diferente)
-     * faça requisições para a API backend
-     */
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permite requisições de qualquer origem (desenvolvimento)
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        // Permite todos os métodos HTTP necessários para a API REST
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Permite todos os headers nas requisições
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        // Não permite credenciais (cookies, auth headers) por segurança
         configuration.setAllowCredentials(false);
         
-        // Aplica a configuração CORS para todos os endpoints
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
