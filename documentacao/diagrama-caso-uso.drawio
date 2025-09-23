@@ -1,0 +1,188 @@
+<mxfile host="app.diagrams.net" modified="2024-01-15T11:00:00.000Z" agent="5.0" etag="ghi789" version="22.1.16">
+  <diagram name="CasoUso-AlimentandoFuturo" id="usecase-diagram">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Sistema -->
+        <mxCell id="sistema" value="SISTEMA ALIMENTANDO O FUTURO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=16;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="200" y="50" width="500" height="600" as="geometry" />
+        </mxCell>
+        
+        <!-- Atores -->
+        <mxCell id="usuario" value="Usuário" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="30" height="60" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="admin" value="Administrador" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="80" y="450" width="30" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Casos de Uso - Usuário -->
+        <mxCell id="uc01" value="Fazer Login" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="230" y="100" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc02" value="Cadastrar-se" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="350" y="100" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc03" value="Gerenciar Hortas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="1">
+          <mxGeometry x="230" y="180" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc04" value="Criar Horta" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="1">
+          <mxGeometry x="350" y="160" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc05" value="Editar Horta" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="1">
+          <mxGeometry x="470" y="160" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc06" value="Excluir Horta" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366" vertex="1" parent="1">
+          <mxGeometry x="590" y="160" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc07" value="Registrar Colheita" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" vertex="1" parent="1">
+          <mxGeometry x="230" y="260" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc08" value="Visualizar Colheitas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00" vertex="1" parent="1">
+          <mxGeometry x="350" y="240" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc09" value="Consultar Receitas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="1">
+          <mxGeometry x="470" y="240" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc10" value="Acessar Dicas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656" vertex="1" parent="1">
+          <mxGeometry x="590" y="240" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc11" value="Usar Chat" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="230" y="340" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc12" value="Visualizar Dashboard" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="350" y="320" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Casos de Uso - Administrador -->
+        <mxCell id="uc13" value="Gerenciar Usuários" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="230" y="420" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc14" value="Visualizar Relatórios" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="350" y="400" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc15" value="Gerenciar Dicas" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="470" y="400" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc16" value="Monitorar Sistema" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="590" y="400" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc17" value="Gerenciar Notificações" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="230" y="500" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="uc18" value="Aprovar Solicitações" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="350" y="480" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Relacionamentos Usuário -->
+        <mxCell id="rel_u01" edge="1" parent="1" source="usuario" target="uc01">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u02" edge="1" parent="1" source="usuario" target="uc02">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u03" edge="1" parent="1" source="usuario" target="uc03">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u07" edge="1" parent="1" source="usuario" target="uc07">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u08" edge="1" parent="1" source="usuario" target="uc08">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u09" edge="1" parent="1" source="usuario" target="uc09">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u10" edge="1" parent="1" source="usuario" target="uc10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u11" edge="1" parent="1" source="usuario" target="uc11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_u12" edge="1" parent="1" source="usuario" target="uc12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Relacionamentos Administrador -->
+        <mxCell id="rel_a01" edge="1" parent="1" source="admin" target="uc01">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_a13" edge="1" parent="1" source="admin" target="uc13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_a14" edge="1" parent="1" source="admin" target="uc14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_a15" edge="1" parent="1" source="admin" target="uc15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_a16" edge="1" parent="1" source="admin" target="uc16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_a17" edge="1" parent="1" source="admin" target="uc17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_a18" edge="1" parent="1" source="admin" target="uc18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Relacionamentos Include/Extend -->
+        <mxCell id="include1" edge="1" parent="1" source="uc03" target="uc04" style="dashed=1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="include1_label" value="&lt;&lt;include&gt;&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=2" vertex="1" connectable="0" parent="include1">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="include2" edge="1" parent="1" source="uc03" target="uc05" style="dashed=1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="include2_label" value="&lt;&lt;include&gt;&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=2" vertex="1" connectable="0" parent="include2">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="include3" edge="1" parent="1" source="uc03" target="uc06" style="dashed=1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="include3_label" value="&lt;&lt;include&gt;&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=2" vertex="1" connectable="0" parent="include3">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Título -->
+        <mxCell id="titulo_uc" value="DIAGRAMA DE CASOS DE USO&#xa;Sistema Alimentando o Futuro" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;verticalAlign=middle;fontStyle=1;fontSize=14" vertex="1" parent="1">
+          <mxGeometry x="300" y="680" width="300" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Legenda -->
+        <mxCell id="legenda_uc" value="LEGENDA&#xa;🔵 Autenticação&#xa;🟢 Gestão de Hortas&#xa;🟡 Colheitas&#xa;🟠 Conteúdo&#xa;⚪ Funcionalidades Gerais&#xa;🔴 Administração" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#666666;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="750" y="100" width="150" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

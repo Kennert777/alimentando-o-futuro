@@ -22,18 +22,23 @@ alimentando-o-futuro/
 │   │   └── *.jsx
 │   ├── public/
 │   └── package.json
-└── backend/           # Spring Boot Java (localhost:8080)
-    ├── src/main/java/com/alimentandoofuturo/backend/
-    │   ├── controller/
-    │   ├── model/
-    │   ├── service/
-    │   ├── repository/
-    │   └── config/
-    ├── src/main/resources/
-    │   └── application.yml
-    ├── database-setup.sql
-    ├── populate-data.sql
-    └── pom.xml
+├── backend/           # Spring Boot Java (localhost:8080)
+│   ├── src/main/java/com/alimentandoofuturo/backend/
+│   │   ├── controller/
+│   │   ├── model/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   └── config/
+│   ├── src/main/resources/
+│   │   └── application.yml
+│   ├── database-setup.sql
+│   ├── populate-data.sql
+│   └── pom.xml
+└── documentacao/      # Documentação Técnica
+    ├── MER-alimentando-futuro.drawio
+    ├── DER-alimentando-futuro.drawio
+    ├── diagrama-caso-uso.drawio
+    └── README.md
 ```
 
 ## 🖥️ Frontend (React + Vite)
@@ -107,12 +112,24 @@ mvn spring-boot:run
 - Maven
 - BCrypt (criptografia)
 
+## 📋 Documentação Técnica
+
+A pasta `documentacao/` contém:
+- **MER** - Modelo Entidade-Relacionamento (padrão BR Modelo)
+- **DER** - Diagrama Entidade-Relacionamento com tabelas
+- **Casos de Uso** - Diagrama UML dos casos de uso do sistema
+
+### Visualizar Diagramas
+- Acesse [app.diagrams.net](https://app.diagrams.net)
+- Abra os arquivos `.drawio` da pasta documentacao/
+
 ## 🔧 Configuração do Ambiente
 
 ### Pré-requisitos
 - Node.js 18+
 - Java 17+
 - Maven 3.6+
+- Draw.io (para visualizar diagramas)
 
 ### Configuração do Banco
 1. Execute `database-setup.sql` para criar tabelas

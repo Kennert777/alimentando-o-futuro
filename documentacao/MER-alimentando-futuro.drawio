@@ -1,0 +1,204 @@
+<mxfile host="app.diagrams.net" modified="2024-01-15T10:00:00.000Z" agent="5.0" etag="abc123" version="22.1.16">
+  <diagram name="MER-AlimentandoFuturo" id="mer-diagram">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Entidade USUARIO -->
+        <mxCell id="usuario" value="USUARIO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Atributos USUARIO -->
+        <mxCell id="usuario_id" value="id_usuario" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=4" vertex="1" parent="1">
+          <mxGeometry x="20" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario_nome" value="nome" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="120" y="30" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario_email" value="email" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="200" y="50" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario_telefone" value="telefone" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="240" y="100" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario_senha" value="senha" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="200" y="150" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario_tipo" value="tipo_perfil" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="usuario_data" value="data_cadastro" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="20" y="150" width="90" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Entidade HORTA -->
+        <mxCell id="horta" value="HORTA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="450" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Atributos HORTA -->
+        <mxCell id="horta_id" value="id_horta" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=4" vertex="1" parent="1">
+          <mxGeometry x="370" y="50" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="horta_nome" value="nome" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="470" y="30" width="60" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="horta_tipo" value="tipo_cultivo" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="550" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="horta_tamanho" value="tamanho" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="590" y="100" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="horta_localizacao" value="localizacao" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="550" y="150" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="horta_data" value="data_criacao" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="470" y="180" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="horta_status" value="status" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="370" y="150" width="60" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Entidade COLHEITA -->
+        <mxCell id="colheita" value="COLHEITA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="450" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Atributos COLHEITA -->
+        <mxCell id="colheita_id" value="id_colheita" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=4" vertex="1" parent="1">
+          <mxGeometry x="370" y="300" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="colheita_produto" value="produto" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="470" y="280" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="colheita_quantidade" value="quantidade" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="550" y="300" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="colheita_data" value="data_colheita" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="590" y="350" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="colheita_observacoes" value="observacoes" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="550" y="400" width="90" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="colheita_peso" value="peso_kg" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="470" y="430" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="colheita_qualidade" value="qualidade" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6" vertex="1" parent="1">
+          <mxGeometry x="370" y="400" width="80" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Relacionamento POSSUI -->
+        <mxCell id="possui" value="POSSUI" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="275" y="110" width="100" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Relacionamento PRODUZ -->
+        <mxCell id="produz" value="PRODUZ" style="rhombus;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="460" y="225" width="100" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Conexões -->
+        <mxCell id="edge1" edge="1" parent="1" source="usuario" target="possui">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" edge="1" parent="1" source="possui" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" edge="1" parent="1" source="horta" target="produz">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" edge="1" parent="1" source="produz" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Cardinalidades -->
+        <mxCell id="card1" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="220" y="120" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="card2" value="N" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="420" y="120" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="card3" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="500" y="190" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="card4" value="N" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="500" y="320" width="30" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Legenda -->
+        <mxCell id="legenda" value="LEGENDA&#xa;🔑 Chave Primária&#xa;📋 Atributo Obrigatório&#xa;📝 Atributo Opcional" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#666666;align=left;verticalAlign=top;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="50" y="300" width="150" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Conectar atributos às entidades -->
+        <mxCell id="attr1" edge="1" parent="1" source="usuario_id" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr2" edge="1" parent="1" source="usuario_nome" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr3" edge="1" parent="1" source="usuario_email" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr4" edge="1" parent="1" source="usuario_telefone" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr5" edge="1" parent="1" source="usuario_senha" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr6" edge="1" parent="1" source="usuario_tipo" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr7" edge="1" parent="1" source="usuario_data" target="usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="attr8" edge="1" parent="1" source="horta_id" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr9" edge="1" parent="1" source="horta_nome" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr10" edge="1" parent="1" source="horta_tipo" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr11" edge="1" parent="1" source="horta_tamanho" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr12" edge="1" parent="1" source="horta_localizacao" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr13" edge="1" parent="1" source="horta_data" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr14" edge="1" parent="1" source="horta_status" target="horta">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="attr15" edge="1" parent="1" source="colheita_id" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr16" edge="1" parent="1" source="colheita_produto" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr17" edge="1" parent="1" source="colheita_quantidade" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr18" edge="1" parent="1" source="colheita_data" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr19" edge="1" parent="1" source="colheita_observacoes" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr20" edge="1" parent="1" source="colheita_peso" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="attr21" edge="1" parent="1" source="colheita_qualidade" target="colheita">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
