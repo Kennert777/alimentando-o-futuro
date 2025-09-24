@@ -4,11 +4,14 @@ Plataforma completa para agricultura urbana e sustentabilidade alimentar.
 
 ## 🚀 Status do Projeto
 
-✅ **Sistema de Autenticação** - Cadastro e Login funcionando  
+✅ **Sistema de Autenticação** - JWT + Sessões persistentes  
 ✅ **Banco de Dados** - SQL Server configurado (Somee.com)  
-✅ **API Backend** - Spring Boot com CORS configurado  
-✅ **Frontend** - React com Bootstrap e Axios  
-✅ **Dashboard** - Interface de usuário funcional  
+✅ **API Backend** - Spring Boot com CORS otimizado  
+✅ **Frontend** - React com Bootstrap e Recharts  
+✅ **Dashboard** - Interface estável sem redirecionamentos  
+✅ **Google Maps** - Integração completa com filtros  
+✅ **Relatórios CSV** - Exportação e gráficos dinâmicos  
+✅ **Deploy Ready** - Configurado para Netlify + Somee  
 
 ## 📁 Estrutura do Projeto
 
@@ -54,14 +57,17 @@ npm run dev
 
 ### Funcionalidades Implementadas
 - ✅ Sistema de cadastro de usuários
-- ✅ Sistema de login/logout
-- ✅ Dashboard personalizado
-- ✅ Gerenciamento de hortas
+- ✅ Sistema de login/logout com JWT
+- ✅ Dashboard estável e responsivo
+- ✅ Gerenciamento de hortas e colheitas
+- ✅ Google Maps com localizações interativas
+- ✅ Relatórios CSV e gráficos dinâmicos
 - ✅ Interface responsiva com Bootstrap
-- ✅ Integração com API backend
+- ✅ Autenticação persistente e segura
+- ✅ Filtros avançados no mapa
+- ✅ Exportação de dados em CSV
 - 🔄 Chat integrado (em desenvolvimento)
 - 🔄 Sistema de receitas (em desenvolvimento)
-- 🔄 Catálogo de plantas (em desenvolvimento)
 
 ## ⚙️ Backend (Spring Boot Java)
 
@@ -74,13 +80,29 @@ mvn spring-boot:run
 ```
 
 ### API Endpoints Funcionais
+
+#### Usuários
 - `POST /api/usuarios/cadastro` - Cadastrar usuário
-- `POST /api/usuarios/login` - Autenticar usuário
+- `POST /api/usuarios/login` - Autenticar usuário (retorna JWT)
 - `GET /api/usuarios` - Listar usuários
 - `GET /api/usuarios/{id}` - Buscar usuário por ID
+
+#### Hortas e Colheitas
 - `POST /api/hortas` - Criar horta
 - `GET /api/hortas` - Listar hortas
 - `GET /api/hortas/usuario/{id}` - Hortas por usuário
+- `POST /api/colheitas` - Registrar colheita
+- `GET /api/colheitas/usuario/{id}` - Colheitas por usuário
+
+#### Localizações (Google Maps)
+- `POST /api/localizacoes` - Criar localização
+- `GET /api/localizacoes` - Listar localizações
+- `GET /api/localizacoes/regiao` - Filtrar por região
+
+#### Relatórios
+- `GET /api/relatorios/csv/{id}` - Exportar CSV
+- `GET /api/relatorios/graficos/{id}` - Dados para gráficos
+- `GET /api/relatorios/producao-mensal/{id}` - Produção mensal
 
 ### Banco de Dados
 - **Servidor:** AlimentandoOFuturo.mssql.somee.com
@@ -158,7 +180,7 @@ npm run dev
 - joao@exemplo.com / password
 - ana@exemplo.com / password
 
-## 🌐 Deploy
+## 🚀 Deploy
 
 ### Desenvolvimento Local
 - Frontend: `http://localhost:5173`
@@ -166,5 +188,52 @@ npm run dev
 - API: `http://localhost:8080/api`
 
 ### Produção
-- Backend: Configurado para Somee.com
-- Frontend: Pronto para deploy em qualquer provedor
+- **Frontend:** Netlify - `https://alimentando-o-futuro.netlify.app`
+- **Backend:** Somee.com - `https://alimentandoofuturo.somee.com`
+- **API:** `https://alimentandoofuturo.somee.com/api`
+
+### Guia de Deploy
+Veja o arquivo [DEPLOY.md](DEPLOY.md) para instruções completas de deploy.
+
+#### Deploy Rápido
+```bash
+# Backend
+cd backend
+mvn clean package -DskipTests
+# Upload JAR no Somee.com
+
+# Frontend
+cd frontend
+npm run build
+# Deploy no Netlify
+```
+
+## 🎯 Funcionalidades Principais
+
+### 🗺️ Google Maps Integrado
+- Localização de hortas comunitárias
+- Pontos de venda de sementes e plantas
+- Filtros por região (estado/cidade)
+- Cadastro de novas localizações
+- Marcadores interativos com informações
+
+### 📊 Relatórios e Gráficos
+- Exportação de dados em CSV
+- Gráficos dinâmicos de produção
+- Análise de qualidade das colheitas
+- Produção mensal e anual
+- Dashboard com métricas em tempo real
+
+### 🔐 Autenticação Segura
+- JWT (JSON Web Tokens)
+- Sessões persistentes
+- Logout automático por inatividade
+- Proteção contra CSRF
+- Criptografia de senhas com BCrypt
+
+### 📱 Interface Responsiva
+- Design mobile-first
+- Bootstrap 5 integrado
+- Componentes reutilizáveis
+- Navegação intuitiva
+- Modo escuro (em desenvolvimento)

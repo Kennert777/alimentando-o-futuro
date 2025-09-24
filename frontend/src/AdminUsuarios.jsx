@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from './config/api.js';
-import { useAdminAuth } from './useAuth.js';
+import { useAdminAuth } from './useAuth.jsx';
 import { AdminSessionInfo } from './ProtectedRoute.jsx';
 
 export default function AdminUsuarios() {

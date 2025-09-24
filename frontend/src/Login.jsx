@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from './config/api.js';
-import { useAuth } from './useAuth.js';
+import { useAuth } from './useAuth.jsx';
 
 export default function Login() {
     const [formData, setFormData] = useState({ email: '', password: '' });
@@ -20,7 +20,15 @@ export default function Login() {
                 email: formData.email,
                 senha: formData.password
             });
-            login(response.data);
+            
+            // Verifica se a resposta contém token JWT
+            if (response.data.token && response.data.usuario) {
+                login(response.data.usuario, response.data.token);
+            } else {
+                // Compatibilidade com resposta antiga
+                login(response.data);
+            }
+            
             window.location.href = '/dashboard';
         } catch (error) {
             setErro(error.response?.data?.erro || 'Erro ao fazer login');

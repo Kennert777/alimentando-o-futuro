@@ -47,6 +47,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/hortas/**").permitAll()
                 // Permite acesso público aos endpoints de colheitas
                 .requestMatchers("/api/colheitas/**").permitAll()
+                // Permite acesso público aos endpoints de localizações
+                .requestMatchers("/api/localizacoes/**").permitAll()
+                // Permite acesso público aos endpoints de relatórios
+                .requestMatchers("/api/relatorios/**").permitAll()
                 // Qualquer outra requisição requer autenticação
                 .anyRequest().authenticated()
             );
@@ -59,10 +63,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+            "http://localhost:*",
+            "https://*.netlify.app",
+            "https://*.netlify.com",
+            "https://alimentando-o-futuro.netlify.app"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Disposition"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

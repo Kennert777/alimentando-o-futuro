@@ -1,20 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from './config/api.js';
-import { useAdminAuth } from './useAuth.js';
+import { useAuth } from './useAuth.jsx';
 
 export default function AdminDashboard() {
-    const { admin, loading: authLoading, isAuthenticated } = useAdminAuth();
+    const { currentUser, isAdmin, loading: authLoading, logout: authLogout } = useAuth();
+    const navigate = useNavigate();
     const [stats, setStats] = useState({});
     const [loading, setLoading] = useState(true);
     const [notificacoes, setNotificacoes] = useState([]);
 
     useEffect(() => {
-        if (!authLoading && isAuthenticated) {
+        if (!authLoading) {
+            if (!isAdmin) {
+                navigate('/admin/login');
+                return;
+            }
             loadStats();
         }
-    }, [authLoading, isAuthenticated]);
+    }, [authLoading, isAdmin, navigate]);
 
     const loadStats = async () => {
         try {
@@ -47,14 +52,13 @@ export default function AdminDashboard() {
     };
 
     const logout = () => {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('currentAdmin');
-        window.location.href = '/';
+        authLogout();
+        navigate('/');
     };
 
     if (authLoading || loading) return <div className="container mt-5"><div className="text-center">Carregando...</div></div>;
     
-    if (!isAuthenticated) return null;
+    if (!isAdmin) return null;
 
     return (
         <div className="container mt-4">
@@ -66,8 +70,8 @@ export default function AdminDashboard() {
                 </div>
                 <div className="text-end">
                     <div className="mb-2">
-                        <span className="badge bg-success me-2">👨‍💼 {admin?.nome}</span>
-                        <span className="badge bg-info">🔑 {admin?.tipoPerfil || admin?.tipo_perfil}</span>
+                        <span className="badge bg-success me-2">👨‍💼 {currentUser?.nome}</span>
+                        <span className="badge bg-info">🔑 {currentUser?.tipoPerfil || currentUser?.tipo_perfil}</span>
                     </div>
                     <button onClick={logout} className="btn btn-outline-danger btn-sm">Sair do Admin</button>
                 </div>
@@ -174,7 +178,7 @@ export default function AdminDashboard() {
                                     <button className="btn btn-outline-warning btn-sm w-100 mb-2" onClick={() => alert('Modo manutenção ativado!')}>🔧 Modo Manutenção</button>
                                 </div>
                                 <div className="col-md-3">
-                                    <button className="btn btn-outline-info btn-sm w-100 mb-2" onClick={() => window.location.href = '/admin/notificacoes'}>📧 Enviar Notificação</button>
+                                    <button className="btn btn-outline-info btn-sm w-100 mb-2" onClick={() => navigate('/admin/notificacoes')}>📧 Enviar Notificação</button>
                                 </div>
                                 <div className="col-md-3">
                                     <button className="btn btn-outline-success btn-sm w-100 mb-2" onClick={() => alert('Logs do sistema exportados!')}>📋 Exportar Logs</button>

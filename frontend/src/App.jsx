@@ -40,6 +40,11 @@ import AdminRegister from './AdminRegister';
 import AdminNotificacoes from './AdminNotificacoes';
 import AdminHortas from './AdminHortas';
 import { AdminRoute, UserRoute } from './ProtectedRoute';
+import { AuthProvider } from './useAuth.jsx';
+import MapaHortas from './MapaHortas';
+import MapaHortasNovo from './MapaHortasNovo';
+import Relatorios from './Relatorios';
+import RelatoriosNovo from './RelatoriosNovo';
 
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -57,8 +62,9 @@ import './darkMode.css';
  */
 export default function App() {
   return (
-    // Router: Habilita navegação entre páginas sem recarregar (SPA)
-    <Router>
+    <AuthProvider>
+      {/* Router: Habilita navegação entre páginas sem recarregar (SPA) */}
+      <Router>
       {/* Container principal com layout flexbox */}
       <div className="d-flex flex-column min-vh-100">
         {/* Navbar: Menu de navegação fixo no topo */}
@@ -82,6 +88,8 @@ export default function App() {
             <Route path="/admin" element={<AdminRedirect />} />              {/* Redirecionamento admin */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
             <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />      {/* Controle de colheitas */}
+            <Route path="/mapa" element={<MapaHortasNovo />} />          {/* Mapa de hortas */}
+            <Route path="/relatorios" element={<UserRoute><RelatoriosNovo /></UserRoute>} />    {/* Relatórios e gráficos */}
             {/* ROTAS ADMINISTRATIVAS - Requerem autenticação de admin */}
             <Route path="/admin/login" element={<AdminLogin />} />   {/* Login admin */}
             <Route path="/admin/register" element={<AdminRegister />} /> {/* Cadastro admin */}
@@ -104,5 +112,6 @@ export default function App() {
         <ChatbotFutuzinhoExpandido />
       </div>
     </Router>
+    </AuthProvider>
   );
 }

@@ -5,7 +5,7 @@ import { useState } from 'react';
 // Componente para alternar modo escuro
 import DarkModeToggle from './DarkModeToggle';
 // Hook de autenticação
-import { useAuth } from './useAuth.js';
+import { useAuth } from './useAuth.jsx';
 
 // Componente da barra de navegação
 export default function Navbar() {
@@ -46,6 +46,7 @@ export default function Navbar() {
             <li className="nav-item"><Link className="nav-link" to="/">Início</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/horta">Horta</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/receitas">Receitas</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/mapa">Mapa</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/dicas">Dicas</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/apoio">Apoio</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/sobre">Sobre</Link></li>
@@ -132,6 +133,9 @@ export default function Navbar() {
                           </Link>
                           <Link className="dropdown-item" to="/colheitas">
                             🌾 Minhas Colheitas
+                          </Link>
+                          <Link className="dropdown-item" to="/relatorios">
+                            📊 Relatórios
                           </Link>
                           <Link className="dropdown-item" to="/chat">
                             💬 Chat

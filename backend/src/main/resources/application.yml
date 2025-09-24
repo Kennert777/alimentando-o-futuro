@@ -12,15 +12,27 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
-        format_sql: true
+        format_sql: false
 
+# Configuração JWT
+jwt:
+  secret: alimentandoofuturo2024secretkeysupersecure
+  expiration: 28800000 # 8 horas em millisegundos
 
+# Configuração CORS
+cors:
+  allowed-origins:
+    - http://localhost:5173
+    - https://*.netlify.app
+    - https://*.netlify.com
+    - https://alimentando-o-futuro.netlify.app
 
 logging:
   level:
-    com.alimentandoofuturo: DEBUG
-    org.springframework.security: DEBUG
+    com.alimentandoofuturo: INFO
+    org.springframework.security: WARN
+    org.springframework.web.cors: DEBUG

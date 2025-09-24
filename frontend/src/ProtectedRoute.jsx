@@ -1,4 +1,4 @@
-import { useAdminAuth, useAuth } from './useAuth.js';
+import { useAdminAuth, useAuth } from './useAuth.jsx';
 import { Navigate } from 'react-router-dom';
 
 // Componente para proteger rotas administrativas

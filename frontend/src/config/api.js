@@ -1,15 +1,13 @@
 /**
  * Configuração da API para conectar com o backend Spring Boot
  * 
- * Utiliza proxy do Vite para redirecionar requisições /api
- * para o backend rodando na porta 8080
- * 
- * Em desenvolvimento:
- * - Frontend: localhost:3000 (ou 5173)
- * - Backend: localhost:8080
- * - Proxy: /api -> http://localhost:8080/api
+ * Em desenvolvimento: usa proxy do Vite (/api -> localhost:8080)
+ * Em produção: usa URL completa do backend no Somee.com
  */
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.MODE === 'production' 
+    ? 'https://alimentandoofuturo.somee.com/api'
+    : '/api');
 
 /**
  * Objeto com todas as URLs dos endpoints da API
@@ -43,6 +41,22 @@ export const api = {
     criar: `${API_BASE_URL}/colheitas`, // POST - Registrar nova colheita
     listar: `${API_BASE_URL}/colheitas`, // GET - Listar todas as colheitas
     porUsuario: (usuarioId) => `${API_BASE_URL}/colheitas/usuario/${usuarioId}` // GET - Colheitas por usuário
+  },
+  
+  // Endpoints para localizações no mapa
+  localizacoes: {
+    criar: `${API_BASE_URL}/localizacoes`, // POST - Criar nova localização
+    listar: `${API_BASE_URL}/localizacoes`, // GET - Listar localizações
+    porRegiao: (estado, cidade) => `${API_BASE_URL}/localizacoes/regiao?estado=${estado}&cidade=${cidade}`,
+    atualizar: (id) => `${API_BASE_URL}/localizacoes/${id}`, // PUT - Atualizar localização
+    excluir: (id) => `${API_BASE_URL}/localizacoes/${id}` // DELETE - Excluir localização
+  },
+  
+  // Endpoints para relatórios
+  relatorios: {
+    exportarCsv: (usuarioId) => `${API_BASE_URL}/relatorios/csv/${usuarioId}`, // GET - Exportar CSV
+    graficos: (usuarioId) => `${API_BASE_URL}/relatorios/graficos/${usuarioId}`, // GET - Dados para gráficos
+    producaoMensal: (usuarioId) => `${API_BASE_URL}/relatorios/producao-mensal/${usuarioId}` // GET - Produção mensal
   }
 };
 

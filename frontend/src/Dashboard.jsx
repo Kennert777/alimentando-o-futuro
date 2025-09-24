@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from './config/api.js';
+import { useAuth } from './useAuth.jsx';
 
 export default function Dashboard() {
     const [user, setUser] = useState(null);
-    const [stats, setStats] = useState({ hortas: 0, receitas: 0, pontos: 0 });
+    const [stats, setStats] = useState({ hortas: 0, colheitas: 0, pontos: 0 });
+    const { currentUser, logout: authLogout, requireAuth } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        if (!currentUser) {
-            window.location.href = '/login';
-            return;
+        if (!requireAuth()) return;
+        
+        if (currentUser) {
+            setUser(currentUser);
+            loadUserStats(currentUser.id);
         }
-        setUser(currentUser);
-
-        // Carrega estatísticas do usuário
-        loadUserStats(currentUser.id);
-    }, []);
+    }, [currentUser]);
     
     const loadUserStats = async (userId) => {
         try {
@@ -46,9 +46,9 @@ export default function Dashboard() {
         }
     };
 
-    const logout = () => {
-        localStorage.removeItem('currentUser');
-        window.location.href = '/';
+    const handleLogout = () => {
+        authLogout();
+        navigate('/');
     };
 
     if (!user) return <div>Carregando...</div>;
@@ -59,7 +59,7 @@ export default function Dashboard() {
                 <div className="col-md-12">
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 style={{ color: "#4F732C" }}>Olá, {user.nome}!</h2>
-                        <button onClick={logout} className="btn btn-outline-danger">Sair</button>
+                        <button onClick={handleLogout} className="btn btn-outline-danger">Sair</button>
                     </div>
                 </div>
             </div>

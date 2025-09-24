@@ -3,12 +3,14 @@ package com.alimentandoofuturo.backend.controller;
 // Importações necessárias para o controller REST
 import com.alimentandoofuturo.backend.model.Usuario;
 import com.alimentandoofuturo.backend.service.UsuarioService;
+import com.alimentandoofuturo.backend.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Controller REST para gerenciamento de usuários
@@ -30,6 +32,9 @@ public class UsuarioController {
     // Injeção de dependência do service de usuários
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired
+    private JwtService jwtService;
 
     /**
      * Endpoint para cadastro de novos usuários
@@ -76,10 +81,18 @@ public class UsuarioController {
             // Autentica o usuário usando o service
             Usuario usuario = usuarioService.autenticarUsuario(email, senha);
             
+            // Gera token JWT
+            String token = jwtService.generateToken(usuario.getEmail(), usuario.getId(), usuario.getTipoPerfil().toString());
+            
             // Remove a senha da resposta por segurança
             usuario.setSenha(null);
             
-            return ResponseEntity.ok(usuario);
+            // Retorna usuário e token
+            Map<String, Object> response = new HashMap<>();
+            response.put("usuario", usuario);
+            response.put("token", token);
+            
+            return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             // Retorna erro 400 para credenciais inválidas
             return ResponseEntity.badRequest().body(Map.of("erro", e.getMessage()));
