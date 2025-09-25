@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, 
 import axios from 'axios';
 import { api } from './config/api';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+const COLORS = ['#4F732C', '#558C03', '#AEBF2C', '#D9C179', '#D9AE89'];
 
 export default function Relatorios() {
   const [dadosGraficos, setDadosGraficos] = useState(null);

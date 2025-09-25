@@ -63,39 +63,69 @@ export function AuthProvider({ children }) {
     };
 
     const login = (userData, token = null, rememberMe = false) => {
-        // Definir tempo de expiração da sessão
-        const expiryTime = new Date();
-        expiryTime.setHours(expiryTime.getHours() + (rememberMe ? 24 * 7 : 8)); // 7 dias se lembrar, 8 horas se não
-        
-        localStorage.setItem('sessionExpiry', expiryTime.toISOString());
-        localStorage.setItem('usuarioId', userData.id);
-        
-        // Salvar token JWT se fornecido
-        if (token) {
-            localStorage.setItem('authToken', token);
+        try {
+            // Definir tempo de expiração da sessão
+            const expiryTime = new Date();
+            expiryTime.setHours(expiryTime.getHours() + (rememberMe ? 24 * 7 : 8)); // 7 dias se lembrar, 8 horas se não
+            
+            localStorage.setItem('sessionExpiry', expiryTime.toISOString());
+            localStorage.setItem('usuarioId', userData.id);
+            
+            // Salvar token JWT se fornecido
+            if (token) {
+                localStorage.setItem('authToken', token);
+                // Configurar header padrão do axios
+                if (window.axios) {
+                    window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                }
+            }
+            
+            if (userData.tipoPerfil === 'ADMIN' || userData.tipo_perfil === 'admin') {
+                localStorage.setItem('currentAdmin', JSON.stringify(userData));
+                localStorage.removeItem('currentUser'); // Remove usuário comum se existir
+                setIsAdmin(true);
+            } else {
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                localStorage.removeItem('currentAdmin'); // Remove admin se existir
+                setIsAdmin(false);
+            }
+            
+            setCurrentUser(userData);
+            setSessionExpiry(expiryTime.toISOString());
+            
+            // Forçar atualização do estado
+            setTimeout(() => checkAuth(), 100);
+        } catch (error) {
+            console.error('Erro no login:', error);
+            throw error;
         }
-        
-        if (userData.tipoPerfil === 'ADMIN' || userData.tipo_perfil === 'admin') {
-            localStorage.setItem('currentAdmin', JSON.stringify(userData));
-            setIsAdmin(true);
-        } else {
-            localStorage.setItem('currentUser', JSON.stringify(userData));
-            setIsAdmin(false);
-        }
-        
-        setCurrentUser(userData);
-        setSessionExpiry(expiryTime.toISOString());
     };
 
     const logout = () => {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('currentAdmin');
-        localStorage.removeItem('sessionExpiry');
-        localStorage.removeItem('usuarioId');
-        localStorage.removeItem('authToken');
-        setCurrentUser(null);
-        setIsAdmin(false);
-        setSessionExpiry(null);
+        try {
+            // Limpar todos os dados de autenticação
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentAdmin');
+            localStorage.removeItem('sessionExpiry');
+            localStorage.removeItem('usuarioId');
+            localStorage.removeItem('authToken');
+            
+            // Limpar header do axios
+            if (window.axios) {
+                delete window.axios.defaults.headers.common['Authorization'];
+            }
+            
+            setCurrentUser(null);
+            setIsAdmin(false);
+            setSessionExpiry(null);
+            
+            // Redirecionar para home após logout
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 100);
+        } catch (error) {
+            console.error('Erro no logout:', error);
+        }
     };
 
     const requireAuth = (redirectTo = '/login') => {

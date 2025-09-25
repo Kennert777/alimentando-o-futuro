@@ -7,6 +7,7 @@ import com.alimentandoofuturo.backend.exception.InvalidCredentialsException;
 import com.alimentandoofuturo.backend.exception.UserNotFoundException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +16,11 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    private final PasswordEncoder passwordEncoder;
+    
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Usuario criarUsuario(Usuario usuario) {
@@ -24,6 +28,8 @@ public class UsuarioService {
             throw new EmailAlreadyExistsException("Email já cadastrado");
         }
         
+        // Criptografa a senha antes de salvar
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setDataCadastro(LocalDateTime.now());
         
         return usuarioRepository.save(usuario);
@@ -38,7 +44,8 @@ public class UsuarioService {
         
         Usuario usuario = usuarioOpt.get();
         
-        if (!senha.equals(usuario.getSenha())) {
+        // Verifica senha usando BCrypt
+        if (!passwordEncoder.matches(senha, usuario.getSenha())) {
             throw new InvalidCredentialsException("Email ou senha incorretos");
         }
         

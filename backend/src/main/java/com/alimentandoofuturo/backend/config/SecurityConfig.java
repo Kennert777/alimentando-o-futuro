@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -51,6 +53,10 @@ public class SecurityConfig {
                 .requestMatchers("/api/localizacoes/**").permitAll()
                 // Permite acesso público aos endpoints de relatórios
                 .requestMatchers("/api/relatorios/**").permitAll()
+                // Permite acesso público aos endpoints de redefinição de senha
+                .requestMatchers("/api/password-reset/**").permitAll()
+                // Permite acesso público aos endpoints de suporte
+                .requestMatchers("/api/support/**").permitAll()
                 // Qualquer outra requisição requer autenticação
                 .anyRequest().authenticated()
             );
@@ -58,7 +64,13 @@ public class SecurityConfig {
         return http.build();
     }
 
-
+    /**
+     * Bean para criptografia de senhas usando BCrypt
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

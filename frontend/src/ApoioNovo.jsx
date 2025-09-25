@@ -1,29 +1,35 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { api } from './config/api.js';
 
 export default function ApoioNovo() {
     const [user, setUser] = useState(null);
     const [formData, setFormData] = useState({
-        tipo_solicitacao: '', titulo: '', descricao: '', urgencia: 'media', valor_estimado: ''
+        nome: '', email: '', assunto: '', mensagem: ''
     });
     const [enviado, setEnviado] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [minhasSolicitacoes, setMinhasSolicitacoes] = useState([]);
     const [activeTab, setActiveTab] = useState('nova');
 
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        if (!currentUser) {
-            window.location.href = '/login';
-            return;
+        if (currentUser) {
+            setUser(currentUser);
+            setFormData(prev => ({
+                ...prev,
+                nome: currentUser.nome || '',
+                email: currentUser.email || ''
+            }));
+            loadSolicitacoes(currentUser.email);
         }
-        setUser(currentUser);
-        loadSolicitacoes(currentUser.id);
     }, []);
 
-    const loadSolicitacoes = async (userId) => {
+    const loadSolicitacoes = async (email) => {
         try {
-            const userSolicitacoes = await db.buscarSolicitacoesPorUsuario(userId);
-            setMinhasSolicitacoes(userSolicitacoes);
+            const response = await axios.get(`${api.base}/support/user/${email}`);
+            setMinhasSolicitacoes(response.data);
         } catch (error) {
             console.error('Erro ao carregar solicitações:', error);
         }
@@ -31,37 +37,45 @@ export default function ApoioNovo() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError('');
         
         try {
-            await db.criarSolicitacaoApoio(formData, user.id);
+            await axios.post(`${api.base}/support/request`, formData);
             
             setEnviado(true);
-            setFormData({ tipo_solicitacao: '', titulo: '', descricao: '', urgencia: 'media', valor_estimado: '' });
-            loadSolicitacoes(user.id);
+            setFormData(prev => ({
+                nome: prev.nome,
+                email: prev.email,
+                assunto: '',
+                mensagem: ''
+            }));
             
-            setTimeout(() => setEnviado(false), 3000);
+            if (user) {
+                loadSolicitacoes(user.email);
+            }
+            
+            setTimeout(() => setEnviado(false), 5000);
         } catch (error) {
-            alert('Erro ao enviar solicitação: ' + error.message);
+            setError(error.response?.data?.error || 'Erro ao enviar solicitação');
+        } finally {
+            setLoading(false);
         }
     };
 
     const getStatusBadge = (status) => {
         const badges = {
-            'pendente': 'bg-warning',
-            'em_analise': 'bg-info', 
-            'aprovada': 'bg-success',
-            'rejeitada': 'bg-danger',
-            'concluida': 'bg-secondary'
+            'PENDENTE': 'bg-warning text-dark',
+            'EM_ANDAMENTO': 'bg-info text-white', 
+            'RESOLVIDO': 'bg-success text-white'
         };
-        return badges[status] || 'bg-secondary';
+        return badges[status] || 'bg-secondary text-white';
     };
-
-    if (!user) return <div>Carregando...</div>;
 
     return (
         <div className="container mt-4">
-            <h2 className="bubble-text" style={{ color: "#4F732C" }}>🤝 Solicitar Apoio</h2>
-            <p className="lead">Precisa de ajuda com sua horta? Solicite apoio da comunidade!</p>
+            <h2 className="bubble-text" style={{ color: "#4F732C" }}>🤝 Suporte ao Usuário</h2>
+            <p className="lead">Precisa de ajuda? Entre em contato conosco!</p>
 
             {/* Tabs */}
             <ul className="nav nav-tabs mb-4">
@@ -70,7 +84,7 @@ export default function ApoioNovo() {
                         className={`nav-link ${activeTab === 'nova' ? 'active' : ''}`}
                         onClick={() => setActiveTab('nova')}
                     >
-                        ➕ Nova Solicitação
+                        ➕ Nova Mensagem
                     </button>
                 </li>
                 <li className="nav-item">
@@ -78,7 +92,7 @@ export default function ApoioNovo() {
                         className={`nav-link ${activeTab === 'minhas' ? 'active' : ''}`}
                         onClick={() => setActiveTab('minhas')}
                     >
-                        📋 Minhas Solicitações ({minhasSolicitacoes.length})
+                        📋 Minhas Mensagens ({minhasSolicitacoes.length})
                     </button>
                 </li>
             </ul>
@@ -87,8 +101,14 @@ export default function ApoioNovo() {
                 <div>
                     {enviado && (
                         <div className="alert alert-success" role="alert">
-                            <h4 className="alert-heading">Solicitação Enviada!</h4>
-                            <p>Sua solicitação foi enviada com sucesso. Nossa equipe analisará em breve.</p>
+                            <h4 className="alert-heading">Mensagem Enviada!</h4>
+                            <p>Sua mensagem foi enviada com sucesso. Nossa equipe entrará em contato em breve.</p>
+                        </div>
+                    )}
+
+                    {error && (
+                        <div className="alert alert-danger" role="alert">
+                            {error}
                         </div>
                     )}
 
@@ -97,71 +117,56 @@ export default function ApoioNovo() {
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
-                                        <label className="form-label">Tipo de Apoio</label>
-                                        <select 
+                                        <label className="form-label">Nome Completo</label>
+                                        <input 
+                                            type="text" 
                                             className="form-control"
-                                            value={formData.tipo_solicitacao}
-                                            onChange={(e) => setFormData({...formData, tipo_solicitacao: e.target.value})}
-                                            required
-                                        >
-                                            <option value="">Selecione...</option>
-                                            <option value="sementes">🌱 Sementes</option>
-                                            <option value="ferramentas">🔧 Ferramentas</option>
-                                            <option value="conhecimento">📚 Conhecimento Técnico</option>
-                                            <option value="voluntarios">👥 Voluntários</option>
-                                            <option value="financeiro">💰 Apoio Financeiro</option>
-                                            <option value="outro">❓ Outro</option>
-                                        </select>
+                                            value={formData.nome}
+                                            onChange={(e) => setFormData({...formData, nome: e.target.value})}
+                                            placeholder="Seu nome completo"
+                                            required 
+                                        />
                                     </div>
                                     <div className="col-md-6 mb-3">
-                                        <label className="form-label">Nível de Urgência</label>
-                                        <select 
+                                        <label className="form-label">Email</label>
+                                        <input 
+                                            type="email" 
                                             className="form-control"
-                                            value={formData.urgencia}
-                                            onChange={(e) => setFormData({...formData, urgencia: e.target.value})}
-                                        >
-                                            <option value="baixa">🟢 Baixa</option>
-                                            <option value="media">🟡 Média</option>
-                                            <option value="alta">🟠 Alta</option>
-                                            <option value="critica">🔴 Crítica</option>
-                                        </select>
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                            placeholder="seu@email.com"
+                                            required 
+                                        />
                                     </div>
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Título da Solicitação</label>
+                                    <label className="form-label">Assunto</label>
                                     <input 
                                         type="text" 
                                         className="form-control"
-                                        value={formData.titulo}
-                                        onChange={(e) => setFormData({...formData, titulo: e.target.value})}
-                                        placeholder="Ex: Preciso de sementes de tomate para horta escolar"
+                                        value={formData.assunto}
+                                        onChange={(e) => setFormData({...formData, assunto: e.target.value})}
+                                        placeholder="Ex: Dúvida sobre cultivo de tomates"
                                         required 
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label">Valor Estimado (R$) - Opcional</label>
-                                    <input 
-                                        type="number" 
-                                        step="0.01"
-                                        className="form-control"
-                                        value={formData.valor_estimado}
-                                        onChange={(e) => setFormData({...formData, valor_estimado: e.target.value})}
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Descrição Detalhada</label>
+                                    <label className="form-label">Mensagem</label>
                                     <textarea 
                                         className="form-control" 
-                                        rows="4"
-                                        value={formData.descricao}
-                                        onChange={(e) => setFormData({...formData, descricao: e.target.value})}
-                                        placeholder="Descreva detalhadamente o tipo de apoio que você precisa, localização, prazo, etc..."
+                                        rows="5"
+                                        value={formData.mensagem}
+                                        onChange={(e) => setFormData({...formData, mensagem: e.target.value})}
+                                        placeholder="Descreva sua dúvida, problema ou sugestão..."
                                         required
                                     ></textarea>
                                 </div>
-                                <button type="submit" className="btn btn-success btn-lg">
-                                    📤 Enviar Solicitação
+                                <button 
+                                    type="submit" 
+                                    className="btn btn-success btn-lg"
+                                    disabled={loading}
+                                >
+                                    {loading ? '📤 Enviando...' : '📤 Enviar Mensagem'}
                                 </button>
                             </form>
                         </div>
@@ -173,13 +178,13 @@ export default function ApoioNovo() {
                 <div>
                     {minhasSolicitacoes.length === 0 ? (
                         <div className="alert alert-info text-center">
-                            <h5>Nenhuma solicitação encontrada</h5>
-                            <p>Você ainda não fez nenhuma solicitação de apoio.</p>
+                            <h5>Nenhuma mensagem encontrada</h5>
+                            <p>Você ainda não enviou nenhuma mensagem de suporte.</p>
                             <button 
                                 className="btn btn-primary"
                                 onClick={() => setActiveTab('nova')}
                             >
-                                Fazer Primeira Solicitação
+                                Enviar Primeira Mensagem
                             </button>
                         </div>
                     ) : (
@@ -189,26 +194,16 @@ export default function ApoioNovo() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between align-items-start mb-2">
-                                                <h5 className="card-title">{solicitacao.titulo}</h5>
+                                                <h5 className="card-title">{solicitacao.assunto}</h5>
                                                 <span className={`badge ${getStatusBadge(solicitacao.status)}`}>
-                                                    {solicitacao.status.replace('_', ' ')}
+                                                    {solicitacao.status}
                                                 </span>
                                             </div>
-                                            <p><strong>🏷️ Tipo:</strong> {solicitacao.tipo_solicitacao}</p>
-                                            <p><strong>⚡ Urgência:</strong> {solicitacao.urgencia}</p>
-                                            {solicitacao.valor_estimado > 0 && (
-                                                <p><strong>💰 Valor:</strong> R$ {solicitacao.valor_estimado.toFixed(2)}</p>
-                                            )}
-                                            <p><strong>📝 Descrição:</strong> {solicitacao.descricao.substring(0, 100)}...</p>
+                                            <p><strong>📧 Email:</strong> {solicitacao.email}</p>
+                                            <p><strong>📝 Mensagem:</strong> {solicitacao.mensagem.substring(0, 100)}...</p>
                                             <small className="text-muted">
-                                                Enviado em: {new Date(solicitacao.data_solicitacao).toLocaleDateString()}
+                                                Enviado em: {new Date(solicitacao.dataCriacao).toLocaleDateString('pt-BR')}
                                             </small>
-                                            {solicitacao.resposta_admin && (
-                                                <div className="mt-2 p-2 bg-light rounded">
-                                                    <strong>📋 Resposta da Equipe:</strong>
-                                                    <p className="mb-0 mt-1">{solicitacao.resposta_admin}</p>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -218,18 +213,18 @@ export default function ApoioNovo() {
                 </div>
             )}
 
-            {/* Seção de Tipos de Apoio - apenas para referência */}
+            {/* Seção de Informações de Contato */}
             {activeTab === 'nova' && (
                 <div className="row mt-5">
                     <div className="col-12">
-                        <h3 style={{ color: "#4F732C" }}>Tipos de Apoio Disponíveis</h3>
+                        <h3 style={{ color: "#4F732C" }}>Como Podemos Ajudar</h3>
                     </div>
                     <div className="col-md-4 mb-3">
                         <div className="card h-100" style={{ backgroundColor: "#D9C179" }}>
                             <div className="card-body text-center">
                                 <h4>🌱</h4>
-                                <h5>Sementes</h5>
-                                <p>Sementes orgânicas para sua horta</p>
+                                <h5>Dúvidas sobre Cultivo</h5>
+                                <p>Orientações sobre plantio e cuidados</p>
                             </div>
                         </div>
                     </div>
@@ -237,17 +232,17 @@ export default function ApoioNovo() {
                         <div className="card h-100" style={{ backgroundColor: "#D9AE89" }}>
                             <div className="card-body text-center">
                                 <h4>🔧</h4>
-                                <h5>Ferramentas</h5>
-                                <p>Equipamentos para cultivo</p>
+                                <h5>Problemas Técnicos</h5>
+                                <p>Suporte com o sistema</p>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-4 mb-3">
                         <div className="card h-100" style={{ backgroundColor: "#AEBF2C" }}>
                             <div className="card-body text-center">
-                                <h4>📚</h4>
-                                <h5>Conhecimento</h5>
-                                <p>Orientação técnica especializada</p>
+                                <h4>💡</h4>
+                                <h5>Sugestões</h5>
+                                <p>Ideias para melhorar a plataforma</p>
                             </div>
                         </div>
                     </div>

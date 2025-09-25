@@ -57,7 +57,24 @@ export const api = {
     exportarCsv: (usuarioId) => `${API_BASE_URL}/relatorios/csv/${usuarioId}`, // GET - Exportar CSV
     graficos: (usuarioId) => `${API_BASE_URL}/relatorios/graficos/${usuarioId}`, // GET - Dados para gráficos
     producaoMensal: (usuarioId) => `${API_BASE_URL}/relatorios/producao-mensal/${usuarioId}` // GET - Produção mensal
-  }
+  },
+  
+  // Endpoints para redefinir senha
+  passwordReset: {
+    request: `${API_BASE_URL}/password-reset/request`, // POST - Solicitar código
+    reset: `${API_BASE_URL}/password-reset/reset` // POST - Redefinir senha
+  },
+  
+  // Endpoints para suporte
+  support: {
+    request: `${API_BASE_URL}/support/request`, // POST - Enviar solicitação
+    all: `${API_BASE_URL}/support/all`, // GET - Todas as solicitações
+    byUser: (email) => `${API_BASE_URL}/support/user/${email}`, // GET - Por usuário
+    updateStatus: (id) => `${API_BASE_URL}/support/${id}/status` // PUT - Atualizar status
+  },
+  
+  // URL base para uso direto
+  base: API_BASE_URL
 };
 
 // Exporta a URL base para uso em outros arquivos se necessário

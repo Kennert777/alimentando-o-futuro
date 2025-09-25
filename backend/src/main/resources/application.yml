@@ -31,6 +31,19 @@ cors:
     - https://*.netlify.com
     - https://alimentando-o-futuro.netlify.app
 
+# Configuração de Email
+mail:
+  host: smtp.office365.com
+  port: 587
+  username: rm94720@estudante.fieb.edu.br
+  password: ${MAIL_PASSWORD:senha_temporaria}
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+
 logging:
   level:
     com.alimentandoofuturo: INFO

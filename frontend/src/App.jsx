@@ -22,6 +22,7 @@ import ApoioNovo from './ApoioNovo';
 import Sobre from './Sobre';
 import Login from './Login';
 import Register from './Register';
+import ForgotPassword from './ForgotPassword';
 import Dashboard from './Dashboard';
 import HortasUsuario from './HortasUsuario';
 import Chat from './Chat';
@@ -82,6 +83,7 @@ export default function App() {
             <Route path="/sobre" element={<Sobre />} />              {/* Página sobre */}
             <Route path="/login" element={<Login />} />              {/* Página de login */}
             <Route path="/register" element={<Register />} />        {/* Página de registro */}
+            <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Redefinir senha */}
             <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />      {/* Dashboard do usuário */}
             <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} /> {/* Hortas do usuário */}
             <Route path="/chat" element={<UserRoute><Chat /></UserRoute>} />                {/* Sistema de chat */}

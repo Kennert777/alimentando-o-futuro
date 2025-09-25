@@ -85,6 +85,9 @@ export default function Login() {
                             </form>
 
                             <div className="text-center">
+                                <p className="mb-2">
+                                    <Link to="/forgot-password" style={{ color: "#4F732C" }}>Esqueceu sua senha?</Link>
+                                </p>
                                 <p>Não tem conta? <Link to="/register" style={{ color: "#4F732C" }}>Cadastre-se</Link></p>
                                 <hr />
                                 <p className="small text-muted">
