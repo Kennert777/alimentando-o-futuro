@@ -31,7 +31,7 @@ public class PasswordResetService {
     
     @Transactional
     public void requestPasswordReset(String email) {
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        usuarioRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("Email não encontrado"));
         
         // Remove tokens antigos

@@ -1,12 +1,12 @@
 package com.alimentandoofuturo.backend.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @Service
 public class EmailService {

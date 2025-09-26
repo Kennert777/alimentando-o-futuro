@@ -42,6 +42,7 @@ import AdminNotificacoes from './AdminNotificacoes';
 import AdminHortas from './AdminHortas';
 import { AdminRoute, UserRoute } from './ProtectedRoute';
 import { AuthProvider } from './useAuth.jsx';
+import { ThemeProvider } from './ThemeContext.jsx';
 import MapaHortas from './MapaHortas';
 import MapaHortasNovo from './MapaHortasNovo';
 import Relatorios from './Relatorios';
@@ -49,8 +50,12 @@ import RelatoriosNovo from './RelatoriosNovo';
 
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
+// Configuração global do axios
+import './config/axios.js';
 // CSS para modo escuro
-import './darkMode.css';
+import './styles/dark-mode.css';
+// Fonte Vogue
+import './styles/globals.css';
 
 /**
  * Componente principal da aplicação
@@ -63,7 +68,8 @@ import './darkMode.css';
  */
 export default function App() {
   return (
-    <AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
       {/* Router: Habilita navegação entre páginas sem recarregar (SPA) */}
       <Router>
       {/* Container principal com layout flexbox */}
@@ -114,6 +120,7 @@ export default function App() {
         <ChatbotFutuzinhoExpandido />
       </div>
     </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

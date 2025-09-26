@@ -43,6 +43,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             // Define regras de autorização para endpoints
             .authorizeHttpRequests(authz -> authz
+                // Permite acesso público aos endpoints de health/ping
+                .requestMatchers("/api/ping", "/api/health").permitAll()
                 // Permite acesso público aos endpoints de usuários (login/cadastro)
                 .requestMatchers("/api/usuarios/**").permitAll()
                 // Permite acesso público aos endpoints de hortas
@@ -75,12 +77,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList(
-            "http://localhost:*",
-            "https://*.netlify.app",
-            "https://*.netlify.com",
-            "https://alimentando-o-futuro.netlify.app"
-        ));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

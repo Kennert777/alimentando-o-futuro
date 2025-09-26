@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { api } from './config/api.js';
+import api from './config/axios.js';
 import { useAuth } from './useAuth.jsx';
 
 export default function Login() {
@@ -16,7 +15,7 @@ export default function Login() {
         setErro('');
 
         try {
-            const response = await axios.post(api.usuarios.login, {
+            const response = await api.post('/usuarios/login', {
                 email: formData.email,
                 senha: formData.password
             });

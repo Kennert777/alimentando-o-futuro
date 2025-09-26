@@ -7,7 +7,6 @@ import com.alimentandoofuturo.backend.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -87,10 +86,12 @@ public class UsuarioController {
             // Remove a senha da resposta por segurança
             usuario.setSenha(null);
             
-            // Retorna usuário e token
+            // Retorna token, role e username conforme especificado
             Map<String, Object> response = new HashMap<>();
-            response.put("usuario", usuario);
             response.put("token", token);
+            response.put("role", usuario.getTipoPerfil().toString());
+            response.put("username", usuario.getEmail());
+            response.put("usuario", usuario); // Mantém para compatibilidade
             
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {

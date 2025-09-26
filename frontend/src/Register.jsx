@@ -1,8 +1,7 @@
 // Importações necessárias do React e bibliotecas
 import { useState } from 'react'; // Hook para gerenciar estado
 import { Link } from 'react-router-dom'; // Componente para navegação
-import axios from 'axios'; // Cliente HTTP para requisições
-import { api } from './config/api.js'; // Configuração das URLs da API
+import api from './config/axios.js'; // Cliente HTTP configurado
 
 /**
  * Componente de Cadastro de Usuários
@@ -15,7 +14,7 @@ import { api } from './config/api.js'; // Configuração das URLs da API
  * - Redirecionamento após cadastro
  */
 export default function Register() {
-    console.log('API URL:', api.usuarios.cadastro);
+
     // Estados do componente
     const [formData, setFormData] = useState({
         nome: '', email: '', telefone: '', password: '', confirmPassword: ''
@@ -50,7 +49,7 @@ export default function Register() {
             };
             console.log('Enviando dados:', userData);
             
-            const response = await axios.post(api.usuarios.cadastro, userData);
+            const response = await api.post('/usuarios/cadastro', userData);
             console.log('Resposta:', response.data);
             
             setSucesso(true);

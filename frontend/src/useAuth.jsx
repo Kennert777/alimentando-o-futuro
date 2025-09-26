@@ -12,6 +12,11 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         checkAuth();
+        // Configurar axios com token salvo
+        const token = localStorage.getItem('authToken');
+        if (token && window.axios) {
+            window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
         // Verificar sessão a cada 5 minutos
         const interval = setInterval(checkSessionExpiry, 5 * 60 * 1000);
         return () => clearInterval(interval);
@@ -64,9 +69,9 @@ export function AuthProvider({ children }) {
 
     const login = (userData, token = null, rememberMe = false) => {
         try {
-            // Definir tempo de expiração da sessão
+            // Definir tempo de expiração da sessão (24 horas)
             const expiryTime = new Date();
-            expiryTime.setHours(expiryTime.getHours() + (rememberMe ? 24 * 7 : 8)); // 7 dias se lembrar, 8 horas se não
+            expiryTime.setHours(expiryTime.getHours() + 24); // 24 horas
             
             localStorage.setItem('sessionExpiry', expiryTime.toISOString());
             localStorage.setItem('usuarioId', userData.id);

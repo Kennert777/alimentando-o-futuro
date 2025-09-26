@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { api } from './config/api.js';
+import api from './config/axios.js';
 import { useAuth } from './useAuth.jsx';
 
 export default function AdminLogin() {
@@ -17,23 +16,23 @@ export default function AdminLogin() {
 
         try {
             console.log('Tentando login admin com:', formData.email);
-            const response = await axios.post(api.usuarios.login, {
+            const response = await api.post('/usuarios/login', {
                 email: formData.email,
                 senha: formData.password
             });
             
-            const usuario = response.data;
-            console.log('Resposta do login:', usuario);
+            const { usuario, token, role } = response.data;
+            console.log('Resposta do login:', response.data);
             
-            if (usuario.tipoPerfil !== 'ADMIN') {
-                console.log('Usuário não é admin:', usuario.tipoPerfil);
+            if (role !== 'ADMIN') {
+                console.log('Usuário não é admin:', role);
                 setErro('Acesso negado. Apenas administradores podem acessar.');
                 setLoading(false);
                 return;
             }
             
             console.log('Login admin bem-sucedido, redirecionando...');
-            login(usuario);
+            login(usuario, token);
             window.location.href = '/admin/dashboard';
         } catch (error) {
             console.error('Erro no login admin:', error);

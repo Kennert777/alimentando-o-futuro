@@ -8,6 +8,14 @@ spring:
     username: alimentandoofuturo
     password: "@ITB123456"
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 120000
+      leak-detection-threshold: 60000
+      pool-name: AlimentandoOFuturoPool
   
   jpa:
     hibernate:
@@ -21,7 +29,7 @@ spring:
 # Configuração JWT
 jwt:
   secret: alimentandoofuturo2024secretkeysupersecure
-  expiration: 28800000 # 8 horas em millisegundos
+  expiration: 86400000 # 24 horas em millisegundos
 
 # Configuração CORS
 cors:

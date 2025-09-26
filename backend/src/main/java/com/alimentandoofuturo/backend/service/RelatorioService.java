@@ -6,15 +6,22 @@ import com.alimentandoofuturo.backend.model.Usuario;
 import com.alimentandoofuturo.backend.repository.ColheitaRepository;
 import com.alimentandoofuturo.backend.repository.HortaRepository;
 import com.alimentandoofuturo.backend.repository.UsuarioRepository;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +39,6 @@ public class RelatorioService {
     public byte[] gerarRelatorioCsv(Long usuarioId) {
         try {
             List<Colheita> colheitas = colheitaRepository.findByUsuarioId(usuarioId);
-            Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
-            List<Horta> hortas = usuario != null ? hortaRepository.findByUsuarioResponsavel(usuario) : new ArrayList<>();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PrintWriter writer = new PrintWriter(baos);
@@ -125,6 +130,60 @@ public class RelatorioService {
         }
 
         dados.put("producaoMensal", producaoMensal);
+        return dados;
+    }
+
+    public byte[] gerarGraficoProducaoMensalComoPng(Long usuarioId) {
+        try {
+            Map<String, Object> dadosProducao = gerarProducaoMensal(usuarioId);
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> producaoMensal = (List<Map<String, Object>>) dadosProducao.get("producaoMensal");
+
+            // Criar dataset
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            for (Map<String, Object> item : producaoMensal) {
+                String mes = (String) item.get("mes");
+                Double producao = (Double) item.get("producao");
+                dataset.addValue(producao, "Produção (kg)", mes);
+            }
+
+            // Criar gráfico
+            JFreeChart chart = ChartFactory.createBarChart(
+                "Produção Mensal",
+                "Mês",
+                "Quantidade (kg)",
+                dataset
+            );
+
+            // Personalizar cores
+            CategoryPlot plot = chart.getCategoryPlot();
+            plot.getRenderer().setSeriesPaint(0, new Color(76, 175, 80)); // Verde do projeto
+            chart.setBackgroundPaint(Color.WHITE);
+            plot.setBackgroundPaint(Color.WHITE);
+
+            // Converter para PNG
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ChartUtils.writeChartAsPNG(baos, chart, 800, 400);
+            return baos.toByteArray();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao gerar gráfico PNG", e);
+        }
+    }
+
+    public List<Map<String, Object>> obterDadosColheitas(Long usuarioId) {
+        List<Colheita> colheitas = colheitaRepository.findByUsuarioId(usuarioId);
+        List<Map<String, Object>> dados = new ArrayList<>();
+
+        for (Colheita colheita : colheitas) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("tipoVegetal", colheita.getTipoPlanta());
+            item.put("quantidade", colheita.getQuantidadeKg());
+            item.put("qualidade", colheita.getQualidade());
+            item.put("dataColheita", colheita.getDataColheita().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            dados.add(item);
+        }
+
         return dados;
     }
 }

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { api } from './config/api.js';
+import api from './config/axios.js';
 
 export default function AdminRegister() {
     const [formData, setFormData] = useState({
@@ -27,7 +26,7 @@ export default function AdminRegister() {
         // Validação do código será feita no backend
 
         try {
-            const response = await axios.post(api.usuarios.cadastro, {
+            const response = await api.post('/usuarios/cadastro', {
                 nome: formData.nome,
                 email: formData.email,
                 telefone: formData.telefone,

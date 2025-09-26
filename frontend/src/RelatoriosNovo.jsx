@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { api } from './config/api.js';
+import api from './config/axios.js';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 const COLORS = ['#4F732C', '#558C03', '#AEBF2C', '#D9C179', '#D9AE89'];
@@ -25,8 +24,8 @@ export default function RelatoriosNovo() {
     const loadData = async (userId) => {
         try {
             const [graficosResponse, producaoResponse] = await Promise.all([
-                axios.get(api.relatorios.graficos(userId)),
-                axios.get(api.relatorios.producaoMensal(userId))
+                api.get(`/relatorios/graficos/${userId}`),
+                api.get(`/relatorios/producao-mensal/${userId}`)
             ]);
             
             setDadosGraficos(graficosResponse.data);
@@ -40,7 +39,7 @@ export default function RelatoriosNovo() {
 
     const exportarCSV = async () => {
         try {
-            const response = await axios.get(api.relatorios.exportarCsv(user.id), {
+            const response = await api.get(`/relatorios/csv/${user.id}`, {
                 responseType: 'blob'
             });
             
@@ -56,6 +55,27 @@ export default function RelatoriosNovo() {
         } catch (error) {
             console.error('Erro ao exportar CSV:', error);
             alert('Erro ao exportar relatório. Tente novamente.');
+        }
+    };
+
+    const exportarPDF = async () => {
+        try {
+            const response = await api.get(`/relatorios/pdf/${user.id}`, {
+                responseType: 'blob'
+            });
+            
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'relatorio-producao.pdf');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Erro ao exportar PDF:', error);
+            alert('Erro ao gerar relatório PDF. Tente novamente.');
         }
     };
 
@@ -121,10 +141,15 @@ export default function RelatoriosNovo() {
                 <div className="col-md-3">
                     <div className="card text-center" style={{ backgroundColor: "#4F732C", color: "white" }}>
                         <div className="card-body">
-                            <button onClick={exportarCSV} className="btn btn-light btn-sm">
-                                📄 Exportar CSV
-                            </button>
-                            <p className="mt-2 mb-0">Download Relatório</p>
+                            <div className="d-grid gap-2">
+                                <button onClick={exportarCSV} className="btn btn-light btn-sm">
+                                    📄 Exportar CSV
+                                </button>
+                                <button onClick={exportarPDF} className="btn btn-warning btn-sm">
+                                    📊 Relatório PDF
+                                </button>
+                            </div>
+                            <p className="mt-2 mb-0">Downloads</p>
                         </div>
                     </div>
                 </div>
