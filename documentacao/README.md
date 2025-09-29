@@ -6,7 +6,7 @@ Esta pasta contém toda a documentação técnica do projeto Alimentando o Futur
 
 ### 🗂️ Diagramas de Banco de Dados
 - **`MER-alimentando-futuro.drawio`** - Modelo Entidade-Relacionamento (padrão BR Modelo)
-- **`DER-alimentando-futuro.drawio`** - Diagrama Entidade-Relacionamento com tabelas e campos
+- **`DER-alimentando-futuro.drawio`** - Diagrama Entidade-Relacionamento com tabelas e campos (padrão BR Modelo)
 
 ### 🎯 Diagramas de Sistema
 - **`diagrama-caso-uso.drawio`** - Diagrama de Casos de Uso UML
@@ -25,9 +25,27 @@ Esta pasta contém toda a documentação técnica do projeto Alimentando o Futur
 ## 📊 Estrutura do Banco de Dados
 
 ### Entidades Principais
-- **USUARIOS** - Dados dos usuários do sistema
-- **HORTAS** - Informações das hortas urbanas
-- **COLHEITAS** - Registro das colheitas realizadas
+- **USUARIOS**
+  - id_usuario (PK)
+  - nome
+  - email
+  - telefone
+  - senha
+  - tipo_perfil
+  - data_cadastro
+- **HORTAS**
+  - id_horta (PK)
+  - id_usuario (FK)
+  - nome
+  - tipo_cultivo
+  - tamanho
+  - status
+  - data_criacao
+- **COLHEITAS**
+  - id_colheita (PK)
+  - id_horta (FK)
+  - quantidade
+  - data_colheita
 
 ### Relacionamentos
 - USUARIO (1) → (N) HORTA
@@ -48,10 +66,9 @@ Esta pasta contém toda a documentação técnica do projeto Alimentando o Futur
 - Visualizar relatórios
 
 ## 🎨 Padrões Utilizados
-
-- **MER**: Notação padrão BR Modelo
-- **DER**: Notação de tabelas relacionais
-- **Casos de Uso**: Padrão UML 2.0
+- Diagramas MER e DER seguem o padrão BR Modelo, com entidades, atributos, relacionamentos e cardinalidades representados conforme normas brasileiras de modelagem de dados.
+- Nomenclatura de entidades e atributos em maiúsculo, chaves primárias e estrangeiras destacadas, relacionamentos com linhas e cardinalidades (1:N, N:1, N:M).
+- Para detalhes visuais, consulte os arquivos `.drawio` na pasta documentação.
 
 ## 📝 Notas Técnicas
 
