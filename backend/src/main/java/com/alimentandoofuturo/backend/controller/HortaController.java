@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/hortas")
@@ -22,7 +23,7 @@ public class HortaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> criarHorta(@RequestBody Horta horta) {
+    public ResponseEntity<?> criarHorta(@Valid @RequestBody Horta horta) {
         try {
             logger.info("Criando horta: {}", horta.getNome());
             Horta novaHorta = hortaService.criarHorta(horta, horta.getUsuarioResponsavel().getId());

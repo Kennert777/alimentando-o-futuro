@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import jakarta.validation.Valid;
 
 /**
  * Controller REST para gerenciamento de usuários
@@ -42,7 +43,7 @@ public class UsuarioController {
      * @return ResponseEntity com o usuário criado ou erro
      */
     @PostMapping("/cadastro")
-    public ResponseEntity<?> cadastrarUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody Usuario usuario) {
         try {
             // Log para debug (remover em produção)
             System.out.println("Dados recebidos: " + usuario.getNome() + ", " + usuario.getEmail());
@@ -118,7 +119,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario dadosAtualizacao) {
+    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody Usuario dadosAtualizacao) {
         try {
             Usuario usuario = usuarioService.atualizarUsuario(id, dadosAtualizacao);
             usuario.setSenha(null);
