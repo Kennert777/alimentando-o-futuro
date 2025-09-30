@@ -9,7 +9,7 @@ Plataforma completa para agricultura urbana e sustentabilidade alimentar.
 ✅ **API Backend** - Spring Boot com CORS otimizado  
 ✅ **Frontend** - React com Bootstrap e Recharts  
 ✅ **Dashboard** - Interface estável sem redirecionamentos  
-✅ **Google Maps** - Integração completa com filtros  
+❌ **Google Maps** - Removido do projeto  
 ✅ **Relatórios CSV** - Exportação e gráficos dinâmicos  
 ✅ **Deploy Ready** - Configurado para Netlify + Somee  
 
@@ -56,18 +56,16 @@ npm run dev
 ```
 
 ### Funcionalidades Implementadas
-- ✅ Sistema de cadastro de usuários
-- ✅ Sistema de login/logout com JWT
-- ✅ Dashboard estável e responsivo
-- ✅ Gerenciamento de hortas e colheitas
-- ✅ Google Maps com localizações interativas
-- ✅ Relatórios CSV e gráficos dinâmicos
-- ✅ Interface responsiva com Bootstrap
-- ✅ Autenticação persistente e segura
-- ✅ Filtros avançados no mapa
-- ✅ Exportação de dados em CSV
-- 🔄 Chat integrado (em desenvolvimento)
-- 🔄 Sistema de receitas (em desenvolvimento)
+✅ Sistema de cadastro de usuários
+✅ Sistema de login/logout com JWT
+✅ Dashboard estável e responsivo
+✅ Gerenciamento de hortas e colheitas
+✅ Relatórios CSV e gráficos dinâmicos
+✅ Interface responsiva com Bootstrap
+✅ Autenticação persistente e segura
+✅ Exportação de dados em CSV
+🔄 Chat integrado (em desenvolvimento)
+🔄 Sistema de receitas (em desenvolvimento)
 
 ## ⚙️ Backend (Spring Boot Java)
 
@@ -94,10 +92,8 @@ mvn spring-boot:run
 - `POST /api/colheitas` - Registrar colheita
 - `GET /api/colheitas/usuario/{id}` - Colheitas por usuário
 
-#### Localizações (Google Maps)
-- `POST /api/localizacoes` - Criar localização
-- `GET /api/localizacoes` - Listar localizações
-- `GET /api/localizacoes/regiao` - Filtrar por região
+#### Localizações
+❌ Endpoints removidos
 
 #### Relatórios
 - `GET /api/relatorios/csv/{id}` - Exportar CSV
@@ -210,12 +206,7 @@ npm run build
 
 ## 🎯 Funcionalidades Principais
 
-### 🗺️ Google Maps Integrado
-- Localização de hortas comunitárias
-- Pontos de venda de sementes e plantas
-- Filtros por região (estado/cidade)
-- Cadastro de novas localizações
-- Marcadores interativos com informações
+### (Google Maps removido)
 
 ### 📊 Relatórios e Gráficos
 - Exportação de dados em CSV

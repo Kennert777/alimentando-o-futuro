@@ -112,15 +112,7 @@ export default function AdminHortas() {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-4">
-                    <div className="card border-info">
-                        <div className="card-body text-center">
-                            <h6 className="text-info">🗺️ Mapa</h6>
-                            <button className="btn btn-info btn-sm mb-1 w-100" onClick={() => alert('Abrindo mapa de hortas...')}>Ver Mapa</button>
-                            <button className="btn btn-outline-info btn-sm w-100" onClick={() => alert('Exportando localizações...')}>📍 Exportar</button>
-                        </div>
-                    </div>
-                </div>
+                {/* Card de mapa removido */}
             </div>
 
             {/* Filtros */}

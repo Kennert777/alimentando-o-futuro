@@ -39,7 +39,7 @@ export default function Navbar() {
               <Link className="nav-link fw-semibold" to="/receitas" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Receitas</Link>
             </li>
             <li className="nav-item mx-2">
-              <Link className="nav-link fw-semibold" to="/mapa" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Mapa</Link>
+              {/* Link para Mapa removido */}
             </li>
             <li className="nav-item mx-2">
               <Link className="nav-link fw-semibold" to="/apoio" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Apoio</Link>

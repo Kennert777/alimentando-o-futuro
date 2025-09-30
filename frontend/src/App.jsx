@@ -43,8 +43,8 @@ import AdminHortas from './AdminHortas';
 import { AdminRoute, UserRoute } from './ProtectedRoute';
 import { AuthProvider } from './useAuth.jsx';
 import { ThemeProvider } from './ThemeContext.jsx';
-import MapaHortas from './MapaHortas';
-import MapaHortasNovo from './MapaHortasNovo';
+// import MapaHortas from './MapaHortas';
+// import MapaHortasNovo from './MapaHortasNovo';
 import Relatorios from './Relatorios';
 import RelatoriosNovo from './RelatoriosNovo';
 
@@ -96,7 +96,7 @@ export default function App() {
             <Route path="/admin" element={<AdminRedirect />} />              {/* Redirecionamento admin */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
             <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />      {/* Controle de colheitas */}
-            <Route path="/mapa" element={<MapaHortasNovo />} />          {/* Mapa de hortas */}
+            {/* Rota do mapa removida */}
             <Route path="/relatorios" element={<UserRoute><RelatoriosNovo /></UserRoute>} />    {/* Relatórios e gráficos */}
             {/* ROTAS ADMINISTRATIVAS - Requerem autenticação de admin */}
             <Route path="/admin/login" element={<AdminLogin />} />   {/* Login admin */}

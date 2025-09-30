@@ -1,5 +1,10 @@
+
+// Controller REST para gerenciamento de hortas
+// Expõe endpoints para criar e listar hortas
 package com.alimentandoofuturo.backend.controller;
 
+
+// Importações necessárias para o controller de hortas
 import com.alimentandoofuturo.backend.model.Horta;
 import com.alimentandoofuturo.backend.service.HortaService;
 import org.slf4j.Logger;
@@ -10,18 +15,32 @@ import java.util.List;
 import java.util.Map;
 import jakarta.validation.Valid;
 
+
+// Indica que esta classe é um controller REST
 @RestController
+// Define o prefixo dos endpoints deste controller
 @RequestMapping("/api/hortas")
+// Permite requisições de qualquer origem (CORS)
 @CrossOrigin(origins = "*")
 public class HortaController {
 
+
+    // Logger para registrar informações e erros
     private static final Logger logger = LoggerFactory.getLogger(HortaController.class);
+    // Service responsável pela lógica de hortas
     private final HortaService hortaService;
 
+    // Injeção de dependência via construtor
     public HortaController(HortaService hortaService) {
         this.hortaService = hortaService;
     }
 
+
+    /**
+     * Endpoint para criar uma nova horta
+     * Recebe os dados da horta via JSON
+     * Retorna a horta criada ou erro
+     */
     @PostMapping
     public ResponseEntity<?> criarHorta(@Valid @RequestBody Horta horta) {
         try {
@@ -34,6 +53,11 @@ public class HortaController {
         }
     }
 
+
+    /**
+     * Endpoint para listar todas as hortas cadastradas
+     * Retorna uma lista de hortas
+     */
     @GetMapping
     public ResponseEntity<List<Horta>> listarHortas() {
         return ResponseEntity.ok(hortaService.buscarTodas());

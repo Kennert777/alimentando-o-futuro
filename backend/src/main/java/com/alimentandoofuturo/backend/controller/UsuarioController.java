@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "*") // Permite requisições de qualquer origem
+@CrossOrigin(origins = "https://refactored-giggle-v6qpr5gjggwjfwq7-5173.app.github.dev")
 public class UsuarioController {
 
     // Injeção de dependência do service de usuários
