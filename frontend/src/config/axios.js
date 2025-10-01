@@ -2,16 +2,7 @@ import axios from 'axios';
 
 // Configuração base do axios
 const getBaseURL = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return 'https://alimentandoofuturo.somee.com/api';
-  }
-  
-  // Para GitHub Codespaces
-  if (window.location.hostname.includes('github.dev')) {
-    return window.location.origin.replace('-5173', '-8080') + '/api';
-  }
-  
-  return '/api'; // Proxy local
+  return '/api'; // Sempre usar proxy
 };
 
 const api = axios.create({

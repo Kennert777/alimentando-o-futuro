@@ -9,7 +9,9 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: process.env.CODESPACE_NAME 
+          ? `https://${process.env.CODESPACE_NAME}-8080.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
+          : 'http://localhost:8080',
         changeOrigin: true,
         secure: false
       }

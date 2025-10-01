@@ -56,8 +56,11 @@ export default function Login() {
                                     <input 
                                         type="email" 
                                         className="form-control"
+                                        id="email"
+                                        name="email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        autoComplete="email"
                                         required 
                                     />
                                 </div>
@@ -67,8 +70,11 @@ export default function Login() {
                                     <input 
                                         type="password" 
                                         className="form-control"
+                                        id="password"
+                                        name="password"
                                         value={formData.password}
                                         onChange={(e) => setFormData({...formData, password: e.target.value})}
+                                        autoComplete="current-password"
                                         required 
                                     />
                                 </div>

@@ -575,6 +575,8 @@ export default function ChatbotFutuzinhoExpandido() {
                             />
                             <button
                                 onClick={sendMessage}
+                                title="Enviar mensagem"
+                                aria-label="Enviar mensagem"
                                 style={{
                                     backgroundColor: '#4F732C',
                                     color: 'white',
