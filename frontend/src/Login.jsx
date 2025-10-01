@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from './config/axios.js';
 import { useAuth } from './useAuth.jsx';
 
@@ -8,6 +8,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [erro, setErro] = useState('');
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,15 +21,21 @@ export default function Login() {
                 senha: formData.password
             });
             
+            console.log('Resposta do login:', response.data);
+            
             // Verifica se a resposta contém token JWT
             if (response.data.token && response.data.usuario) {
-                login(response.data.usuario, response.data.token);
+                await login(response.data.usuario, response.data.token);
             } else {
                 // Compatibilidade com resposta antiga
-                login(response.data);
+                await login(response.data);
             }
             
-            window.location.href = '/dashboard';
+            console.log('Login realizado, redirecionando...');
+            
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 500);
         } catch (error) {
             setErro(error.response?.data?.erro || 'Erro ao fazer login');
         } finally {
