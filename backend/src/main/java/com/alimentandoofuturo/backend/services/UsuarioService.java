@@ -1,13 +1,9 @@
-package com.alimentandoofuturo.backend.service;
+package com.alimentandoofuturo.backend.services;
 
-import com.alimentandoofuturo.backend.model.Usuario;
-import com.alimentandoofuturo.backend.repository.UsuarioRepository;
-import com.alimentandoofuturo.backend.exception.EmailAlreadyExistsException;
-import com.alimentandoofuturo.backend.exception.InvalidCredentialsException;
-import com.alimentandoofuturo.backend.exception.UserNotFoundException;
-
+import com.alimentandoofuturo.backend.model.entity.Usuario;
+import com.alimentandoofuturo.backend.model.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,23 +11,14 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-    
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public Usuario criarUsuario(Usuario usuario) {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
-            throw new EmailAlreadyExistsException("Email já cadastrado");
+            throw new RuntimeException("Email já cadastrado");
         }
-        
-        // Criptografa a senha antes de salvar
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setDataCadastro(LocalDateTime.now());
-        
         return usuarioRepository.save(usuario);
     }
 
@@ -39,14 +26,13 @@ public class UsuarioService {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
         
         if (usuarioOpt.isEmpty()) {
-            throw new InvalidCredentialsException("Email ou senha incorretos");
+            throw new RuntimeException("Email ou senha incorretos");
         }
         
         Usuario usuario = usuarioOpt.get();
         
-        // Verifica senha usando BCrypt
-        if (!passwordEncoder.matches(senha, usuario.getSenha())) {
-            throw new InvalidCredentialsException("Email ou senha incorretos");
+        if (!usuario.getSenha().equals(senha)) {
+            throw new RuntimeException("Email ou senha incorretos");
         }
         
         usuario.setDataUltimoAcesso(LocalDateTime.now());
@@ -57,17 +43,13 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email);
-    }
-
     public List<Usuario> buscarTodos() {
         return usuarioRepository.findAll();
     }
 
     public Usuario atualizarUsuario(Long id, Usuario dadosAtualizacao) {
         Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         
         if (dadosAtualizacao.getNome() != null) {
             usuario.setNome(dadosAtualizacao.getNome());
@@ -77,12 +59,6 @@ public class UsuarioService {
         }
         if (dadosAtualizacao.getEndereco() != null) {
             usuario.setEndereco(dadosAtualizacao.getEndereco());
-        }
-        if (dadosAtualizacao.getCidade() != null) {
-            usuario.setCidade(dadosAtualizacao.getCidade());
-        }
-        if (dadosAtualizacao.getEstado() != null) {
-            usuario.setEstado(dadosAtualizacao.getEstado());
         }
         
         return usuarioRepository.save(usuario);

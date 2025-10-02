@@ -26,31 +26,13 @@ spring:
         dialect: org.hibernate.dialect.SQLServerDialect
         format_sql: false
 
-# Configuração JWT
-jwt:
-  secret: alimentandoofuturo2024secretkeysupersecure
-  expiration: 86400000 # 24 horas em millisegundos
-
 # Configuração CORS
 cors:
   allowed-origins:
-    - http://localhost:5173
+    - http://localhost:5173  # Frontend Vite - React
+    - http://localhost:8686  # Mobile Flutter
     - https://*.netlify.app
     - https://*.netlify.com
-    - https://alimentando-o-futuro.netlify.app
-
-# Configuração de Email
-mail:
-  host: smtp.office365.com
-  port: 587
-  username: rm94720@estudante.fieb.edu.br
-  password: ${MAIL_PASSWORD:senha_temporaria}
-  properties:
-    mail:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
 
 logging:
   level:

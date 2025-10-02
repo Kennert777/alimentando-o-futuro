@@ -1,4 +1,4 @@
-package com.alimentandoofuturo.backend.model;
+package com.alimentandoofuturo.backend.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

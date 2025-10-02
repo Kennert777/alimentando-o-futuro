@@ -1,6 +1,6 @@
-package com.alimentandoofuturo.backend.repository;
+package com.alimentandoofuturo.backend.model.repository;
 
-import com.alimentandoofuturo.backend.model.Usuario;
+import com.alimentandoofuturo.backend.model.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
