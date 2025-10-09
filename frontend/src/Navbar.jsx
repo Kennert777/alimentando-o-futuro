@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from './useAuth.jsx';
-import { useTheme } from './ThemeContext.jsx';
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,7 @@ export default function Navbar() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
   const { currentUser, isAdmin, logout: authLogout } = useAuth();
-  const { isDarkMode, toggleDarkMode } = useTheme();
+
 
   const logout = () => {
     authLogout();
@@ -47,15 +47,7 @@ export default function Navbar() {
             <li className="nav-item mx-2">
               <Link className="nav-link fw-semibold" to="/sobre" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Sobre</Link>
             </li>
-            <li className="nav-item mx-2">
-              <button 
-                className="btn btn-outline-light btn-sm" 
-                onClick={toggleDarkMode}
-                style={{ borderRadius: '20px' }}
-              >
-                {isDarkMode ? '☀️' : '🌙'}
-              </button>
-            </li>
+
           </ul>
           
           <ul className="navbar-nav">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { api } from './config/api.js';
+import { apiService } from './services/apiService.js';
 import { plantas } from './data/plantas.js';
 
 export default function Colheitas() {
@@ -27,7 +27,7 @@ export default function Colheitas() {
 
     const loadColheitas = async (userId) => {
         try {
-            const response = await axios.get(api.colheitas.porUsuario(userId));
+            const response = await axios.get(apiService.colheitas.porUsuario(userId));
             setColheitas(response.data);
         } catch (error) {
             console.error('Erro ao carregar colheitas:', error);
@@ -39,7 +39,7 @@ export default function Colheitas() {
         e.preventDefault();
         
         try {
-            const hortasResponse = await axios.get(api.hortas.porUsuario(user.id));
+            const hortasResponse = await axios.get(apiService.hortas.porUsuario(user.id));
             const hortas = hortasResponse.data;
             const hortaId = hortas.length > 0 ? hortas[0].id : null;
             
@@ -48,14 +48,13 @@ export default function Colheitas() {
                 return;
             }
             
-            await axios.post(api.colheitas.criar, {
+            await axios.post(apiService.colheitas.criar(), {
                 horta: { id: hortaId },
                 usuario: { id: user.id },
-                tipoPlanta: formData.tipo_planta,
-                quantidadeKg: parseFloat(formData.quantidade_kg),
+                produto: formData.tipo_planta,
+                quantidade: parseFloat(formData.quantidade_kg),
                 dataColheita: formData.data_colheita,
                 qualidade: formData.qualidade.toUpperCase(),
-                destino: formData.destino,
                 observacoes: formData.observacoes
             });
             
@@ -68,10 +67,22 @@ export default function Colheitas() {
         }
     };
 
+    const deleteColheita = async (colheitaId, produto) => {
+        if (confirm(`Tem certeza que deseja deletar a colheita de "${produto}"?`)) {
+            try {
+                await axios.delete(apiService.colheitas.deletar(colheitaId));
+                alert('Colheita deletada com sucesso!');
+                loadColheitas(user.id);
+            } catch (error) {
+                alert('Erro ao deletar colheita: ' + (error.response?.data?.erro || error.message));
+            }
+        }
+    };
+
     const getTotalColheitas = () => {
         if (!colheitas || colheitas.length === 0) return '0.00';
         return colheitas.reduce((total, colheita) => {
-            const kg = parseFloat(colheita.quantidadeKg || colheita.quantidade_kg || 0);
+            const kg = parseFloat(colheita.quantidade || colheita.quantidadeKg || colheita.quantidade_kg || 0);
             return total + (isNaN(kg) ? 0 : kg);
         }, 0).toFixed(2);
     };
@@ -83,7 +94,7 @@ export default function Colheitas() {
             const dataColheita = colheita.dataColheita || colheita.data_colheita;
             if (dataColheita) {
                 const mes = new Date(dataColheita).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-                const kg = parseFloat(colheita.quantidadeKg || colheita.quantidade_kg || 0);
+                const kg = parseFloat(colheita.quantidade || colheita.quantidadeKg || colheita.quantidade_kg || 0);
                 agrupadas[mes] = (agrupadas[mes] || 0) + (isNaN(kg) ? 0 : kg);
             }
         });
@@ -234,7 +245,7 @@ export default function Colheitas() {
                             <div className="card">
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between align-items-start mb-2">
-                                        <h5 className="card-title">{colheita.tipoPlanta || colheita.tipo_planta}</h5>
+                                        <h5 className="card-title">{colheita.produto || colheita.tipoPlanta || colheita.tipo_planta}</h5>
                                         <span className={`badge ${
                                             colheita.qualidade === 'excelente' ? 'bg-success' :
                                             colheita.qualidade === 'boa' ? 'bg-primary' :
@@ -243,7 +254,7 @@ export default function Colheitas() {
                                             {colheita.qualidade}
                                         </span>
                                     </div>
-                                    <p><strong>📊 Quantidade:</strong> {colheita.quantidadeKg || colheita.quantidade_kg || 0} kg</p>
+                                    <p><strong>📊 Quantidade:</strong> {colheita.quantidade || colheita.quantidadeKg || colheita.quantidade_kg || 0} kg</p>
                                     <p><strong>📅 Data:</strong> {new Date(colheita.dataColheita || colheita.data_colheita).toLocaleDateString()}</p>
                                     <p><strong>🎯 Destino:</strong> {(colheita.destino || '').replace('_', ' ')}</p>
                                     {colheita.observacoes && (
@@ -252,6 +263,14 @@ export default function Colheitas() {
                                     <small className="text-muted">
                                         Registrado em: {new Date(colheita.dataRegistro || colheita.data_registro || new Date()).toLocaleDateString()}
                                     </small>
+                                    <div className="mt-2">
+                                        <button 
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => deleteColheita(colheita.id, colheita.produto || colheita.tipoPlanta || colheita.tipo_planta)}
+                                        >
+                                            🗑️ Deletar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

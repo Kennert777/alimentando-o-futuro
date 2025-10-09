@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="container py-4">
         <div className="row">
           <div className="col-md-6">
-            <h5 style={{ fontFamily: 'Playfair Display', fontWeight: '600' }}>Alimentando o Futuro</h5>
+            <h5 style={{ fontFamily: 'Playfair Display', fontWeight: '1000' }}>Alimentando o Futuro</h5>
             <p className="small" style={{ fontFamily: 'Cormorant Garamond' }}>
               Promovendo alimentação saudável e sustentável através da tecnologia e educação.
             </p>

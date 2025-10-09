@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from './config/api';
+import { api } from './config/api';
 
 export default function ForgotPassword() {
     const [step, setStep] = useState(1); // 1: email, 2: token + nova senha

@@ -25,9 +25,7 @@ import Register from './Register';
 import ForgotPassword from './ForgotPassword';
 import Dashboard from './Dashboard';
 import HortasUsuario from './HortasUsuario';
-import Chat from './Chat';
 import AdminRedirect from './AdminRedirect';
-import ChatbotFutuzinhoExpandido from './ChatbotFutuzinhoExpandido';
 import Dicas from './Dicas';
 import Colheitas from './Colheitas';
 // Componentes Administrativos
@@ -40,21 +38,18 @@ import AdminDicas from './AdminDicas';
 import AdminRegister from './AdminRegister';
 import AdminNotificacoes from './AdminNotificacoes';
 import AdminHortas from './AdminHortas';
+import AdminColheitas from './AdminColheitas';
 import { AdminRoute, UserRoute } from './ProtectedRoute';
 import { AuthProvider } from './useAuth.jsx';
 import { ThemeProvider } from './ThemeContext.jsx';
-// import MapaHortas from './MapaHortas';
-// import MapaHortasNovo from './MapaHortasNovo';
-import Relatorios from './Relatorios';
+import ChatbotFutuzinhoExpandido from './ChatbotFutuzinhoExpandido';
 import RelatoriosNovo from './RelatoriosNovo';
 
 // Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
 // Configuração global do axios
 import './config/axios.js';
-// CSS para modo escuro
-import './styles/dark-mode.css';
-// Fonte Vogue
+// Estilos globais
 import './styles/globals.css';
 
 /**
@@ -64,14 +59,14 @@ import './styles/globals.css';
  * - Router: Gerencia navegação SPA
  * - Layout: Navbar + Main + Footer
  * - Routes: Define todas as rotas da aplicação
- * - Chatbot: Assistente virtual flutuante
+
  */
 export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-      {/* Router: Habilita navegação entre páginas sem recarregar (SPA) */}
-      <Router>
+        {/* Router: Habilita navegação entre páginas sem recarregar (SPA) */}
+        <Router>
       {/* Container principal com layout flexbox */}
       <div className="d-flex flex-column min-vh-100">
         {/* Navbar: Menu de navegação fixo no topo */}
@@ -92,7 +87,7 @@ export default function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Redefinir senha */}
             <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />      {/* Dashboard do usuário */}
             <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} /> {/* Hortas do usuário */}
-            <Route path="/chat" element={<UserRoute><Chat /></UserRoute>} />                {/* Sistema de chat */}
+
             <Route path="/admin" element={<AdminRedirect />} />              {/* Redirecionamento admin */}
             <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
             <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />      {/* Controle de colheitas */}
@@ -104,6 +99,7 @@ export default function App() {
             <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> {/* Dashboard admin */}
             <Route path="/admin/usuarios" element={<AdminRoute><AdminUsuarios /></AdminRoute>} /> {/* Gerenciar usuários */}
             <Route path="/admin/hortas" element={<AdminRoute><AdminHortas /></AdminRoute>} />   {/* Gerenciar hortas */}
+            <Route path="/admin/colheitas" element={<AdminRoute><AdminColheitas /></AdminRoute>} /> {/* Gerenciar colheitas */}
             <Route path="/admin/solicitacoes" element={<AdminRoute><AdminSolicitacoes /></AdminRoute>} /> {/* Solicitações */}
             <Route path="/admin/dicas" element={<AdminRoute><AdminDicas /></AdminRoute>} />       {/* Gerenciar dicas */}
             <Route path="/admin/relatorios" element={<AdminRoute><AdminRelatorios /></AdminRoute>} /> {/* Relatórios */}

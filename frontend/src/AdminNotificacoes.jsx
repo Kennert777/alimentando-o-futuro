@@ -139,7 +139,7 @@ export default function AdminNotificacoes() {
                                 <option value="todas">Todas</option>
                                 <option value="nao_lidas">Não lidas</option>
                                 <option value="solicitacao">Solicitações</option>
-                                <option value="chat">Chat</option>
+
                                 <option value="cadastro">Cadastros</option>
                                 <option value="horta">Hortas</option>
                                 <option value="colheita">Colheitas</option>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth.jsx';
-import { useTheme } from './ThemeContext.jsx';
+
 
 export default function AdminUsuarios() {
   const { isAdmin } = useAuth();
-  const { isDarkMode } = useTheme();
+
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +53,7 @@ export default function AdminUsuarios() {
   if (!isAdmin) return null;
 
   return (
-    <div className={`container py-5 ${isDarkMode ? 'text-white' : ''}`}>
+    <div className="container py-5">
       <h1 className="mb-4" style={{ fontFamily: 'Playfair Display' }}>Gerenciar Usuários</h1>
       
       {loading ? (
@@ -63,10 +63,10 @@ export default function AdminUsuarios() {
           </div>
         </div>
       ) : (
-        <div className={`card ${isDarkMode ? 'bg-dark text-white' : ''}`}>
+        <div className="card">
           <div className="card-body">
             <div className="table-responsive">
-              <table className={`table ${isDarkMode ? 'table-dark' : ''}`}>
+              <table className="table">
                 <thead>
                   <tr>
                     <th>ID</th>

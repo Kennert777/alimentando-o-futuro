@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import api from './config/axios.js';
+import axios from 'axios';
+import { apiService } from './services/apiService.js';
 import { Link } from 'react-router-dom';
 import { useAdminAuth } from './useAuth.jsx';
 import { AdminSessionInfo } from './ProtectedRoute.jsx';
@@ -18,7 +19,7 @@ export default function AdminHortas() {
 
     const loadHortas = async () => {
         try {
-            const response = await api.get('/hortas');
+            const response = await axios.get(apiService.hortas.listar());
             const todasHortas = response.data;
             setHortas(todasHortas);
         } catch (error) {
@@ -30,11 +31,14 @@ export default function AdminHortas() {
     };
 
     const aprovarHorta = async (id) => {
-        try {
-            await api.put(`/hortas/${id}`, { aprovada: true });
-            loadHortas();
-        } catch (error) {
-            alert('Erro ao aprovar horta: ' + error.message);
+        if (confirm('Tem certeza que deseja aprovar esta horta?')) {
+            try {
+                await axios.put(apiService.hortas.aprovar(id));
+                alert('Horta aprovada com sucesso!');
+                loadHortas();
+            } catch (error) {
+                alert('Erro ao aprovar horta: ' + (error.response?.data?.erro || error.message));
+            }
         }
     };
 
@@ -42,14 +46,13 @@ export default function AdminHortas() {
         const motivo = prompt('Motivo da rejeição:');
         if (motivo) {
             try {
-                await api.put(`/hortas/${id}`, { 
-                    aprovada: false, 
-                    status: 'rejeitada',
-                    motivo_rejeicao: motivo 
+                await axios.put(apiService.hortas.atualizar(id), { 
+                    status: 'INATIVA'
                 });
+                alert('Horta rejeitada com sucesso!');
                 loadHortas();
             } catch (error) {
-                alert('Erro ao rejeitar horta: ' + error.message);
+                alert('Erro ao rejeitar horta: ' + (error.response?.data?.erro || error.message));
             }
         }
     };
@@ -57,10 +60,11 @@ export default function AdminHortas() {
     const excluirHorta = async (id) => {
         if (confirm('Tem certeza que deseja excluir esta horta?')) {
             try {
-                await api.delete(`/hortas/${id}`);
+                await axios.delete(apiService.hortas.deletar(id));
+                alert('Horta excluída com sucesso!');
                 loadHortas();
             } catch (error) {
-                alert('Erro ao excluir horta: ' + error.message);
+                alert('Erro ao excluir horta: ' + (error.response?.data?.erro || error.message));
             }
         }
     };
@@ -178,8 +182,8 @@ export default function AdminHortas() {
                                     </div>
                                     
                                     <p><strong>Localização:</strong> {horta.localizacao}</p>
-                                    <p><strong>Tipo:</strong> {horta.tipo}</p>
-                                    <p><strong>Usuário ID:</strong> {horta.usuario_id}</p>
+                                    <p><strong>Tipo:</strong> {horta.tipoPlantio}</p>
+                                    <p><strong>Usuário:</strong> {horta.usuario?.nome || 'N/A'}</p>
                                     
                                     {horta.descricao && (
                                         <p><strong>Descrição:</strong> {horta.descricao.substring(0, 100)}...</p>
@@ -192,11 +196,11 @@ export default function AdminHortas() {
                                     )}
                                     
                                     <small className="text-muted">
-                                        Criada em: {new Date(horta.data_criacao).toLocaleDateString()}
+                                        Criada em: {new Date(horta.dataCriacao).toLocaleDateString()}
                                     </small>
                                     
                                     <div className="mt-3">
-                                        {!horta.aprovada && horta.status !== 'rejeitada' && (
+                                        {horta.status !== 'INATIVA' && (
                                             <>
                                                 <button 
                                                     className="btn btn-success btn-sm me-2"
@@ -205,10 +209,10 @@ export default function AdminHortas() {
                                                     ✓ Aprovar
                                                 </button>
                                                 <button 
-                                                    className="btn btn-danger btn-sm me-2"
+                                                    className="btn btn-warning btn-sm me-2"
                                                     onClick={() => rejeitarHorta(horta.id)}
                                                 >
-                                                    ✗ Rejeitar
+                                                    ⚠️ Inativar
                                                 </button>
                                             </>
                                         )}

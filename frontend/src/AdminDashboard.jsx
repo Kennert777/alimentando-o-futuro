@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth.jsx';
-import { useTheme } from './ThemeContext.jsx';
+
 
 export default function AdminDashboard() {
   const { currentUser, isAdmin } = useAuth();
-  const { isDarkMode } = useTheme();
+
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalHortas: 0,
@@ -37,12 +37,12 @@ export default function AdminDashboard() {
   if (!isAdmin) return null;
 
   return (
-    <div className={`container py-5 ${isDarkMode ? 'text-white' : ''}`}>
+    <div className="container py-5">
       <h1 className="mb-4" style={{ fontFamily: 'Playfair Display' }}>Dashboard Administrativo</h1>
       
       <div className="row g-4 mb-5">
         <div className="col-md-3">
-          <div className={`card h-100 ${isDarkMode ? 'bg-dark text-white' : ''}`}>
+          <div className="card h-100">
             <div className="card-body text-center">
               <h3 className="text-success">{stats.totalUsers}</h3>
               <p className="card-text">Total de Usuários</p>
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="col-md-3">
-          <div className={`card h-100 ${isDarkMode ? 'bg-dark text-white' : ''}`}>
+          <div className="card h-100">
             <div className="card-body text-center">
               <h3 className="text-success">{stats.totalHortas}</h3>
               <p className="card-text">Total de Hortas</p>
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="col-md-3">
-          <div className={`card h-100 ${isDarkMode ? 'bg-dark text-white' : ''}`}>
+          <div className="card h-100">
             <div className="card-body text-center">
               <h3 className="text-success">{stats.totalColheitas}</h3>
               <p className="card-text">Total de Colheitas</p>
@@ -66,7 +66,7 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="col-md-3">
-          <div className={`card h-100 ${isDarkMode ? 'bg-dark text-white' : ''}`}>
+          <div className="card h-100">
             <div className="card-body text-center">
               <h3 className="text-success">{stats.activeUsers}</h3>
               <p className="card-text">Usuários Ativos</p>
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
 
       <div className="row">
         <div className="col-md-6">
-          <div className={`card ${isDarkMode ? 'bg-dark text-white' : ''}`}>
+          <div className="card">
             <div className="card-header">
               <h5>Ações Rápidas</h5>
             </div>

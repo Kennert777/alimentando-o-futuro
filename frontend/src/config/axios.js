@@ -2,12 +2,7 @@ import axios from 'axios';
 
 // Configuração base do axios
 const getBaseURL = () => {
-  // Em desenvolvimento, sempre usar proxy
-  if (import.meta.env.DEV) {
-    return '/api';
-  }
-  // Em produção, usar URL do backend
-  return 'https://alimentandoofuturo.somee.com/api';
+  return 'http://localhost:8080/api';
 };
 
 const api = axios.create({

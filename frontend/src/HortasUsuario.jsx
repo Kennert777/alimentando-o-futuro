@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { api } from './config/api.js';
+import { apiService } from './services/apiService.js';
 
 export default function HortasUsuario() {
     const [user, setUser] = useState(null);
@@ -22,7 +22,7 @@ export default function HortasUsuario() {
 
     const loadHortas = async (userId) => {
         try {
-            const response = await axios.get(api.hortas.porUsuario(userId));
+            const response = await axios.get(apiService.hortas.porUsuario(userId));
             setHortas(response.data);
         } catch (error) {
             console.error('Erro ao carregar hortas:', error);
@@ -33,13 +33,13 @@ export default function HortasUsuario() {
         e.preventDefault();
         
         try {
-            await axios.post(api.hortas.criar, {
+            await axios.post(apiService.hortas.criar(), {
                 nome: formData.nome,
                 localizacao: formData.localizacao,
-                tipoCultivo: formData.tipo.toUpperCase(),
+                tipoPlantio: formData.tipo,
                 descricao: formData.descricao,
                 status: formData.status.toUpperCase(),
-                usuarioResponsavel: { id: user.id }
+                usuario: { id: user.id }
             });
             
             alert('Horta cadastrada com sucesso!');
@@ -53,7 +53,7 @@ export default function HortasUsuario() {
 
     const updateStatus = async (hortaId, newStatus) => {
         try {
-            await axios.put(api.hortas.atualizar(hortaId), {
+            await axios.put(apiService.hortas.atualizar(hortaId), {
                 status: newStatus.toUpperCase()
             });
             
@@ -61,6 +61,18 @@ export default function HortasUsuario() {
             loadHortas(user.id);
         } catch (error) {
             alert('Erro ao atualizar status: ' + (error.response?.data?.erro || error.message));
+        }
+    };
+
+    const deleteHorta = async (hortaId, nomeHorta) => {
+        if (confirm(`Tem certeza que deseja deletar a horta "${nomeHorta}"?`)) {
+            try {
+                await axios.delete(apiService.hortas.deletar(hortaId));
+                alert('Horta deletada com sucesso!');
+                loadHortas(user.id);
+            } catch (error) {
+                alert('Erro ao deletar horta: ' + (error.response?.data?.erro || error.message));
+            }
         }
     };
 
@@ -171,7 +183,7 @@ export default function HortasUsuario() {
                                         </span>
                                     </div>
                                     <p><strong>📍 Local:</strong> {horta.localizacao}</p>
-                                    <p><strong>🌱 Tipo:</strong> {horta.tipo_cultivo}</p>
+                                    <p><strong>🌱 Tipo:</strong> {horta.tipoPlantio}</p>
                                     <p><strong>📊 Status:</strong> 
                                         <select 
                                             className="form-select form-select-sm d-inline-block ms-2" 
@@ -189,6 +201,14 @@ export default function HortasUsuario() {
                                     <small className="text-muted">
                                         Criada em: {new Date(horta.dataCriacao).toLocaleDateString()}
                                     </small>
+                                    <div className="mt-2">
+                                        <button 
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => deleteHorta(horta.id, horta.nome)}
+                                        >
+                                            🗑️ Deletar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

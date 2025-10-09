@@ -2,11 +2,6 @@
 
 import axios from "axios";
 
-// Troque a URL abaixo conforme o ambiente
-// Localhost (para desenvolvimento):
-// const API_URL = "http://localhost:8080/api";
-
-// Somee (produção):
 const API_URL = "http://localhost:8080/api"
 
 export const api = axios.create({
