@@ -1,122 +1,47 @@
-/**
- * Arquivo principal da aplicação React - Alimentando o Futuro
- * 
- * Este arquivo configura:
- * - Roteamento da aplicação (React Router)
- * - Layout principal (Navbar, Main, Footer)
- * - Todas as rotas públicas e administrativas
- * - Integração do chatbot
- * - Estilos globais (Bootstrap + CSS customizado)
- */
-
-// Importações necessárias do React Router para navegação entre páginas
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Importação dos componentes principais da aplicação
+import { AuthProvider } from './useAuth.jsx';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Home from './Home';
+import Login from './Login';
+import Register from './Register';
+import Dashboard from './Dashboard';
+import HortasUsuario from './HortasUsuario';
+import Colheitas from './Colheitas';
 import HortaDigital from './HortaDigital';
 import Receitas from './Receitas';
 import ApoioNovo from './ApoioNovo';
 import Sobre from './Sobre';
-import Login from './Login';
-import Register from './Register';
-import ForgotPassword from './ForgotPassword';
-import Dashboard from './Dashboard';
-import HortasUsuario from './HortasUsuario';
-import AdminRedirect from './AdminRedirect';
-import Dicas from './Dicas';
-import Colheitas from './Colheitas';
-// Componentes Administrativos
-import AdminLogin from './AdminLogin';
-import AdminDashboard from './AdminDashboard';
-import AdminUsuarios from './AdminUsuarios';
-import AdminSolicitacoes from './AdminSolicitacoes';
-import AdminRelatorios from './AdminRelatorios';
-import AdminDicas from './AdminDicas';
 import AdminRegister from './AdminRegister';
-import AdminNotificacoes from './AdminNotificacoes';
-import AdminHortas from './AdminHortas';
-import AdminColheitas from './AdminColheitas';
-import { AdminRoute, UserRoute } from './ProtectedRoute';
-import { AuthProvider } from './useAuth.jsx';
-import { ThemeProvider } from './ThemeContext.jsx';
-import ChatbotFutuzinhoExpandido from './ChatbotFutuzinhoExpandido';
-import RelatoriosNovo from './RelatoriosNovo';
+import { UserRoute } from './ProtectedRoute';
 
-// Importação do CSS do Bootstrap para estilização
 import 'bootstrap/dist/css/bootstrap.min.css';
-// Configuração global do axios
 import './config/axios.js';
-// Estilos globais
-import './styles/globals.css';
 
-/**
- * Componente principal da aplicação
- * 
- * Estrutura:
- * - Router: Gerencia navegação SPA
- * - Layout: Navbar + Main + Footer
- * - Routes: Define todas as rotas da aplicação
-
- */
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        {/* Router: Habilita navegação entre páginas sem recarregar (SPA) */}
-        <Router>
-      {/* Container principal com layout flexbox */}
-      <div className="d-flex flex-column min-vh-100">
-        {/* Navbar: Menu de navegação fixo no topo */}
-        <Navbar />
-        
-        {/* Main: Área principal que cresce para ocupar espaço disponível */}
-        <main className="flex-grow-1">
-          {/* Routes: Define as rotas da aplicação */}
-          <Routes>
-            {/* ROTAS PÚBLICAS - Acessíveis a todos os usuários */}
-            <Route path="/" element={<Home />} />                    {/* Página inicial */}
-            <Route path="/horta" element={<HortaDigital />} />       {/* Página da horta */}
-            <Route path="/receitas" element={<Receitas />} />        {/* Página de receitas */}
-            <Route path="/apoio" element={<ApoioNovo />} />              {/* Página de apoio */}
-            <Route path="/sobre" element={<Sobre />} />              {/* Página sobre */}
-            <Route path="/login" element={<Login />} />              {/* Página de login */}
-            <Route path="/register" element={<Register />} />        {/* Página de registro */}
-            <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Redefinir senha */}
-            <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />      {/* Dashboard do usuário */}
-            <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} /> {/* Hortas do usuário */}
-
-            <Route path="/admin" element={<AdminRedirect />} />              {/* Redirecionamento admin */}
-            <Route path="/dicas" element={<Dicas />} />              {/* Dicas e conhecimento */}
-            <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />      {/* Controle de colheitas */}
-            {/* Rota do mapa removida */}
-            <Route path="/relatorios" element={<UserRoute><RelatoriosNovo /></UserRoute>} />    {/* Relatórios e gráficos */}
-            {/* ROTAS ADMINISTRATIVAS - Requerem autenticação de admin */}
-            <Route path="/admin/login" element={<AdminLogin />} />   {/* Login admin */}
-            <Route path="/admin/register" element={<AdminRegister />} /> {/* Cadastro admin */}
-            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> {/* Dashboard admin */}
-            <Route path="/admin/usuarios" element={<AdminRoute><AdminUsuarios /></AdminRoute>} /> {/* Gerenciar usuários */}
-            <Route path="/admin/hortas" element={<AdminRoute><AdminHortas /></AdminRoute>} />   {/* Gerenciar hortas */}
-            <Route path="/admin/colheitas" element={<AdminRoute><AdminColheitas /></AdminRoute>} /> {/* Gerenciar colheitas */}
-            <Route path="/admin/solicitacoes" element={<AdminRoute><AdminSolicitacoes /></AdminRoute>} /> {/* Solicitações */}
-            <Route path="/admin/dicas" element={<AdminRoute><AdminDicas /></AdminRoute>} />       {/* Gerenciar dicas */}
-            <Route path="/admin/relatorios" element={<AdminRoute><AdminRelatorios /></AdminRoute>} /> {/* Relatórios */}
-            <Route path="/admin/notificacoes" element={<AdminRoute><AdminNotificacoes /></AdminRoute>} /> {/* Notificações */}
-            <Route path="/admin/gamificacao" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> {/* Gamificação */}
-
-          </Routes>
-        </main>
-        
-        {/* Footer: Rodapé fixo na parte inferior */}
-        <Footer />
-        
-        {/* Chatbot: Assistente virtual flutuante */}
-        <ChatbotFutuzinhoExpandido />
-      </div>
-    </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <Router>
+        <div className="d-flex flex-column min-vh-100">
+          <Navbar />
+          <main className="flex-grow-1">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/horta" element={<HortaDigital />} />
+              <Route path="/receitas" element={<Receitas />} />
+              <Route path="/apoio" element={<ApoioNovo />} />
+              <Route path="/sobre" element={<Sobre />} />
+              <Route path="/admin/register" element={<AdminRegister />} />
+              <Route path="/dashboard" element={<UserRoute><Dashboard /></UserRoute>} />
+              <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} />
+              <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }

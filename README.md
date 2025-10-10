@@ -7,11 +7,12 @@ Plataforma completa para agricultura urbana e sustentabilidade alimentar.
 ✅ **Sistema de Autenticação** - JWT + Sessões persistentes  
 ✅ **Banco de Dados** - SQL Server configurado (Somee.com)  
 ✅ **API Backend** - Spring Boot com CORS otimizado  
-✅ **Frontend** - React com Bootstrap e Recharts  
-✅ **Dashboard** - Interface estável sem redirecionamentos  
-❌ **Google Maps** - Removido do projeto  
+✅ **Frontend** - React com Bootstrap limpo e otimizado  
+✅ **Dashboard** - Interface estável e responsiva  
+✅ **CRUD Completo** - Usuários, Hortas e Colheitas funcionais  
 ✅ **Relatórios CSV** - Exportação e gráficos dinâmicos  
 ✅ **Deploy Ready** - Configurado para Netlify + Somee  
+🧹 **Código Limpo** - Removidos mapas, modo escuro e chatbot  
 
 ## 📁 Estrutura do Projeto
 
@@ -59,13 +60,14 @@ npm run dev
 ✅ Sistema de cadastro de usuários
 ✅ Sistema de login/logout com JWT
 ✅ Dashboard estável e responsivo
-✅ Gerenciamento de hortas e colheitas
+✅ CRUD completo de hortas (criar, listar, atualizar, deletar)
+✅ CRUD completo de colheitas (registrar, listar, deletar)
 ✅ Relatórios CSV e gráficos dinâmicos
 ✅ Interface responsiva com Bootstrap
 ✅ Autenticação persistente e segura
 ✅ Exportação de dados em CSV
-🔄 Chat integrado (em desenvolvimento)
-🔄 Sistema de receitas (em desenvolvimento)
+✅ Sistema de receitas
+✅ Páginas informativas (Sobre, Apoio)
 
 ## ⚙️ Backend (Spring Boot Java)
 
@@ -92,8 +94,7 @@ mvn spring-boot:run
 - `POST /api/colheitas` - Registrar colheita
 - `GET /api/colheitas/usuario/{id}` - Colheitas por usuário
 
-#### Localizações
-❌ Endpoints removidos
+
 
 #### Relatórios
 - `GET /api/relatorios/csv/{id}` - Exportar CSV
@@ -206,7 +207,17 @@ npm run build
 
 ## 🎯 Funcionalidades Principais
 
-### (Google Maps removido)
+### 🌱 Gerenciamento de Hortas
+- Cadastro de hortas com diferentes tipos de cultivo
+- Acompanhamento de status (planejamento, plantio, crescimento, colheita)
+- Localização e descrição detalhada
+- Aprovação administrativa
+
+### 🌾 Controle de Colheitas
+- Registro de colheitas com quantidade e qualidade
+- Seleção de plantas da base de dados
+- Estatísticas de produção
+- Histórico completo de colheitas
 
 ### 📊 Relatórios e Gráficos
 - Exportação de dados em CSV
@@ -227,4 +238,4 @@ npm run build
 - Bootstrap 5 integrado
 - Componentes reutilizáveis
 - Navegação intuitiva
-- Modo escuro (em desenvolvimento)
+- Interface limpa e otimizada

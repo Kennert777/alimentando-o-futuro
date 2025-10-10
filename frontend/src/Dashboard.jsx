@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from './config/api.js';
 import { useAuth } from './useAuth.jsx';
+import { apiService } from './services/apiService.js';
 
 export default function Dashboard() {
     const [user, setUser] = useState(null);
@@ -22,9 +23,9 @@ export default function Dashboard() {
     const loadUserStats = async (userId) => {
         try {
             const [hortasResponse, colheitasResponse, userResponse] = await Promise.all([
-                axios.get(api.hortas.porUsuario(userId)),
-                axios.get(api.colheitas.porUsuario(userId)),
-                axios.get(api.usuarios.buscar(userId))
+                axios.get(apiService.hortas.listar()),
+                axios.get(apiService.colheitas.listar()),
+                axios.get(apiService.usuarios.listar())
             ]);
             
             const updatedUser = userResponse.data;

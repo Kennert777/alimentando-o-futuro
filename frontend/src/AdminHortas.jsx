@@ -33,7 +33,7 @@ export default function AdminHortas() {
     const aprovarHorta = async (id) => {
         if (confirm('Tem certeza que deseja aprovar esta horta?')) {
             try {
-                await axios.put(apiService.hortas.aprovar(id));
+                await axios.put(apiService.hortas.atualizar(id), { aprovada: true });
                 alert('Horta aprovada com sucesso!');
                 loadHortas();
             } catch (error) {

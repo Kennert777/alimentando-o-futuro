@@ -22,7 +22,7 @@ export default function HortasUsuario() {
 
     const loadHortas = async (userId) => {
         try {
-            const response = await axios.get(apiService.hortas.porUsuario(userId));
+            const response = await axios.get(apiService.hortas.listar());
             setHortas(response.data);
         } catch (error) {
             console.error('Erro ao carregar hortas:', error);

@@ -1,39 +1,66 @@
 const API_URL = "http://localhost:8080/api";
+const AUTH_URL = "http://localhost:8080/auth";
 
 export const apiService = {
-  // Usuários
+  // Autenticação (2 endpoints)
+  auth: {
+    register: () => `${AUTH_URL}/register`,
+    login: () => `${AUTH_URL}/login`,
+  },
+
+  // Usuários (4 endpoints)
   usuarios: {
     listar: () => `${API_URL}/usuarios`,
-    buscar: (id) => `${API_URL}/usuarios/${id}`,
-    cadastro: () => `${API_URL}/usuarios/cadastro`,
-    login: () => `${API_URL}/usuarios/login`,
+    findAll: () => `${API_URL}/usuarios/findAll`,
     atualizar: (id) => `${API_URL}/usuarios/${id}`,
     deletar: (id) => `${API_URL}/usuarios/${id}`,
   },
 
-  // Hortas
+  // Hortas (5 endpoints)
   hortas: {
     listar: () => `${API_URL}/hortas`,
-    buscar: (id) => `${API_URL}/hortas/${id}`,
     criar: () => `${API_URL}/hortas`,
+    buscar: (id) => `${API_URL}/hortas/${id}`,
     atualizar: (id) => `${API_URL}/hortas/${id}`,
     deletar: (id) => `${API_URL}/hortas/${id}`,
-    porUsuario: (usuarioId) => `${API_URL}/hortas/usuario/${usuarioId}`,
-    aprovar: (id) => `${API_URL}/hortas/${id}/aprovar`,
   },
 
-  // Colheitas
+  // Colheitas (5 endpoints)
   colheitas: {
     listar: () => `${API_URL}/colheitas`,
-    buscar: (id) => `${API_URL}/colheitas/${id}`,
     criar: () => `${API_URL}/colheitas`,
+    buscar: (id) => `${API_URL}/colheitas/${id}`,
     atualizar: (id) => `${API_URL}/colheitas/${id}`,
     deletar: (id) => `${API_URL}/colheitas/${id}`,
-    porUsuario: (usuarioId) => `${API_URL}/colheitas/usuario/${usuarioId}`,
-    porHorta: (hortaId) => `${API_URL}/colheitas/horta/${hortaId}`,
   },
 
-  // Health check
-  ping: () => `${API_URL}/ping`,
-  health: () => `${API_URL}/health`,
+  // Reset de Senhas (8 endpoints)
+  passwordReset: {
+    listar: () => `${API_URL}/password-reset`,
+    criar: () => `${API_URL}/password-reset`,
+    buscar: (id) => `${API_URL}/password-reset/${id}`,
+    buscarPorToken: (token) => `${API_URL}/password-reset/token/${token}`,
+    buscarPorEmail: (email) => `${API_URL}/password-reset/email/${email}`,
+    atualizar: (id) => `${API_URL}/password-reset/${id}`,
+    deletar: (id) => `${API_URL}/password-reset/${id}`,
+    deletarPorEmail: (email) => `${API_URL}/password-reset/email/${email}`,
+  },
+
+  // Suporte (8 endpoints)
+  support: {
+    listar: () => `${API_URL}/support`,
+    criar: () => `${API_URL}/support`,
+    buscar: (id) => `${API_URL}/support/${id}`,
+    buscarPorEmail: (email) => `${API_URL}/support/email/${email}`,
+    buscarPorStatus: (status) => `${API_URL}/support/status/${status}`,
+    atualizar: (id) => `${API_URL}/support/${id}`,
+    atualizarStatus: (id) => `${API_URL}/support/${id}/status`,
+    deletar: (id) => `${API_URL}/support/${id}`,
+  },
 };
+
+// Compatibilidade com código existente
+export const auth = apiService.auth;
+export const usuarios = apiService.usuarios;
+export const hortas = apiService.hortas;
+export const colheitas = apiService.colheitas;

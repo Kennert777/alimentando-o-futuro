@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "./useAuth";
+import { useAuth } from "./useAuth";
+import { apiService } from "./services/apiService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
     setLoading(true);
     setErro("");
     try {
-      const response = await fetch("/api/usuarios/login", {
+      const response = await fetch(apiService.auth.login(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -35,7 +36,7 @@ const Login = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4 text-primary">Login</h2>
+      <h2 className="mb-4" style={{ color: '#4F732C' }}>Login</h2>
       <form onSubmit={handleSubmit} className="card p-4 shadow-sm">
         <div className="mb-3">
           <label className="form-label">E-mail</label>
@@ -62,7 +63,8 @@ const Login = () => {
         {erro && <div className="alert alert-danger">{erro}</div>}
         <button
           type="submit"
-          className="btn btn-primary w-100"
+          className="btn w-100"
+          style={{ backgroundColor: '#4F732C', borderColor: '#4F732C', color: 'white' }}
           disabled={loading}
         >
           {loading ? "Entrando..." : "Entrar"}

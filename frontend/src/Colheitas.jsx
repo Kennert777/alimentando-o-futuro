@@ -27,7 +27,7 @@ export default function Colheitas() {
 
     const loadColheitas = async (userId) => {
         try {
-            const response = await axios.get(apiService.colheitas.porUsuario(userId));
+            const response = await axios.get(apiService.colheitas.listar());
             setColheitas(response.data);
         } catch (error) {
             console.error('Erro ao carregar colheitas:', error);
@@ -39,7 +39,7 @@ export default function Colheitas() {
         e.preventDefault();
         
         try {
-            const hortasResponse = await axios.get(apiService.hortas.porUsuario(user.id));
+            const hortasResponse = await axios.get(apiService.hortas.listar());
             const hortas = hortasResponse.data;
             const hortaId = hortas.length > 0 ? hortas[0].id : null;
             
