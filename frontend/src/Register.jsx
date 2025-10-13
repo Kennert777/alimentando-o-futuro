@@ -25,10 +25,14 @@ const Register = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        setErro(data?.erro || "Erro ao cadastrar.");
+        const errorMessages = {
+          400: "Dados inválidos. Verifique os campos.",
+          409: "Este email já está cadastrado.",
+          500: "Erro interno do servidor."
+        };
+        setErro(errorMessages[response.status] || "Erro ao realizar cadastro.");
       } else {
         setSucesso("Cadastro realizado com sucesso!");
-        // Login automático
         const loginResp = await fetch("http://localhost:8080/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -36,14 +40,16 @@ const Register = () => {
         });
         const loginData = await loginResp.json();
         if (!loginResp.ok) {
-          setErro(loginData?.erro || "Erro ao fazer login automático.");
+          setErro("Cadastro realizado, mas houve erro no login automático.");
         } else {
+          localStorage.setItem('authToken', loginData.token);
+          localStorage.setItem('currentUser', JSON.stringify(loginData.usuario));
           login(loginData.usuario, loginData.token);
           navigate("/dashboard");
         }
       }
     } catch (err) {
-      setErro("Erro de conexão com o servidor.");
+      setErro("Não foi possível conectar ao servidor.");
     }
     setLoading(false);
   };

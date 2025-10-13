@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { plantas } from './data/plantas.js';
-import { handleDelete } from './utils/deleteHandler';
 
 export default function Colheitas() {
     const [user, setUser] = useState(null);
@@ -28,8 +26,17 @@ export default function Colheitas() {
 
     const loadColheitas = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/colheitas`);
-            setColheitas(response.data);
+            const token = localStorage.getItem('authToken');
+            const response = await fetch('http://localhost:8080/api/colheitas', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setColheitas(data.filter(c => c.usuario?.id === userId));
+            }
         } catch (error) {
             console.error('Erro ao carregar colheitas:', error);
             setColheitas([]);
@@ -40,12 +47,19 @@ export default function Colheitas() {
         e.preventDefault();
         
         try {
-            const hortasResponse = await axios.get(`http://localhost:8080/api/hortas`);
-            const hortas = hortasResponse.data;
-            const hortaId = hortas.length > 0 ? hortas[0].id : null;
+            const token = localStorage.getItem('authToken');
+            const hortasResponse = await fetch('http://localhost:8080/api/hortas', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const hortas = await hortasResponse.json();
+            const userHortas = hortas.filter(h => h.usuario?.id === user.id);
+            const hortaId = userHortas.length > 0 ? userHortas[0].id : null;
             
             if (!hortaId) {
-                alert('Você precisa ter pelo menos uma horta cadastrada para registrar colheitas.');
+                alert('Cadastre uma horta primeiro para registrar colheitas.');
                 return;
             }
             
@@ -59,18 +73,30 @@ export default function Colheitas() {
                 observacoes: formData.observacoes
             };
             
-            if (editingId) {
-                await axios.put(`http://localhost:8080/api/colheitas/${editingId}`, colheitaData);
-                alert('Colheita atualizada com sucesso!');
-            } else {
-                await axios.post('http://localhost:8080/api/colheitas', colheitaData);
-                alert('Colheita registrada com sucesso!');
-            }
+            const url = editingId ? `http://localhost:8080/api/colheitas/${editingId}` : 'http://localhost:8080/api/colheitas';
+            const method = editingId ? 'PUT' : 'POST';
             
-            loadColheitas(user.id);
-            resetForm();
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(colheitaData)
+            });
+            
+            if (response.ok) {
+                alert(editingId ? 'Colheita atualizada com sucesso!' : 'Colheita registrada com sucesso!');
+                loadColheitas(user.id);
+                resetForm();
+            } else {
+                const errorMsg = response.status === 400 ? 'Dados inválidos. Verifique os campos.' :
+                               response.status === 401 ? 'Sessão expirada. Faça login novamente.' :
+                               'Erro ao salvar colheita. Tente novamente.';
+                alert(errorMsg);
+            }
         } catch (error) {
-            alert('Erro ao salvar colheita: ' + (error.response?.data?.erro || error.message));
+            alert('Erro de conexão com o servidor.');
         }
     };
     
@@ -78,6 +104,32 @@ export default function Colheitas() {
         setShowForm(false);
         setEditingId(null);
         setFormData({ tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: '' });
+    };
+    
+    const deleteColheita = async (colheitaId, produto) => {
+        if (confirm(`Tem certeza que deseja deletar a colheita de "${produto}"?`)) {
+            setLoading(true);
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`http://localhost:8080/api/colheitas/${colheitaId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    alert('Colheita deletada com sucesso!');
+                    loadColheitas(user.id);
+                } else {
+                    alert('Erro ao deletar colheita. Tente novamente.');
+                }
+            } catch (error) {
+                alert('Erro de conexão com o servidor.');
+            } finally {
+                setLoading(false);
+            }
+        }
     };
     
     const editColheita = (colheita) => {
@@ -297,7 +349,7 @@ export default function Colheitas() {
                                         </button>
                                         <button 
                                             className="btn btn-danger btn-sm"
-                                            onClick={() => handleDelete(colheita.id, 'colheitas', colheita.produto || colheita.tipoPlanta || colheita.tipo_planta, setColheitas, setLoading)}
+                                            onClick={() => deleteColheita(colheita.id, colheita.produto || colheita.tipoPlanta || colheita.tipo_planta)}
                                             disabled={loading}
                                         >
                                             {loading ? 'Deletando...' : '🗑️ Deletar'}

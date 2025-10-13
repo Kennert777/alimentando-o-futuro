@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 export default function HortasUsuario() {
     const [user, setUser] = useState(null);
@@ -21,8 +20,17 @@ export default function HortasUsuario() {
 
     const loadHortas = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/hortas`);
-            setHortas(response.data);
+            const token = localStorage.getItem('authToken');
+            const response = await fetch('http://localhost:8080/api/hortas', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setHortas(data.filter(h => h.usuario?.id === userId));
+            }
         } catch (error) {
             console.error('Erro ao carregar hortas:', error);
         }
@@ -32,45 +40,81 @@ export default function HortasUsuario() {
         e.preventDefault();
         
         try {
-            await axios.post('http://localhost:8080/api/hortas', {
-                nome: formData.nome,
-                localizacao: formData.localizacao,
-                tipoPlantio: formData.tipo,
-                descricao: formData.descricao,
-                status: formData.status.toUpperCase(),
-                usuario: { id: user.id }
+            const token = localStorage.getItem('authToken');
+            const response = await fetch('http://localhost:8080/api/hortas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    nome: formData.nome,
+                    localizacao: formData.localizacao,
+                    tipoPlantio: formData.tipo,
+                    descricao: formData.descricao,
+                    status: formData.status.toUpperCase(),
+                    usuario: { id: user.id }
+                })
             });
             
-            alert('Horta cadastrada com sucesso!');
-            loadHortas(user.id);
-            setShowForm(false);
-            setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
+            if (response.ok) {
+                alert('Horta cadastrada com sucesso!');
+                loadHortas(user.id);
+                setShowForm(false);
+                setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
+            } else {
+                const errorMsg = response.status === 400 ? 'Dados inválidos. Verifique os campos.' :
+                               response.status === 401 ? 'Sessão expirada. Faça login novamente.' :
+                               'Erro ao cadastrar horta. Tente novamente.';
+                alert(errorMsg);
+            }
         } catch (error) {
-            alert('Erro ao cadastrar horta: ' + (error.response?.data?.erro || error.message));
+            alert('Erro de conexão com o servidor.');
         }
     };
 
     const updateStatus = async (hortaId, newStatus) => {
         try {
-            await axios.put(`http://localhost:8080/api/hortas/${hortaId}`, {
-                status: newStatus.toUpperCase()
+            const token = localStorage.getItem('authToken');
+            const response = await fetch(`http://localhost:8080/api/hortas/${hortaId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: newStatus.toUpperCase() })
             });
             
-            alert('Status atualizado com sucesso!');
-            loadHortas(user.id);
+            if (response.ok) {
+                alert('Status atualizado com sucesso!');
+                loadHortas(user.id);
+            } else {
+                alert('Erro ao atualizar status. Tente novamente.');
+            }
         } catch (error) {
-            alert('Erro ao atualizar status: ' + (error.response?.data?.erro || error.message));
+            alert('Erro de conexão com o servidor.');
         }
     };
 
     const deleteHorta = async (hortaId, nomeHorta) => {
         if (confirm(`Tem certeza que deseja deletar a horta "${nomeHorta}"?`)) {
             try {
-                await axios.delete(`http://localhost:8080/api/hortas/${hortaId}`);
-                alert('Horta deletada com sucesso!');
-                loadHortas(user.id);
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`http://localhost:8080/api/hortas/${hortaId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    alert('Horta deletada com sucesso!');
+                    loadHortas(user.id);
+                } else {
+                    alert('Erro ao deletar horta. Tente novamente.');
+                }
             } catch (error) {
-                alert('Erro ao deletar horta: ' + (error.response?.data?.erro || error.message));
+                alert('Erro de conexão com o servidor.');
             }
         }
     };

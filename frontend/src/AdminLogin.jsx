@@ -15,28 +15,28 @@ export default function AdminLogin() {
         setErro('');
 
         try {
-            console.log('Tentando login admin com:', formData.email);
-            const response = await axios.post('http://localhost:8080/auth/login', {
-                email: formData.email,
-                senha: formData.password
+            const response = await fetch('http://localhost:8080/api/usuarios/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: formData.email,
+                    senha: formData.password
+                })
             });
             
-            const { usuario, token, role } = response.data;
-            console.log('Resposta do login:', response.data);
+            const data = await response.json();
             
-            if (role !== 'ADMIN') {
-                console.log('Usuário não é admin:', role);
-                setErro('Acesso negado. Apenas administradores podem acessar.');
-                setLoading(false);
+            if (!response.ok) {
+                setErro('Email ou senha incorretos.');
                 return;
             }
             
-            console.log('Login admin bem-sucedido, redirecionando...');
-            login(usuario, token);
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('currentUser', JSON.stringify(data.usuario));
+            login(data.usuario, data.token);
             window.location.href = '/admin/dashboard';
         } catch (error) {
-            console.error('Erro no login admin:', error);
-            setErro(error.response?.data?.erro || 'Erro ao fazer login');
+            setErro('Não foi possível conectar ao servidor.');
         } finally {
             setLoading(false);
         }

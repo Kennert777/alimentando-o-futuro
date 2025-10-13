@@ -15,9 +15,6 @@ const Login = () => {
     setLoading(true);
     setErro("");
     
-    // Debug: mostrar dados enviados
-    console.log('Enviando:', { email, senha });
-    
     try {
       const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
@@ -25,34 +22,24 @@ const Login = () => {
         body: JSON.stringify({ email, senha }),
       });
       
-      console.log('Status:', response.status);
       const data = await response.json();
-      console.log('Resposta:', data);
       
       if (response.ok) {
-        // Verificar se usuário está ativo
-        if (data.usuario.ativo === false) {
-          setErro("Conta inativa. Entre em contato com o administrador.");
-          return;
-        }
-        
-        // Sucesso (200)
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('currentUser', JSON.stringify(data.usuario));
         login(data.usuario, data.token);
         navigate("/dashboard");
       } else {
-        // Erros (400, 401, 404)
         const errorMessages = {
-          400: "Email e senha são obrigatórios",
-          401: "Email ou senha incorretos. Tente: admin@alimentandoofuturo.com / password",
-          404: "Usuário não encontrado"
+          400: "Email e senha são obrigatórios.",
+          401: "Email ou senha incorretos.",
+          404: "Usuário não encontrado.",
+          500: "Erro interno do servidor."
         };
-        setErro(errorMessages[response.status] || data.erro || "Erro ao fazer login");
+        setErro(errorMessages[response.status] || data.erro || "Erro ao fazer login.");
       }
     } catch (err) {
-      console.error('Erro de conexão:', err);
-      setErro("Erro de conexão com o servidor. Verifique se o backend está rodando em localhost:8080");
+      setErro("Não foi possível conectar ao servidor.");
     } finally {
       setLoading(false);
     }
@@ -62,13 +49,7 @@ const Login = () => {
     <div className="container mt-5">
       <h2 className="mb-4" style={{ color: '#4F732C' }}>Login</h2>
       
-      {/* Credenciais de teste */}
-      <div className="alert alert-info mb-3">
-        <strong>Teste com:</strong><br/>
-        Email: admin@alimentandoofuturo.com<br/>
-        Senha: password<br/>
-        <small>Verifique o console (F12) para debug</small>
-      </div>
+
       
       <form onSubmit={handleSubmit} className="card p-4 shadow-sm">
         <div className="mb-3">

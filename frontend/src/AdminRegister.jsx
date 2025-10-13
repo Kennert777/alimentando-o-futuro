@@ -26,17 +26,30 @@ export default function AdminRegister() {
         // Validação do código será feita no backend
 
         try {
-            const response = await api.post('/usuarios/cadastro', {
-                nome: formData.nome,
-                email: formData.email,
-                telefone: formData.telefone,
-                senha: formData.password,
-                tipoPerfil: 'ADMIN'
+            const response = await fetch('http://localhost:8080/api/usuarios/admin/cadastro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nome: formData.nome,
+                    email: formData.email,
+                    senha: formData.password
+                })
             });
             
-            setSucesso(true);
+            const data = await response.json();
+            
+            if (response.ok) {
+                setSucesso(true);
+            } else {
+                const errorMessages = {
+                    400: 'Dados inválidos. Verifique os campos.',
+                    409: 'Este email já está cadastrado.',
+                    500: 'Erro interno do servidor.'
+                };
+                setErro(errorMessages[response.status] || 'Erro ao cadastrar admin.');
+            }
         } catch (error) {
-            setErro(error.response?.data?.erro || error.response?.data?.message || 'Erro ao cadastrar admin');
+            setErro('Erro de conexão com o servidor');
         } finally {
             setLoading(false);
         }
