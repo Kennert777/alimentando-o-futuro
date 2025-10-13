@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { api } from './config/api.js';
 import { useAuth } from './useAuth.jsx';
-import { apiService } from './services/apiService.js';
 
 export default function Dashboard() {
     const [user, setUser] = useState(null);
@@ -23,9 +21,9 @@ export default function Dashboard() {
     const loadUserStats = async (userId) => {
         try {
             const [hortasResponse, colheitasResponse, userResponse] = await Promise.all([
-                axios.get(apiService.hortas.listar()),
-                axios.get(apiService.colheitas.listar()),
-                axios.get(apiService.usuarios.listar())
+                axios.get(`http://localhost:8080/api/hortas`),
+                axios.get(`http://localhost:8080/api/colheitas`),
+                axios.get(`http://localhost:8080/api/usuarios`)
             ]);
             
             const updatedUser = userResponse.data;

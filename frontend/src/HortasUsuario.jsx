@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { apiService } from './services/apiService.js';
 
 export default function HortasUsuario() {
     const [user, setUser] = useState(null);
@@ -22,7 +21,7 @@ export default function HortasUsuario() {
 
     const loadHortas = async (userId) => {
         try {
-            const response = await axios.get(apiService.hortas.listar());
+            const response = await axios.get(`http://localhost:8080/api/hortas`);
             setHortas(response.data);
         } catch (error) {
             console.error('Erro ao carregar hortas:', error);
@@ -33,7 +32,7 @@ export default function HortasUsuario() {
         e.preventDefault();
         
         try {
-            await axios.post(apiService.hortas.criar(), {
+            await axios.post('http://localhost:8080/api/hortas', {
                 nome: formData.nome,
                 localizacao: formData.localizacao,
                 tipoPlantio: formData.tipo,
@@ -53,7 +52,7 @@ export default function HortasUsuario() {
 
     const updateStatus = async (hortaId, newStatus) => {
         try {
-            await axios.put(apiService.hortas.atualizar(hortaId), {
+            await axios.put(`http://localhost:8080/api/hortas/${hortaId}`, {
                 status: newStatus.toUpperCase()
             });
             
@@ -67,7 +66,7 @@ export default function HortasUsuario() {
     const deleteHorta = async (hortaId, nomeHorta) => {
         if (confirm(`Tem certeza que deseja deletar a horta "${nomeHorta}"?`)) {
             try {
-                await axios.delete(apiService.hortas.deletar(hortaId));
+                await axios.delete(`http://localhost:8080/api/hortas/${hortaId}`);
                 alert('Horta deletada com sucesso!');
                 loadHortas(user.id);
             } catch (error) {

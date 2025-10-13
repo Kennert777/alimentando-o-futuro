@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { apiService } from './services/apiService.js';
 import { Link } from 'react-router-dom';
 import { useAdminAuth } from './useAuth.jsx';
 import { AdminSessionInfo } from './ProtectedRoute.jsx';
+import { handleDelete } from './utils/deleteHandler';
 
 export default function AdminHortas() {
     const { admin, loading: authLoading, isAuthenticated } = useAdminAuth();
     const [hortas, setHortas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filtro, setFiltro] = useState('todas');
+    const [editingHorta, setEditingHorta] = useState(null);
+    const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState({
+        nome: '', localizacao: '', tipoPlantio: '', descricao: '', aprovada: false
+    });
 
     useEffect(() => {
         if (!authLoading && isAuthenticated) {
@@ -19,7 +24,7 @@ export default function AdminHortas() {
 
     const loadHortas = async () => {
         try {
-            const response = await axios.get(apiService.hortas.listar());
+            const response = await axios.get('http://localhost:8080/api/hortas');
             const todasHortas = response.data;
             setHortas(todasHortas);
         } catch (error) {
@@ -33,7 +38,7 @@ export default function AdminHortas() {
     const aprovarHorta = async (id) => {
         if (confirm('Tem certeza que deseja aprovar esta horta?')) {
             try {
-                await axios.put(apiService.hortas.atualizar(id), { aprovada: true });
+                await axios.put(`http://localhost:8080/api/hortas/${id}`, { aprovada: true });
                 alert('Horta aprovada com sucesso!');
                 loadHortas();
             } catch (error) {
@@ -46,7 +51,7 @@ export default function AdminHortas() {
         const motivo = prompt('Motivo da rejeição:');
         if (motivo) {
             try {
-                await axios.put(apiService.hortas.atualizar(id), { 
+                await axios.put(`http://localhost:8080/api/hortas/${id}`, { 
                     status: 'INATIVA'
                 });
                 alert('Horta rejeitada com sucesso!');
@@ -57,16 +62,45 @@ export default function AdminHortas() {
         }
     };
 
-    const excluirHorta = async (id) => {
-        if (confirm('Tem certeza que deseja excluir esta horta?')) {
-            try {
-                await axios.delete(apiService.hortas.deletar(id));
-                alert('Horta excluída com sucesso!');
-                loadHortas();
-            } catch (error) {
-                alert('Erro ao excluir horta: ' + (error.response?.data?.erro || error.message));
-            }
+    const editHorta = (horta) => {
+        setEditingHorta(horta.id);
+        setFormData({
+            nome: horta.nome,
+            localizacao: horta.localizacao,
+            tipoPlantio: horta.tipoPlantio,
+            descricao: horta.descricao || '',
+            aprovada: horta.aprovada
+        });
+        setShowForm(true);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        
+        try {
+            const url = editingHorta 
+                ? `http://localhost:8080/api/hortas/${editingHorta}`
+                : 'http://localhost:8080/api/hortas';
+            
+            const method = editingHorta ? 'PUT' : 'POST';
+            
+            await axios({ method, url, data: formData });
+            
+            alert(editingHorta ? 'Horta atualizada!' : 'Horta criada!');
+            loadHortas();
+            resetForm();
+        } catch (error) {
+            alert('Erro ao salvar horta');
+        } finally {
+            setLoading(false);
         }
+    };
+
+    const resetForm = () => {
+        setShowForm(false);
+        setEditingHorta(null);
+        setFormData({ nome: '', localizacao: '', tipoPlantio: '', descricao: '', aprovada: false });
     };
 
     const hortasFiltradas = hortas.filter(h => {
@@ -217,16 +251,16 @@ export default function AdminHortas() {
                                             </>
                                         )}
                                         <button 
-                                            className="btn btn-outline-info btn-sm me-2"
-                                            onClick={() => alert('Visualizando detalhes da horta...')}
+                                            className="btn btn-outline-primary btn-sm me-2"
+                                            onClick={() => editHorta(horta)}
                                         >
-                                            👁️ Detalhes
+                                            ✏️ Editar
                                         </button>
                                         <button 
                                             className="btn btn-outline-danger btn-sm"
-                                            onClick={() => excluirHorta(horta.id)}
+                                            onClick={() => handleDelete(horta.id, 'hortas', horta.nome, setHortas, setLoading)}
                                         >
-                                            🗑️ Excluir
+                                            🗑️ Deletar
                                         </button>
                                     </div>
                                 </div>

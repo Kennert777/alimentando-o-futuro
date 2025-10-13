@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { apiService } from './services/apiService.js';
 import { plantas } from './data/plantas.js';
+import { handleDelete } from './utils/deleteHandler';
 
 export default function Colheitas() {
     const [user, setUser] = useState(null);
     const [colheitas, setColheitas] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: ''
     });
@@ -27,7 +28,7 @@ export default function Colheitas() {
 
     const loadColheitas = async (userId) => {
         try {
-            const response = await axios.get(apiService.colheitas.listar());
+            const response = await axios.get(`http://localhost:8080/api/colheitas`);
             setColheitas(response.data);
         } catch (error) {
             console.error('Erro ao carregar colheitas:', error);
@@ -39,7 +40,7 @@ export default function Colheitas() {
         e.preventDefault();
         
         try {
-            const hortasResponse = await axios.get(apiService.hortas.listar());
+            const hortasResponse = await axios.get(`http://localhost:8080/api/hortas`);
             const hortas = hortasResponse.data;
             const hortaId = hortas.length > 0 ? hortas[0].id : null;
             
@@ -48,7 +49,7 @@ export default function Colheitas() {
                 return;
             }
             
-            await axios.post(apiService.colheitas.criar(), {
+            const colheitaData = {
                 horta: { id: hortaId },
                 usuario: { id: user.id },
                 produto: formData.tipo_planta,
@@ -56,28 +57,43 @@ export default function Colheitas() {
                 dataColheita: formData.data_colheita,
                 qualidade: formData.qualidade.toUpperCase(),
                 observacoes: formData.observacoes
-            });
+            };
             
-            alert('Colheita registrada com sucesso!');
+            if (editingId) {
+                await axios.put(`http://localhost:8080/api/colheitas/${editingId}`, colheitaData);
+                alert('Colheita atualizada com sucesso!');
+            } else {
+                await axios.post('http://localhost:8080/api/colheitas', colheitaData);
+                alert('Colheita registrada com sucesso!');
+            }
+            
             loadColheitas(user.id);
-            setShowForm(false);
-            setFormData({ tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: '' });
+            resetForm();
         } catch (error) {
-            alert('Erro ao registrar colheita: ' + (error.response?.data?.erro || error.message));
+            alert('Erro ao salvar colheita: ' + (error.response?.data?.erro || error.message));
         }
+    };
+    
+    const resetForm = () => {
+        setShowForm(false);
+        setEditingId(null);
+        setFormData({ tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: '' });
+    };
+    
+    const editColheita = (colheita) => {
+        setEditingId(colheita.id);
+        setFormData({
+            tipo_planta: colheita.produto || colheita.tipoPlanta || colheita.tipo_planta,
+            quantidade_kg: colheita.quantidade || colheita.quantidadeKg || colheita.quantidade_kg,
+            data_colheita: colheita.dataColheita || colheita.data_colheita,
+            qualidade: colheita.qualidade?.toLowerCase() || 'boa',
+            destino: colheita.destino || 'consumo_proprio',
+            observacoes: colheita.observacoes || ''
+        });
+        setShowForm(true);
     };
 
-    const deleteColheita = async (colheitaId, produto) => {
-        if (confirm(`Tem certeza que deseja deletar a colheita de "${produto}"?`)) {
-            try {
-                await axios.delete(apiService.colheitas.deletar(colheitaId));
-                alert('Colheita deletada com sucesso!');
-                loadColheitas(user.id);
-            } catch (error) {
-                alert('Erro ao deletar colheita: ' + (error.response?.data?.erro || error.message));
-            }
-        }
-    };
+    const [loading, setLoading] = useState(false);
 
     const getTotalColheitas = () => {
         if (!colheitas || colheitas.length === 0) return '0.00';
@@ -107,13 +123,20 @@ export default function Colheitas() {
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 className="bubble-text" style={{ color: "#4F732C" }}>🌾 Minhas Colheitas</h2>
-                <button 
-                    onClick={() => setShowForm(!showForm)} 
-                    className="btn btn-success"
-                    style={{ backgroundColor: "#4F732C" }}
-                >
-                    {showForm ? 'Cancelar' : 'Nova Colheita'}
-                </button>
+                <div>
+                    <button 
+                        onClick={() => setShowForm(!showForm)} 
+                        className="btn btn-success me-2"
+                        style={{ backgroundColor: "#4F732C" }}
+                    >
+                        {showForm ? 'Cancelar' : 'Nova Colheita'}
+                    </button>
+                    {showForm && editingId && (
+                        <button onClick={resetForm} className="btn btn-secondary">
+                            Cancelar Edição
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Estatísticas */}
@@ -148,7 +171,7 @@ export default function Colheitas() {
             {showForm && (
                 <div className="card mb-4">
                     <div className="card-body">
-                        <h5>Registrar Nova Colheita</h5>
+                        <h5>{editingId ? 'Editar Colheita' : 'Registrar Nova Colheita'}</h5>
                         <form onSubmit={handleSubmit}>
                             <div className="row">
                                 <div className="col-md-6 mb-3">
@@ -224,7 +247,9 @@ export default function Colheitas() {
                                     onChange={(e) => setFormData({...formData, observacoes: e.target.value})}
                                 ></textarea>
                             </div>
-                            <button type="submit" className="btn btn-success">Registrar Colheita (+100 pontos)</button>
+                            <button type="submit" className="btn btn-success">
+                                {editingId ? 'Atualizar Colheita' : 'Registrar Colheita (+100 pontos)'}
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -265,10 +290,17 @@ export default function Colheitas() {
                                     </small>
                                     <div className="mt-2">
                                         <button 
-                                            className="btn btn-danger btn-sm"
-                                            onClick={() => deleteColheita(colheita.id, colheita.produto || colheita.tipoPlanta || colheita.tipo_planta)}
+                                            className="btn btn-primary btn-sm me-2"
+                                            onClick={() => editColheita(colheita)}
                                         >
-                                            🗑️ Deletar
+                                            ✏️ Editar
+                                        </button>
+                                        <button 
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => handleDelete(colheita.id, 'colheitas', colheita.produto || colheita.tipoPlanta || colheita.tipo_planta, setColheitas, setLoading)}
+                                            disabled={loading}
+                                        >
+                                            {loading ? 'Deletando...' : '🗑️ Deletar'}
                                         </button>
                                     </div>
                                 </div>

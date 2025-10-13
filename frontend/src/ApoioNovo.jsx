@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { api } from './config/api.js';
 
 export default function ApoioNovo() {
     const [user, setUser] = useState(null);
@@ -28,7 +27,7 @@ export default function ApoioNovo() {
 
     const loadSolicitacoes = async (email) => {
         try {
-            const response = await axios.get(`${api.base}/support/user/${email}`);
+            const response = await axios.get(`http://localhost:8080/api/support/email/${email}`);
             setMinhasSolicitacoes(response.data);
         } catch (error) {
             console.error('Erro ao carregar solicitações:', error);
@@ -41,7 +40,7 @@ export default function ApoioNovo() {
         setError('');
         
         try {
-            await axios.post(`${api.base}/support/request`, formData);
+            await axios.post('http://localhost:8080/api/support', formData);
             
             setEnviado(true);
             setFormData(prev => ({

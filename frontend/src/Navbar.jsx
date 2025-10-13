@@ -36,6 +36,9 @@ export default function Navbar() {
               <Link className="nav-link fw-semibold" to="/horta" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Horta</Link>
             </li>
             <li className="nav-item mx-2">
+              <Link className="nav-link fw-semibold" to="/colheitas" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Colheitas</Link>
+            </li>
+            <li className="nav-item mx-2">
               <Link className="nav-link fw-semibold" to="/receitas" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Receitas</Link>
             </li>
             <li className="nav-item mx-2">
@@ -115,6 +118,8 @@ export default function Navbar() {
                           <>
                             <Link className="dropdown-item" to="/dashboard">📊 Dashboard</Link>
                             <Link className="dropdown-item" to="/hortas-usuario">🌱 Minhas Hortas</Link>
+                            <Link className="dropdown-item" to="/colheitas">🌾 Minhas Colheitas</Link>
+                            <Link className="dropdown-item" to="/perfil">👤 Meu Perfil</Link>
                           </>
                         )}
                         <div className="dropdown-divider"></div>

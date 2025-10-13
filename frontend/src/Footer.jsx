@@ -18,6 +18,7 @@ export default function Footer() {
             <ul className="list-unstyled small">
               <li><Link to="/" className="text-white-50 text-decoration-none">Início</Link></li>
               <li><Link to="/horta" className="text-white-50 text-decoration-none">Horta</Link></li>
+              <li><Link to="/colheitas" className="text-white-50 text-decoration-none">Colheitas</Link></li>
               <li><Link to="/receitas" className="text-white-50 text-decoration-none">Receitas</Link></li>
               <li><Link to="/apoio" className="text-white-50 text-decoration-none">Apoio</Link></li>
             </ul>

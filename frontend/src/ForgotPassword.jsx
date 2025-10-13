@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from './config/api';
+import axios from 'axios';
 
 export default function ForgotPassword() {
     const [step, setStep] = useState(1); // 1: email, 2: token + nova senha
@@ -19,7 +19,7 @@ export default function ForgotPassword() {
         setMessage('');
 
         try {
-            await api.post('/password-reset/request', { email });
+            await axios.post('http://localhost:8080/api/password-reset', { email });
             setMessage('Código enviado para seu email! Verifique sua caixa de entrada.');
             setStep(2);
         } catch (err) {
@@ -47,7 +47,7 @@ export default function ForgotPassword() {
         setMessage('');
 
         try {
-            await api.post('/password-reset/reset', { token, newPassword });
+            await axios.put(`http://localhost:8080/api/password-reset/token/${token}`, { newPassword });
             setMessage('Senha redefinida com sucesso! Você pode fazer login agora.');
             setTimeout(() => {
                 window.location.href = '/login';

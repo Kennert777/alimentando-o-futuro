@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./useAuth";
-import { apiService } from "./services/apiService";
 
 const Register = () => {
   const [nome, setNome] = useState("");
@@ -19,7 +18,7 @@ const Register = () => {
     setErro("");
     setSucesso("");
     try {
-      const response = await fetch(apiService.auth.register(), {
+      const response = await fetch("http://localhost:8080/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, email, senha }),
@@ -30,7 +29,7 @@ const Register = () => {
       } else {
         setSucesso("Cadastro realizado com sucesso!");
         // Login automático
-        const loginResp = await fetch(apiService.auth.login(), {
+        const loginResp = await fetch("http://localhost:8080/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, senha }),

@@ -149,6 +149,19 @@ export function AuthProvider({ children }) {
         return true;
     };
 
+    const updateUser = (updatedUserData) => {
+        try {
+            if (isAdmin) {
+                localStorage.setItem('currentAdmin', JSON.stringify(updatedUserData));
+            } else {
+                localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
+            }
+            setCurrentUser(updatedUserData);
+        } catch (error) {
+            console.error('Erro ao atualizar usuário:', error);
+        }
+    };
+
     const value = {
         currentUser,
         isAdmin,
@@ -156,6 +169,7 @@ export function AuthProvider({ children }) {
         sessionExpiry,
         login,
         logout,
+        updateUser,
         requireAuth,
         requireAdmin,
         checkAuth

@@ -16,7 +16,7 @@ export default function AdminLogin() {
 
         try {
             console.log('Tentando login admin com:', formData.email);
-            const response = await api.post('/usuarios/login', {
+            const response = await axios.post('http://localhost:8080/auth/login', {
                 email: formData.email,
                 senha: formData.password
             });
