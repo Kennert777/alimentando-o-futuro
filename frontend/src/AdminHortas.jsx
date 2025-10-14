@@ -38,7 +38,13 @@ export default function AdminHortas() {
     const aprovarHorta = async (id) => {
         if (confirm('Tem certeza que deseja aprovar esta horta?')) {
             try {
-                await axios.put(`http://localhost:8080/api/hortas/${id}`, { aprovada: true });
+                const horta = hortas.find(h => h.id === id);
+                const payload = {
+                    ...horta,
+                    aprovada: true,
+                    status: 'ATIVA'
+                };
+                await axios.put(`http://localhost:8080/api/hortas/${id}`, payload);
                 alert('Horta aprovada com sucesso!');
                 loadHortas();
             } catch (error) {
@@ -51,9 +57,14 @@ export default function AdminHortas() {
         const motivo = prompt('Motivo da rejeição:');
         if (motivo) {
             try {
-                await axios.put(`http://localhost:8080/api/hortas/${id}`, { 
-                    status: 'INATIVA'
-                });
+                const horta = hortas.find(h => h.id === id);
+                const payload = {
+                    ...horta,
+                    aprovada: false,
+                    status: 'INATIVA',
+                    motivo_rejeicao: motivo
+                };
+                await axios.put(`http://localhost:8080/api/hortas/${id}`, payload);
                 alert('Horta rejeitada com sucesso!');
                 loadHortas();
             } catch (error) {
