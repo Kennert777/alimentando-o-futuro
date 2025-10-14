@@ -33,10 +33,7 @@ export default function Navbar() {
               <Link className="nav-link fw-semibold" to="/" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Início</Link>
             </li>
             <li className="nav-item mx-2">
-              <Link className="nav-link fw-semibold" to="/horta" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Horta</Link>
-            </li>
-            <li className="nav-item mx-2">
-              <Link className="nav-link fw-semibold" to="/colheitas" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Colheitas</Link>
+              <Link className="nav-link fw-semibold" to="/dicas" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Dicas</Link>
             </li>
             <li className="nav-item mx-2">
               <Link className="nav-link fw-semibold" to="/receitas" style={{ color: 'white', fontFamily: 'Playfair Display' }}>Receitas</Link>
@@ -95,9 +92,9 @@ export default function Navbar() {
                   style={{ borderRadius: '25px', fontFamily: 'Playfair Display' }}
                 >
                   <div className="rounded-circle bg-white text-success d-flex align-items-center justify-content-center me-2" style={{ width: '30px', height: '30px' }}>
-                    {currentUser ? currentUser.nome.charAt(0).toUpperCase() : 'U'}
+                    {currentUser && currentUser.nome ? currentUser.nome.charAt(0).toUpperCase() : 'U'}
                   </div>
-                  {currentUser ? currentUser.nome.split(' ')[0] : 'Perfil'}
+                  {currentUser && currentUser.nome ? currentUser.nome.split(' ')[0] : 'Perfil'}
                 </button>
                 
                 {profileOpen && (
