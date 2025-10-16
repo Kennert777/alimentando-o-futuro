@@ -39,7 +39,7 @@ export default function Perfil() {
                 updateData.senha = formData.senha;
             }
 
-            const response = await fetch(`http://localhost:8080/api/usuarios/${currentUser.id}`, {
+            const response = await fetch(`https://backend-y6kz.onrender.com/api/usuarios/${currentUser.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

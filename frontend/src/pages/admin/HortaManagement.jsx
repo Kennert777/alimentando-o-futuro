@@ -24,8 +24,8 @@ export default function HortaManagement() {
             };
             
             const [hortasResp, usuariosResp] = await Promise.all([
-                fetch('http://localhost:8080/api/hortas', { headers }),
-                fetch('http://localhost:8080/api/usuarios', { headers })
+                fetch('https://backend-y6kz.onrender.com/api/hortas', { headers }),
+                fetch('https://backend-y6kz.onrender.com/api/usuarios', { headers })
             ]);
             
             if (hortasResp.ok && usuariosResp.ok) {
@@ -46,8 +46,8 @@ export default function HortaManagement() {
         try {
             const token = localStorage.getItem('authToken');
             const url = editingHorta ? 
-                `http://localhost:8080/api/hortas/${editingHorta}` : 
-                'http://localhost:8080/api/hortas';
+                `https://backend-y6kz.onrender.com/api/hortas/${editingHorta}` : 
+                'https://backend-y6kz.onrender.com/api/hortas';
             const method = editingHorta ? 'PUT' : 'POST';
             
             const response = await fetch(url, {
@@ -78,7 +78,7 @@ export default function HortaManagement() {
         if (confirm(`Tem certeza que deseja deletar a horta "${nome}"?`)) {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/hortas/${id}`, {
+                const response = await fetch(`https://backend-y6kz.onrender.com/api/hortas/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`

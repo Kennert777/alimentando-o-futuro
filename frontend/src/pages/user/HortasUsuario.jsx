@@ -21,7 +21,7 @@ export default function HortasUsuario() {
     const loadHortas = async (userId) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('http://localhost:8080/api/hortas', {
+            const response = await fetch('https://backend-y6kz.onrender.com/api/hortas', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -41,7 +41,7 @@ export default function HortasUsuario() {
         
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('http://localhost:8080/api/hortas', {
+            const response = await fetch('https://backend-y6kz.onrender.com/api/hortas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function HortasUsuario() {
     const updateStatus = async (hortaId, newStatus) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`http://localhost:8080/api/hortas/${hortaId}`, {
+            const response = await fetch(`https://backend-y6kz.onrender.com/api/hortas/${hortaId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default function HortasUsuario() {
         if (confirm(`Tem certeza que deseja deletar a horta "${nomeHorta}"?`)) {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/hortas/${hortaId}`, {
+                const response = await fetch(`https://backend-y6kz.onrender.com/api/hortas/${hortaId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`

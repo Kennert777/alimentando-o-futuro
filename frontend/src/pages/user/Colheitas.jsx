@@ -27,7 +27,7 @@ export default function Colheitas() {
     const loadColheitas = async (userId) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('http://localhost:8080/api/colheitas', {
+            const response = await fetch('https://backend-y6kz.onrender.com/api/colheitas', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -48,7 +48,7 @@ export default function Colheitas() {
         
         try {
             const token = localStorage.getItem('authToken');
-            const hortasResponse = await fetch('http://localhost:8080/api/hortas', {
+            const hortasResponse = await fetch('https://backend-y6kz.onrender.com/api/hortas', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -73,7 +73,7 @@ export default function Colheitas() {
                 observacoes: formData.observacoes
             };
             
-            const url = editingId ? `http://localhost:8080/api/colheitas/${editingId}` : 'http://localhost:8080/api/colheitas';
+            const url = editingId ? `https://backend-y6kz.onrender.com/api/colheitas/${editingId}` : 'https://backend-y6kz.onrender.com/api/colheitas';
             const method = editingId ? 'PUT' : 'POST';
             
             const response = await fetch(url, {
@@ -111,7 +111,7 @@ export default function Colheitas() {
             setLoading(true);
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/colheitas/${colheitaId}`, {
+                const response = await fetch(`https://backend-y6kz.onrender.com/api/colheitas/${colheitaId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`

@@ -21,9 +21,9 @@ export default function Dashboard() {
     const loadUserStats = async (userId) => {
         try {
             const [hortasResponse, colheitasResponse, userResponse] = await Promise.all([
-                axios.get(`http://localhost:8080/api/hortas`),
-                axios.get(`http://localhost:8080/api/colheitas`),
-                axios.get(`http://localhost:8080/api/usuarios`)
+                axios.get(`https://backend-y6kz.onrender.com/api/hortas`),
+                axios.get(`https://backend-y6kz.onrender.com/api/colheitas`),
+                axios.get(`https://backend-y6kz.onrender.com/api/usuarios`)
             ]);
             
             const updatedUser = userResponse.data;

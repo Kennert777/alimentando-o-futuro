@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // Configuração base do axios
 const getBaseURL = () => {
-  return 'http://localhost:8080/api';
+  //return 'https://backend-y6kz.onrender.com/api';
+
+  return 'https://backend-y6kz.onrender.com/api';
 };
 
 const api = axios.create({
