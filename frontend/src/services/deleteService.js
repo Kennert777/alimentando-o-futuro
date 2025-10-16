@@ -10,7 +10,7 @@ export const handleDelete = async (id, tipo, nomeItem, setItems, setLoading) => 
 
   try {
     // 3. Fazer DELETE para API
-    const response = await fetch(`http://localhost:8080/api/${tipo}/${id}`, {
+    const response = await fetch(`https://backend-y6kz.onrender.com/api/${tipo}/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

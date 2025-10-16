@@ -24,7 +24,7 @@ export default function AdminColheitas() {
 
     const loadColheitas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/colheitas');
+            const response = await axios.get('https://backend-y6kz.onrender.com/api/colheitas');
             setColheitas(response.data);
         } catch (error) {
             console.error('Erro ao carregar colheitas:', error);
@@ -52,8 +52,8 @@ export default function AdminColheitas() {
         
         try {
             const url = editingColheita 
-                ? `http://localhost:8080/api/colheitas/${editingColheita}`
-                : 'http://localhost:8080/api/colheitas';
+                ? `https://backend-y6kz.onrender.com/api/colheitas/${editingColheita}`
+                : 'https://backend-y6kz.onrender.com/api/colheitas';
             
             const method = editingColheita ? 'PUT' : 'POST';
             

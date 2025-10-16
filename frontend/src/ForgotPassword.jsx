@@ -19,7 +19,7 @@ export default function ForgotPassword() {
         setMessage('');
 
         try {
-            await axios.post('http://localhost:8080/api/password-reset', { email });
+            await axios.post('https://backend-y6kz.onrender.com/api/password-reset', { email });
             setMessage('Código enviado para seu email! Verifique sua caixa de entrada.');
             setStep(2);
         } catch (err) {
@@ -47,7 +47,7 @@ export default function ForgotPassword() {
         setMessage('');
 
         try {
-            await axios.put(`http://localhost:8080/api/password-reset/token/${token}`, { newPassword });
+            await axios.put(`https://backend-y6kz.onrender.com/api/password-reset/token/${token}`, { newPassword });
             setMessage('Senha redefinida com sucesso! Você pode fazer login agora.');
             setTimeout(() => {
                 window.location.href = '/login';

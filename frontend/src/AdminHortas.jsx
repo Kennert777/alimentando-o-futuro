@@ -24,7 +24,7 @@ export default function AdminHortas() {
 
     const loadHortas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/hortas');
+            const response = await axios.get('https://backend-y6kz.onrender.com/api/hortas');
             const todasHortas = response.data;
             setHortas(todasHortas);
         } catch (error) {
@@ -44,7 +44,7 @@ export default function AdminHortas() {
                     aprovada: true,
                     status: 'ATIVA'
                 };
-                await axios.put(`http://localhost:8080/api/hortas/${id}`, payload);
+                await axios.put(`https://backend-y6kz.onrender.com/api/hortas/${id}`, payload);
                 alert('Horta aprovada com sucesso!');
                 loadHortas();
             } catch (error) {
@@ -64,7 +64,7 @@ export default function AdminHortas() {
                     status: 'INATIVA',
                     motivo_rejeicao: motivo
                 };
-                await axios.put(`http://localhost:8080/api/hortas/${id}`, payload);
+                await axios.put(`https://backend-y6kz.onrender.com/api/hortas/${id}`, payload);
                 alert('Horta rejeitada com sucesso!');
                 loadHortas();
             } catch (error) {
@@ -91,8 +91,8 @@ export default function AdminHortas() {
         
         try {
             const url = editingHorta 
-                ? `http://localhost:8080/api/hortas/${editingHorta}`
-                : 'http://localhost:8080/api/hortas';
+                ? `https://backend-y6kz.onrender.com/api/hortas/${editingHorta}`
+                : 'https://backend-y6kz.onrender.com/api/hortas';
             
             const method = editingHorta ? 'PUT' : 'POST';
             

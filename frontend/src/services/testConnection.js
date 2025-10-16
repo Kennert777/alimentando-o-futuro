@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'https://backend-y6kz.onrender.com/api';
 
 export const testBackendConnection = async () => {
     try {

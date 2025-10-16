@@ -4,7 +4,7 @@ export const handleDelete = async (id, tipo, nomeItem, setItems, setLoading) => 
   setLoading?.(true);
   
   try {
-    const response = await fetch(`http://localhost:8080/api/${tipo}/${id}`, {
+    const response = await fetch(`https://backend-y6kz.onrender.com/api/${tipo}/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

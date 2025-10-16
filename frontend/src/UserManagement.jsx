@@ -14,7 +14,7 @@ export default function UserManagement() {
     const loadUsuarios = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('http://localhost:8080/api/usuarios', {
+            const response = await fetch('https://backend-y6kz.onrender.com/api/usuarios', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -36,7 +36,7 @@ export default function UserManagement() {
         if (confirm(`Tem certeza que deseja deletar o usuário "${nome}"?`)) {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/usuarios/${id}`, {
+                const response = await fetch(`https://backend-y6kz.onrender.com/api/usuarios/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -64,7 +64,7 @@ export default function UserManagement() {
         e.preventDefault();
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`http://localhost:8080/api/usuarios/${editingUser}`, {
+            const response = await fetch(`https://backend-y6kz.onrender.com/api/usuarios/${editingUser}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

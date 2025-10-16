@@ -26,7 +26,7 @@ export default function AdminRegister() {
         // Validação do código será feita no backend
 
         try {
-            const response = await fetch('http://localhost:8080/api/usuarios/admin/cadastro', {
+            const response = await fetch('https://backend-y6kz.onrender.com/api/usuarios/admin/cadastro', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
