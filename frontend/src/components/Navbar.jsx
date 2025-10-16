@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from './useAuth.jsx';
+import { useAuth } from '../hooks/useAuth.jsx';
 
 
 export default function Navbar() {

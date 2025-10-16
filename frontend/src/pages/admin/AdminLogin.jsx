@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from './config/axios.js';
-import { useAuth } from './useAuth.jsx';
+import { useAuth } from '../../hooks/useAuth.jsx';
 
 export default function AdminLogin() {
     const [formData, setFormData] = useState({ email: '', password: '' });

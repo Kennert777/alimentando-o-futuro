@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from './useAuth.jsx';
+import { useAuth } from '../../hooks/useAuth.jsx';
 
 export default function Dashboard() {
     const [user, setUser] = useState(null);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { useAdminAuth } from './useAuth.jsx';
+import { useAdminAuth } from '../../hooks/useAuth.jsx';
 import { AdminSessionInfo } from './ProtectedRoute.jsx';
 import { handleDelete } from './utils/deleteHandler';
 

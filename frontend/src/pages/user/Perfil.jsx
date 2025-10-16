@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from './useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Perfil() {
     const { currentUser, updateUser } = useAuth();
