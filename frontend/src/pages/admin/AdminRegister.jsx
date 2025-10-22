@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from './config/axios.js';
+import api from '../../services/api';
 
 export default function AdminRegister() {
     const [formData, setFormData] = useState({
@@ -26,19 +26,13 @@ export default function AdminRegister() {
         // Validação do código será feita no backend
 
         try {
-            const response = await fetch('https://backend-y6kz.onrender.com/api/usuarios/admin/cadastro', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    nome: formData.nome,
-                    email: formData.email,
-                    senha: formData.password
-                })
+            const response = await api.post('/usuarios/admin/cadastro', {
+                nome: formData.nome,
+                email: formData.email,
+                senha: formData.password
             });
-            
-            const data = await response.json();
-            
-            if (response.ok) {
+
+            if (response.status === 200 || response.status === 201) {
                 setSucesso(true);
             } else {
                 const errorMessages = {
@@ -49,7 +43,16 @@ export default function AdminRegister() {
                 setErro(errorMessages[response.status] || 'Erro ao cadastrar admin.');
             }
         } catch (error) {
-            setErro('Erro de conexão com o servidor');
+            if (error.response && error.response.status) {
+                const errorMessages = {
+                    400: 'Dados inválidos. Verifique os campos.',
+                    409: 'Este email já está cadastrado.',
+                    500: 'Erro interno do servidor.'
+                };
+                setErro(errorMessages[error.response.status] || 'Erro ao cadastrar admin.');
+            } else {
+                setErro('Erro de conexão com o servidor');
+            }
         } finally {
             setLoading(false);
         }
