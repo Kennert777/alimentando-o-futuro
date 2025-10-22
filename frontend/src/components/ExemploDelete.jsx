@@ -8,7 +8,7 @@ const ExemploDelete = () => {
 
   return (
     <div>
-      {/* Exemplo para usuários */}
+      {/* Exemplo para usuários */}//
       <button 
         onClick={() => handleDelete(1, 'usuarios', 'João Silva', setUsuarios, setLoading)}
         disabled={loading}
