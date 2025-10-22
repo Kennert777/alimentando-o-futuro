@@ -52,8 +52,7 @@ export default function HortasUsuario() {
                     localizacao: formData.localizacao,
                     tipoPlantio: formData.tipo,
                     descricao: formData.descricao,
-                    status: formData.status.toUpperCase(),
-                    usuario: { id: user.id }
+                    status: formData.status.toUpperCase()
                 })
             });
             
@@ -227,9 +226,9 @@ export default function HortasUsuario() {
                                     </div>
                                     <p><strong>📍 Local:</strong> {horta.localizacao}</p>
                                     <p><strong>🌱 Tipo:</strong> {horta.tipoPlantio}</p>
-                                    <p><strong>📊 Status:</strong> 
-                                        <select 
-                                            className="form-select form-select-sm d-inline-block ms-2" 
+                                    <div><strong>📊 Status:</strong>
+                                        <select
+                                            className="form-select form-select-sm d-inline-block ms-2"
                                             style={{ width: 'auto' }}
                                             value={horta.status}
                                             onChange={(e) => updateStatus(horta.id, e.target.value)}
@@ -239,7 +238,7 @@ export default function HortasUsuario() {
                                             <option value="crescimento">Crescimento</option>
                                             <option value="colheita">Colheita</option>
                                         </select>
-                                    </p>
+                                    </div>
                                     {horta.descricao && <p><strong>Descrição:</strong> {horta.descricao}</p>}
                                     <small className="text-muted">
                                         Criada em: {new Date(horta.dataCriacao).toLocaleDateString()}
