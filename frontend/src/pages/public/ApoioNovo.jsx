@@ -27,11 +27,6 @@ export default function ApoioNovo() {
 
     const loadSolicitacoes = async (email) => {
         try {
-<<<<<<< HEAD:frontend/src/pages/public/ApoioNovo.jsx
-            const response = await axios.get(`https://backend-y6kz.onrender.com/api/suporte/email/${email}`);
-=======
-            const response = await axios.get(`http://localhost:8080/api/suporte/email/${email}`);
->>>>>>> d1e8e21:frontend/src/ApoioNovo.jsx
             setMinhasSolicitacoes(response.data);
         } catch (error) {
             console.error('Erro ao carregar solicitações:', error);
@@ -44,11 +39,6 @@ export default function ApoioNovo() {
         setError('');
         
         try {
-<<<<<<< HEAD:frontend/src/pages/public/ApoioNovo.jsx
-            await axios.post('https://backend-y6kz.onrender.com/api/suporte', formData);
-=======
-            await axios.post('http://localhost:8080/api/suporte', formData);
->>>>>>> d1e8e21:frontend/src/ApoioNovo.jsx
             
             setEnviado(true);
             setFormData(prev => ({

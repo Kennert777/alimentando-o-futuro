@@ -14,13 +14,8 @@ export default function SupportManagement() {
         try {
             const token = localStorage.getItem('authToken');
             const url = filtroStatus ? 
-<<<<<<< HEAD:frontend/src/pages/admin/SupportManagement.jsx
-                `https://backend-y6kz.onrender.com/api/suporte/status/${filtroStatus}` : 
-                'https://backend-y6kz.onrender.com/api/suporte';
-=======
                 `http://localhost:8080/api/suporte/status/${filtroStatus}` : 
                 'http://localhost:8080/api/suporte';
->>>>>>> d1e8e21:frontend/src/SupportManagement.jsx
                 
             const response = await fetch(url, {
                 headers: {
@@ -43,11 +38,7 @@ export default function SupportManagement() {
     const updateStatus = async (id, novoStatus) => {
         try {
             const token = localStorage.getItem('authToken');
-<<<<<<< HEAD:frontend/src/pages/admin/SupportManagement.jsx
-            const response = await fetch(`https://backend-y6kz.onrender.com/api/suporte/${id}/status`, {
-=======
             const response = await fetch(`http://localhost:8080/api/suporte/${id}/status`, {
->>>>>>> d1e8e21:frontend/src/SupportManagement.jsx
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,11 +62,7 @@ export default function SupportManagement() {
         if (confirm('Tem certeza que deseja deletar esta solicitação?')) {
             try {
                 const token = localStorage.getItem('authToken');
-<<<<<<< HEAD:frontend/src/pages/admin/SupportManagement.jsx
-                const response = await fetch(`https://backend-y6kz.onrender.com/api/suporte/${id}`, {
-=======
                 const response = await fetch(`http://localhost:8080/api/suporte/${id}`, {
->>>>>>> d1e8e21:frontend/src/SupportManagement.jsx
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`

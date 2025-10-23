@@ -90,17 +90,6 @@ export default function AdminHortas() {
         setLoading(true);
 
         try {
-<<<<<<< HEAD:frontend/src/pages/admin/AdminHortas.jsx
-            const url = editingHorta 
-                ? `https://backend-y6kz.onrender.com/api/hortas/${editingHorta}`
-                : 'https://backend-y6kz.onrender.com/api/hortas';
-            
-=======
-            const url = editingHorta
-                ? `http://localhost:8080/api/hortas/${editingHorta}`
-                : 'http://localhost:8080/api/hortas';
-
->>>>>>> d1e8e21:frontend/src/AdminHortas.jsx
             const method = editingHorta ? 'PUT' : 'POST';
 
             const payload = editingHorta
