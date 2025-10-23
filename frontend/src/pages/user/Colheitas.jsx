@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { plantas } from './data/plantas.js';
+import { plantas } from '../../data/plantas.js';
 
 export default function Colheitas() {
     const [user, setUser] = useState(null);
