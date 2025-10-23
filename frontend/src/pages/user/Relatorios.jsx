@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import axios from 'axios';
-import { api } from './config/api';
+import { api } from '../../config/api';
 
 const COLORS = ['#4F732C', '#558C03', '#AEBF2C', '#D9C179', '#D9AE89'];
 

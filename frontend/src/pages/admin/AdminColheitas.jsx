@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAdminAuth } from '../../hooks/useAuth.jsx';
 import { AdminSessionInfo } from '../../components/ProtectedRoute.jsx';
-import { handleDelete } from './utils/deleteHandler';
-import { plantas } from './data/plantas.js';
+import { handleDelete } from '../../utils/deleteHandler';
+import { plantas } from '../../data/plantas.js';
 
 export default function AdminColheitas() {
     const { admin, loading: authLoading, isAuthenticated } = useAdminAuth();

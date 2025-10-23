@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from './config/api.js';
+import { api } from '../../config/api.js';
 
 export default function AdminDicas() {
     const [dicas, setDicas] = useState([]);
