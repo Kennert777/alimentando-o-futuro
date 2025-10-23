@@ -14,8 +14,8 @@ export default function SupportManagement() {
         try {
             const token = localStorage.getItem('authToken');
             const url = filtroStatus ? 
-                `http://localhost:8080/api/support/status/${filtroStatus}` : 
-                'http://localhost:8080/api/support';
+                `http://localhost:8080/api/suporte/status/${filtroStatus}` : 
+                'http://localhost:8080/api/suporte';
                 
             const response = await fetch(url, {
                 headers: {
@@ -38,7 +38,7 @@ export default function SupportManagement() {
     const updateStatus = async (id, novoStatus) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`http://localhost:8080/api/support/${id}/status`, {
+            const response = await fetch(`http://localhost:8080/api/suporte/${id}/status`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export default function SupportManagement() {
         if (confirm('Tem certeza que deseja deletar esta solicitação?')) {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8080/api/support/${id}`, {
+                const response = await fetch(`http://localhost:8080/api/suporte/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`

@@ -27,7 +27,7 @@ export default function ApoioNovo() {
 
     const loadSolicitacoes = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/support/email/${email}`);
+            const response = await axios.get(`http://localhost:8080/api/suporte/email/${email}`);
             setMinhasSolicitacoes(response.data);
         } catch (error) {
             console.error('Erro ao carregar solicitações:', error);
@@ -40,7 +40,7 @@ export default function ApoioNovo() {
         setError('');
         
         try {
-            await axios.post('http://localhost:8080/api/support', formData);
+            await axios.post('http://localhost:8080/api/suporte', formData);
             
             setEnviado(true);
             setFormData(prev => ({

@@ -21,7 +21,7 @@ export default function AdminDashboard() {
                 fetch('http://localhost:8080/api/usuarios', { headers }),
                 fetch('http://localhost:8080/api/hortas', { headers }),
                 fetch('http://localhost:8080/api/colheitas', { headers }),
-                fetch('http://localhost:8080/api/support', { headers })
+                fetch('http://localhost:8080/api/suporte', { headers })
             ]);
             
             const usuarios = await usuariosResp.json();
