@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useAdminAuth } from '../../hooks/useAuth.jsx';
-import { AdminSessionInfo } from './ProtectedRoute.jsx';
+import { AdminSessionInfo } from '../../components/ProtectedRoute.jsx';
 import { handleDelete } from './utils/deleteHandler';
 import { plantas } from './data/plantas.js';
 
