@@ -50,16 +50,24 @@ export default function HortaManagement() {
                 'https://backend-y6kz.onrender.com/api/hortas';
             const method = editingHorta ? 'PUT' : 'POST';
             
+            const payload = editingHorta
+                ? { ...formData, usuario: { id: parseInt(formData.usuarioId) } }
+                : {
+                    nome: formData.nome,
+                    localizacao: formData.localizacao,
+                    tipoPlantio: formData.tipoPlantio,
+                    descricao: formData.descricao,
+                    status: formData.status,
+                    usuario: { id: parseInt(formData.usuarioId) }
+                };
+
             const response = await fetch(url, {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    ...formData,
-                    usuario: { id: parseInt(formData.usuarioId) }
-                })
+                body: JSON.stringify(payload)
             });
             
             if (response.ok) {

@@ -88,16 +88,33 @@ export default function AdminHortas() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        
+
         try {
+<<<<<<< HEAD:frontend/src/pages/admin/AdminHortas.jsx
             const url = editingHorta 
                 ? `https://backend-y6kz.onrender.com/api/hortas/${editingHorta}`
                 : 'https://backend-y6kz.onrender.com/api/hortas';
             
+=======
+            const url = editingHorta
+                ? `http://localhost:8080/api/hortas/${editingHorta}`
+                : 'http://localhost:8080/api/hortas';
+
+>>>>>>> d1e8e21:frontend/src/AdminHortas.jsx
             const method = editingHorta ? 'PUT' : 'POST';
-            
-            await axios({ method, url, data: formData });
-            
+
+            const payload = editingHorta
+                ? formData
+                : {
+                    nome: formData.nome,
+                    localizacao: formData.localizacao,
+                    tipoPlantio: formData.tipoPlantio,
+                    descricao: formData.descricao,
+                    aprovada: formData.aprovada
+                };
+
+            await axios({ method, url, data: payload });
+
             alert(editingHorta ? 'Horta atualizada!' : 'Horta criada!');
             loadHortas();
             resetForm();

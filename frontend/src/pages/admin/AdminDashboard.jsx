@@ -18,10 +18,17 @@ export default function AdminDashboard() {
             };
             
             const [usuariosResp, hortasResp, colheitasResp, suporteResp] = await Promise.all([
+<<<<<<< HEAD:frontend/src/pages/admin/AdminDashboard.jsx
                 fetch('https://backend-y6kz.onrender.com/api/usuarios', { headers }),
                 fetch('https://backend-y6kz.onrender.com/api/hortas', { headers }),
                 fetch('https://backend-y6kz.onrender.com/api/colheitas', { headers }),
                 fetch('https://backend-y6kz.onrender.com/api/suporte', { headers })
+=======
+                fetch('http://localhost:8080/api/usuarios', { headers }),
+                fetch('http://localhost:8080/api/hortas', { headers }),
+                fetch('http://localhost:8080/api/colheitas', { headers }),
+                fetch('http://localhost:8080/api/suporte', { headers })
+>>>>>>> d1e8e21:frontend/src/AdminDashboard.jsx
             ]);
             
             const usuarios = await usuariosResp.json();
