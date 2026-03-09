@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/public/Home';
 import Login from './pages/public/Login';
 import Register from './pages/public/Register';
+import ForgotPassword from './pages/public/ForgotPassword';
 import Dashboard from './pages/user/Dashboard';
 import HortasUsuario from './pages/user/HortasUsuario';
 import Colheitas from './pages/user/Colheitas';
@@ -37,6 +38,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/dicas" element={<Receitas />} />
               <Route path="/receitas" element={<Receitas />} />
               <Route path="/apoio" element={<ApoioNovo />} />

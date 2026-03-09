@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { api } from '../../config/api';
 
 export default function ForgotPassword() {
-    const [step, setStep] = useState(1); // 1: email, 2: token + nova senha
+    const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
     const [token, setToken] = useState('');
-    const [newPassword, setNewPassword] = useState('');
+    const [novaSenha, setNovaSenha] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleRequestReset = async (e) => {
         e.preventDefault();
@@ -19,11 +20,11 @@ export default function ForgotPassword() {
         setMessage('');
 
         try {
-            await axios.post('https://backend-y6kz.onrender.com/api/password-reset', { email });
+            await api.post('/api/password-reset/solicitar', { email });
             setMessage('Código enviado para seu email! Verifique sua caixa de entrada.');
             setStep(2);
         } catch (err) {
-            setError(err.response?.data?.error || 'Erro ao enviar código');
+            setError(err.response?.data?.erro || 'Erro ao enviar código');
         } finally {
             setLoading(false);
         }
@@ -32,12 +33,12 @@ export default function ForgotPassword() {
     const handleResetPassword = async (e) => {
         e.preventDefault();
         
-        if (newPassword !== confirmPassword) {
+        if (novaSenha !== confirmPassword) {
             setError('As senhas não coincidem');
             return;
         }
 
-        if (newPassword.length < 6) {
+        if (novaSenha.length < 6) {
             setError('A senha deve ter pelo menos 6 caracteres');
             return;
         }
@@ -47,13 +48,11 @@ export default function ForgotPassword() {
         setMessage('');
 
         try {
-            await axios.put(`https://backend-y6kz.onrender.com/api/password-reset/token/${token}`, { newPassword });
-            setMessage('Senha redefinida com sucesso! Você pode fazer login agora.');
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 2000);
+            await api.post('/api/password-reset/redefinir', { token, novaSenha });
+            setMessage('Senha redefinida com sucesso! Redirecionando...');
+            setTimeout(() => navigate('/login'), 2000);
         } catch (err) {
-            setError(err.response?.data?.error || 'Erro ao redefinir senha');
+            setError(err.response?.data?.erro || 'Erro ao redefinir senha');
         } finally {
             setLoading(false);
         }
@@ -119,22 +118,22 @@ export default function ForgotPassword() {
                                             className="form-control"
                                             id="token"
                                             value={token}
-                                            onChange={(e) => setToken(e.target.value)}
+                                            onChange={(e) => setToken(e.target.value.toUpperCase())}
                                             required
-                                            placeholder="Digite o código de 6 dígitos"
+                                            placeholder="Digite o código de 6 caracteres"
                                             maxLength="6"
                                         />
                                         <small className="text-muted">Código enviado para {email}</small>
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="newPassword" className="form-label">Nova Senha</label>
+                                        <label htmlFor="novaSenha" className="form-label">Nova Senha</label>
                                         <input
                                             type="password"
                                             className="form-control"
-                                            id="newPassword"
-                                            value={newPassword}
-                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            id="novaSenha"
+                                            value={novaSenha}
+                                            onChange={(e) => setNovaSenha(e.target.value)}
                                             required
                                             placeholder="Digite sua nova senha"
                                             minLength="6"

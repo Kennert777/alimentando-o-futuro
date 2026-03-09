@@ -1,7 +1,6 @@
 import axios from "axios";
 
-// const API_BASE_URL = 'https://backend-y6kz.onrender.com';
-const API_BASE_URL = 'https://backend-y6kz.onrender.com';
+const API_BASE_URL = 'http://localhost:8080';
 
 const defaultHeaders = {
   'Content-Type': 'application/json',

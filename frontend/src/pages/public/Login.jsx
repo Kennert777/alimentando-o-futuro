@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 const Login = () => {
@@ -16,7 +16,7 @@ const Login = () => {
     setErro("");
     
     try {
-      const response = await fetch("https://backend-y6kz.onrender.com/auth/login", {
+      const response = await fetch("http://localhost:8080/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -77,12 +77,17 @@ const Login = () => {
         {erro && <div className="alert alert-danger">{erro}</div>}
         <button
           type="submit"
-          className="btn w-100"
+          className="btn w-100 mb-3"
           style={{ backgroundColor: '#4F732C', borderColor: '#4F732C', color: 'white' }}
           disabled={loading}
         >
           {loading ? "Entrando..." : "Entrar"}
         </button>
+        <div className="text-center">
+          <Link to="/forgot-password" className="text-decoration-none" style={{ color: '#4F732C' }}>
+            Esqueci minha senha
+          </Link>
+        </div>
       </form>
     </div>
   );
