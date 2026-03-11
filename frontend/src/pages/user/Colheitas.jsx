@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import { plantas } from '../../data/plantas.js';
+import Toast from '../../components/Toast';
 
 export default function Colheitas() {
     const [user, setUser] = useState(null);
     const [colheitas, setColheitas] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
     const [formData, setFormData] = useState({
         tipo_planta: '', quantidade_kg: '', data_colheita: '', qualidade: 'boa', destino: 'consumo_proprio', observacoes: ''
     });
 
+    const showToast = (message, type = 'success') => {
+        setToast({ show: true, message, type });
+    };
 
     const qualidades = ['excelente', 'boa', 'regular', 'ruim'];
     const destinos = ['consumo_proprio', 'doacao', 'venda', 'troca', 'compostagem'];
@@ -27,7 +33,7 @@ export default function Colheitas() {
     const loadColheitas = async (userId) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('https://backend-y6kz.onrender.com/api/colheitas', {
+            const response = await fetch('http://localhost:8080/api/colheitas', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -38,7 +44,7 @@ export default function Colheitas() {
                 setColheitas(data.filter(c => c.usuario?.id === userId));
             }
         } catch (error) {
-            console.error('Erro ao carregar colheitas:', error);
+            showToast('Erro ao carregar colheitas', 'error');
             setColheitas([]);
         }
     };
@@ -48,7 +54,7 @@ export default function Colheitas() {
         
         try {
             const token = localStorage.getItem('authToken');
-            const hortasResponse = await fetch('https://backend-y6kz.onrender.com/api/hortas', {
+            const hortasResponse = await fetch('http://localhost:8080/api/hortas', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -59,7 +65,7 @@ export default function Colheitas() {
             const hortaId = userHortas.length > 0 ? userHortas[0].id : null;
             
             if (!hortaId) {
-                alert('Cadastre uma horta primeiro para registrar colheitas.');
+                showToast('Cadastre uma horta primeiro para registrar colheitas', 'warning');
                 return;
             }
             
@@ -73,7 +79,7 @@ export default function Colheitas() {
                 observacoes: formData.observacoes
             };
             
-            const url = editingId ? `https://backend-y6kz.onrender.com/api/colheitas/${editingId}` : 'https://backend-y6kz.onrender.com/api/colheitas';
+            const url = editingId ? `http://localhost:8080/api/colheitas/${editingId}` : 'http://localhost:8080/api/colheitas';
             const method = editingId ? 'PUT' : 'POST';
             
             const response = await fetch(url, {
@@ -86,17 +92,15 @@ export default function Colheitas() {
             });
             
             if (response.ok) {
-                alert(editingId ? 'Colheita atualizada com sucesso!' : 'Colheita registrada com sucesso!');
+                showToast(editingId ? 'Colheita atualizada com sucesso!' : 'Colheita registrada com sucesso!', 'success');
                 loadColheitas(user.id);
                 resetForm();
             } else {
-                const errorMsg = response.status === 400 ? 'Dados inválidos. Verifique os campos.' :
-                               response.status === 401 ? 'Sessão expirada. Faça login novamente.' :
-                               'Erro ao salvar colheita. Tente novamente.';
-                alert(errorMsg);
+                const errorData = await response.json();
+                showToast(errorData.erro || 'Erro ao salvar colheita', 'error');
             }
         } catch (error) {
-            alert('Erro de conexão com o servidor.');
+            showToast('Erro de conexão com o servidor', 'error');
         }
     };
     
@@ -111,7 +115,7 @@ export default function Colheitas() {
             setLoading(true);
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`https://backend-y6kz.onrender.com/api/colheitas/${colheitaId}`, {
+                const response = await fetch(`http://localhost:8080/api/colheitas/${colheitaId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -119,13 +123,13 @@ export default function Colheitas() {
                 });
                 
                 if (response.ok) {
-                    alert('Colheita deletada com sucesso!');
+                    showToast('Colheita deletada com sucesso!', 'success');
                     loadColheitas(user.id);
                 } else {
-                    alert('Erro ao deletar colheita. Tente novamente.');
+                    showToast('Erro ao deletar colheita', 'error');
                 }
             } catch (error) {
-                alert('Erro de conexão com o servidor.');
+                showToast('Erro de conexão com o servidor', 'error');
             } finally {
                 setLoading(false);
             }
@@ -144,8 +148,6 @@ export default function Colheitas() {
         });
         setShowForm(true);
     };
-
-    const [loading, setLoading] = useState(false);
 
     const getTotalColheitas = () => {
         if (!colheitas || colheitas.length === 0) return '0.00';
@@ -172,22 +174,27 @@ export default function Colheitas() {
     if (!user) return <div>Carregando...</div>;
 
     return (
+        <>
+        <Toast 
+            show={toast.show}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ ...toast, show: false })}
+        />
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 className="bubble-text" style={{ color: "#4F732C" }}>🌾 Minhas Colheitas</h2>
                 <div>
                     <button 
-                        onClick={() => setShowForm(!showForm)} 
+                        onClick={() => {
+                            setShowForm(!showForm);
+                            if (showForm) resetForm();
+                        }} 
                         className="btn btn-success me-2"
                         style={{ backgroundColor: "#4F732C" }}
                     >
                         {showForm ? 'Cancelar' : 'Nova Colheita'}
                     </button>
-                    {showForm && editingId && (
-                        <button onClick={resetForm} className="btn btn-secondary">
-                            Cancelar Edição
-                        </button>
-                    )}
                 </div>
             </div>
 
@@ -300,7 +307,7 @@ export default function Colheitas() {
                                 ></textarea>
                             </div>
                             <button type="submit" className="btn btn-success">
-                                {editingId ? 'Atualizar Colheita' : 'Registrar Colheita (+100 pontos)'}
+                                {editingId ? 'Atualizar Colheita' : 'Registrar Colheita'}
                             </button>
                         </form>
                     </div>
@@ -313,7 +320,7 @@ export default function Colheitas() {
                     <div className="col-12">
                         <div className="alert alert-info text-center">
                             <h5>Nenhuma colheita registrada</h5>
-                            <p>Registre sua primeira colheita e ganhe 100 pontos!</p>
+                            <p>Registre sua primeira colheita!</p>
                         </div>
                     </div>
                 ) : (
@@ -333,13 +340,9 @@ export default function Colheitas() {
                                     </div>
                                     <p><strong>📊 Quantidade:</strong> {colheita.quantidade || colheita.quantidadeKg || colheita.quantidade_kg || 0} kg</p>
                                     <p><strong>📅 Data:</strong> {new Date(colheita.dataColheita || colheita.data_colheita).toLocaleDateString()}</p>
-                                    <p><strong>🎯 Destino:</strong> {(colheita.destino || '').replace('_', ' ')}</p>
                                     {colheita.observacoes && (
                                         <p><strong>📝 Observações:</strong> {colheita.observacoes}</p>
                                     )}
-                                    <small className="text-muted">
-                                        Registrado em: {new Date(colheita.dataRegistro || colheita.data_registro || new Date()).toLocaleDateString()}
-                                    </small>
                                     <div className="mt-2">
                                         <button 
                                             className="btn btn-primary btn-sm me-2"
@@ -362,5 +365,6 @@ export default function Colheitas() {
                 )}
             </div>
         </div>
+        </>
     );
 }

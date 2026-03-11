@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
+import Toast from '../../components/Toast';
 
 export default function HortasUsuario() {
     const [user, setUser] = useState(null);
     const [hortas, setHortas] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [editingHorta, setEditingHorta] = useState(null);
+    const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
     const [formData, setFormData] = useState({
         nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento'
     });
+
+    const showToast = (message, type = 'success') => {
+        setToast({ show: true, message, type });
+    };
 
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -21,7 +28,7 @@ export default function HortasUsuario() {
     const loadHortas = async (userId) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('https://backend-y6kz.onrender.com/api/hortas', {
+            const response = await fetch('http://localhost:8080/api/hortas', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -32,7 +39,7 @@ export default function HortasUsuario() {
                 setHortas(data.filter(h => h.usuario?.id === userId));
             }
         } catch (error) {
-            console.error('Erro ao carregar hortas:', error);
+            showToast('Erro ao carregar hortas', 'error');
         }
     };
 
@@ -41,8 +48,12 @@ export default function HortasUsuario() {
         
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('https://backend-y6kz.onrender.com/api/hortas', {
-                method: 'POST',
+            const url = editingHorta 
+                ? `http://localhost:8080/api/hortas/${editingHorta.id}`
+                : 'http://localhost:8080/api/hortas';
+            
+            const response = await fetch(url, {
+                method: editingHorta ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -57,25 +68,36 @@ export default function HortasUsuario() {
             });
             
             if (response.ok) {
-                alert('Horta cadastrada com sucesso!');
+                showToast(editingHorta ? 'Horta atualizada com sucesso!' : 'Horta cadastrada com sucesso!', 'success');
                 loadHortas(user.id);
                 setShowForm(false);
+                setEditingHorta(null);
                 setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
             } else {
-                const errorMsg = response.status === 400 ? 'Dados inválidos. Verifique os campos.' :
-                               response.status === 401 ? 'Sessão expirada. Faça login novamente.' :
-                               'Erro ao cadastrar horta. Tente novamente.';
-                alert(errorMsg);
+                const errorData = await response.json();
+                showToast(errorData.erro || 'Erro ao salvar horta', 'error');
             }
         } catch (error) {
-            alert('Erro de conexão com o servidor.');
+            showToast('Erro de conexão com o servidor', 'error');
         }
+    };
+
+    const editHorta = (horta) => {
+        setEditingHorta(horta);
+        setFormData({
+            nome: horta.nome,
+            localizacao: horta.localizacao,
+            tipo: horta.tipoPlantio,
+            descricao: horta.descricao || '',
+            status: horta.status.toLowerCase()
+        });
+        setShowForm(true);
     };
 
     const updateStatus = async (hortaId, newStatus) => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`https://backend-y6kz.onrender.com/api/hortas/${hortaId}`, {
+            const response = await fetch(`http://localhost:8080/api/hortas/${hortaId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,13 +107,13 @@ export default function HortasUsuario() {
             });
             
             if (response.ok) {
-                alert('Status atualizado com sucesso!');
+                showToast('Status atualizado com sucesso!', 'success');
                 loadHortas(user.id);
             } else {
-                alert('Erro ao atualizar status. Tente novamente.');
+                showToast('Erro ao atualizar status', 'error');
             }
         } catch (error) {
-            alert('Erro de conexão com o servidor.');
+            showToast('Erro de conexão com o servidor', 'error');
         }
     };
 
@@ -99,7 +121,7 @@ export default function HortasUsuario() {
         if (confirm(`Tem certeza que deseja deletar a horta "${nomeHorta}"?`)) {
             try {
                 const token = localStorage.getItem('authToken');
-                const response = await fetch(`https://backend-y6kz.onrender.com/api/hortas/${hortaId}`, {
+                const response = await fetch(`http://localhost:8080/api/hortas/${hortaId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -107,13 +129,13 @@ export default function HortasUsuario() {
                 });
                 
                 if (response.ok) {
-                    alert('Horta deletada com sucesso!');
+                    showToast('Horta deletada com sucesso!', 'success');
                     loadHortas(user.id);
                 } else {
-                    alert('Erro ao deletar horta. Tente novamente.');
+                    showToast('Erro ao deletar horta', 'error');
                 }
             } catch (error) {
-                alert('Erro de conexão com o servidor.');
+                showToast('Erro de conexão com o servidor', 'error');
             }
         }
     };
@@ -121,11 +143,22 @@ export default function HortasUsuario() {
     if (!user) return <div>Carregando...</div>;
 
     return (
+        <>
+        <Toast 
+            show={toast.show}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ ...toast, show: false })}
+        />
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 style={{ color: "#4F732C" }}>Minhas Hortas</h2>
                 <button 
-                    onClick={() => setShowForm(!showForm)} 
+                    onClick={() => {
+                        setShowForm(!showForm);
+                        setEditingHorta(null);
+                        setFormData({ nome: '', localizacao: '', tipo: '', descricao: '', status: 'planejamento' });
+                    }} 
                     className="btn btn-success"
                     style={{ backgroundColor: "#4F732C" }}
                 >
@@ -136,7 +169,7 @@ export default function HortasUsuario() {
             {showForm && (
                 <div className="card mb-4">
                     <div className="card-body">
-                        <h5>Cadastrar Nova Horta</h5>
+                        <h5>{editingHorta ? 'Editar Horta' : 'Cadastrar Nova Horta'}</h5>
                         <form onSubmit={handleSubmit}>
                             <div className="row">
                                 <div className="col-md-6 mb-3">
@@ -199,7 +232,9 @@ export default function HortasUsuario() {
                                     onChange={(e) => setFormData({...formData, descricao: e.target.value})}
                                 ></textarea>
                             </div>
-                            <button type="submit" className="btn btn-success">Cadastrar Horta</button>
+                            <button type="submit" className="btn btn-success">
+                                {editingHorta ? 'Atualizar Horta' : 'Cadastrar Horta'}
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -245,6 +280,12 @@ export default function HortasUsuario() {
                                     </small>
                                     <div className="mt-2">
                                         <button 
+                                            className="btn btn-primary btn-sm me-2"
+                                            onClick={() => editHorta(horta)}
+                                        >
+                                            ✏️ Editar
+                                        </button>
+                                        <button 
                                             className="btn btn-danger btn-sm"
                                             onClick={() => deleteHorta(horta.id, horta.nome)}
                                         >
@@ -258,5 +299,6 @@ export default function HortasUsuario() {
                 )}
             </div>
         </div>
+        </>
     );
 }

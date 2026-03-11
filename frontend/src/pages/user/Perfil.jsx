@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import Toast from '../../components/Toast';
 
 export default function Perfil() {
     const { currentUser, updateUser } = useAuth();
@@ -7,6 +8,11 @@ export default function Perfil() {
         nome: '', email: '', senha: '', confirmarSenha: '', ativo: true
     });
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+
+    const showToast = (message, type = 'success') => {
+        setToast({ show: true, message, type });
+    };
 
     useEffect(() => {
         if (currentUser) {
@@ -39,33 +45,36 @@ export default function Perfil() {
                 updateData.senha = formData.senha;
             }
 
-            const response = await fetch(`https://backend-y6kz.onrender.com/api/usuarios/${currentUser.id}`, {
+            const response = await fetch(`http://localhost:8080/api/usuarios/perfil`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify(updateData)
             });
 
-            if (!response.ok) throw new Error('Erro ao atualizar perfil');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.erro || 'Erro ao atualizar perfil');
+            }
 
             const updatedUser = await response.json();
             updateUser(updatedUser);
             
             if (!formData.ativo) {
-                alert('Conta desativada! Você será deslogado. Para reativar, faça login novamente.');
+                showToast('Conta desativada! Você será deslogado.', 'warning');
                 setTimeout(() => {
                     localStorage.clear();
                     window.location.href = '/login';
                 }, 2000);
             } else {
-                alert('Perfil atualizado com sucesso!');
+                showToast('Perfil atualizado com sucesso!', 'success');
             }
             
             setFormData(prev => ({ ...prev, senha: '', confirmarSenha: '' }));
         } catch (error) {
-            alert('Erro ao atualizar perfil: ' + error.message);
+            showToast(error.message, 'error');
         } finally {
             setLoading(false);
         }
@@ -74,6 +83,13 @@ export default function Perfil() {
     if (!currentUser) return <div>Carregando...</div>;
 
     return (
+        <>
+        <Toast 
+            show={toast.show}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ ...toast, show: false })}
+        />
         <div className="container mt-4">
             <div className="row justify-content-center">
                 <div className="col-md-6">
@@ -160,5 +176,6 @@ export default function Perfil() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
