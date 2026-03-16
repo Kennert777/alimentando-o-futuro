@@ -19,7 +19,7 @@ export function AdminRoute({ children }) {
     }
     
     if (!isAuthenticated) {
-        return <Navigate to="/admin/login" replace />;
+        return <Navigate to="/error/403" replace />;
     }
     
     return children;
@@ -43,7 +43,7 @@ export function UserRoute({ children }) {
     }
     
     if (!currentUser) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/error/401" replace />;
     }
     
     return children;

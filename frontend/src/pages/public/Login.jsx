@@ -88,6 +88,13 @@ const Login = () => {
             Esqueci minha senha
           </Link>
         </div>
+        <hr />
+        <div className="text-center">
+          <span className="text-muted">Não tem cadastro? </span>
+          <Link to="/register" className="fw-bold text-decoration-none" style={{ color: '#4F732C' }}>
+            Cadastre-se!!!
+          </Link>
+        </div>
       </form>
     </div>
   );

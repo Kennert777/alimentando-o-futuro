@@ -58,7 +58,7 @@ export default function Home() {
                                 {slide.subtitle}
                             </p>
                             <Link 
-                                to="/sobre" 
+                                to="/login" 
                                 className="btn btn-light btn-lg px-4"
                                 style={{ borderRadius: '25px', fontFamily: 'Playfair Display' }}
                             >

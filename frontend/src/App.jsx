@@ -23,6 +23,7 @@ import UserManagement from './pages/admin/UserManagement';
 import HortaManagement from './pages/admin/HortaManagement';
 import SupportManagement from './pages/admin/SupportManagement';
 import { UserRoute, AdminRoute } from './components/ProtectedRoute';
+import ErrorPage from './pages/public/ErrorPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './config/axios.js';
@@ -54,6 +55,8 @@ export default function App() {
               <Route path="/hortas-usuario" element={<UserRoute><HortasUsuario /></UserRoute>} />
               <Route path="/colheitas" element={<UserRoute><Colheitas /></UserRoute>} />
               <Route path="/perfil" element={<UserRoute><Perfil /></UserRoute>} />
+              <Route path="/error/:code" element={<ErrorPage />} />
+              <Route path="*" element={<ErrorPage errorCode={404} />} />
             </Routes>
           </main>
           <Footer />
